@@ -1,0 +1,27 @@
+.upload-wrap{
+    margin-top:10px;
+}
+.upload-wrap > div{
+    padding-left:0;
+}
+.upload-wrap .upload-image{
+    padding:3px;
+    border-radius: 5px;
+    border:1px solid #ddd;
+}
+.upload-wrap .upload-image img{
+    width:100%;
+}
+.upload-wrap .upload-btn{
+    padding:0 6px;
+}
+
+.upload-wrap .upload-success{
+    box-shadow: 0 0 1px #00a65a;
+    border:1px solid #00a65a;
+}
+
+.upload-wrap .upload-fail{
+    box-shadow: 0 0 1px #dd4b39;
+    border:1px solid #dd4b39;
+}
