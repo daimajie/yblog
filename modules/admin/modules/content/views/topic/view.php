@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </div>
-    <?php $form = ActiveForm::begin(['action' => Url::to(['status','id'=>$model->id])]); ?>
+    <?php $form = ActiveForm::begin(['action' => Url::to(['view','id'=>$model->id])]); ?>
     <div class="box-body table-responsive no-padding">
         <?= DetailView::widget([
             'template' => '<tr><th width="120">{label}</th><td{contentOptions}>{value}</td></tr>',
@@ -46,22 +46,27 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'status',
                     'format' => 'raw',
                     'value' => function($model){
-                        return Html::activeRadioList($model, 'status', [
+                        $input =  Html::activeRadioList($model, 'status', [
                                 '1' => '正常',
                                 '2' => '完结',
                                 '3' => '冻结',
-                        ]) ;
+                        ]);
+                        $error = Html::error($model, 'status', ['class' => 'text-danger']);
+                        return $input . $error;
                     }
                 ],
                 [
                     'attribute' => 'check',
                     'format' => 'raw',
                     'value' => function($model){
-                        return Html::activeRadioList($model, 'check', [
+                        $input = Html::activeRadioList($model, 'check', [
                             '1' => '待审核',
                             '2' => '审核通过',
                             '3' => '审核失败',
-                        ]) ;
+                        ]);
+                        $error = Html::error($model, 'check', ['class' => 'text-danger']);
+
+                        return $input . $error;
                     }
                 ],
                 [

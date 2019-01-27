@@ -63,7 +63,15 @@ $config = [
         ],appendTimestamp
         */
         'assetManager' => [
-            'appendTimestamp' => true
+            'appendTimestamp' => true,
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'sourcePath' => null,
+                    'js' => [
+                        'https://code.jquery.com/jquery-3.3.1.min.js'
+                    ]
+                ],
+            ],
         ]
 
 

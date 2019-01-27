@@ -2,12 +2,11 @@
 
 namespace app\modules\admin\modules\content\controllers;
 
-use app\components\Helper;
 use Yii;
 use app\modules\admin\models\Topic;
 use app\modules\admin\models\SearchTopic;
 use app\modules\admin\controllers\BaseController;
-use yii\imagine\Image;
+use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
@@ -63,10 +62,28 @@ class TopicController extends BaseController
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        if(Yii::$app->request->isPost){
+            //设置场景
+            $model->scenario = Topic::SCENARIO_STATUS;
+
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                //设置状态成功
+                $this->refresh();
+
+            }else{
+                //设置状态失败
+                //do nothing
+            }
+
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
+
 
     /**
      * Creates a new Topic model.
@@ -113,7 +130,8 @@ class TopicController extends BaseController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->del();
+        if( $this->findModel($id)->del() === false )
+            Yii::$app->session->setFlash('error','删除话题失败，请重试。');
 
         return $this->redirect(['index']);
     }
@@ -134,25 +152,7 @@ class TopicController extends BaseController
         }
     }
 
-    /**
-     * #修改状态
-     * @param $id
-     * @return string|Response
-     * @throws NotFoundHttpException
-     */
-    public function actionStatus($id){
-        $model = $this->findModel($id);
 
-        $model->scenario = Topic::SCENARIO_STATUS;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
 
 
 }

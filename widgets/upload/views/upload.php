@@ -34,11 +34,14 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@widgets/upload/stat
             </div>
         </div>
     </div>
+    <div class="col-sm-12">
+        <p id="response_msg" class="text-danger"></p>
+    </div>
 </div>
 
 <?php
 $token =  Yii::$app->request->getCsrfToken();
-$upUrl = Url::to(['topic/upload']);
+$upUrl = Url::to(['upload']);
 
 $js = <<<UPLOADER
 $(function(){
@@ -91,16 +94,19 @@ $(function(){
     uploader.on( 'uploadSuccess', function( file, response) {
        
        if(response.code === 0){
-            //填充数据
-            $('#{$id}').val(response.url);
+           //填充数据
+           $('#{$id}').val(response.url);
            
            fileBox.removeClass('upload-fail').addClass('upload-success');
        } else {
+           //显示错误信息
+           $('#response_msg').text(response.msg);
            
            fileBox.removeClass('upload-success').addClass('upload-fail');
        }
        
        layer.msg(response.msg);
+       
        
     });
     

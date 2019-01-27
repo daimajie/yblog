@@ -58,7 +58,7 @@ class Topic extends \yii\db\ActiveRecord
             //设置状态
             [['status', 'check'], 'required', 'on'=>[self::SCENARIO_STATUS]],
 
-            [['status', 'check'], 'in', 'range' => [1, 2, 3], 'on'=> [self::SCENARIO_STATUS]],
+            [['status', 'check'], 'in', 'range' => [1,2,3]],
 
             //crud
             [['secrecy', 'name', 'image','desc'], 'required'],
@@ -71,6 +71,13 @@ class Topic extends \yii\db\ActiveRecord
 
             [['desc'], 'string', 'max' => 225],
         ];
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_STATUS] = ['status', 'check'];
+        return $scenarios;
     }
 
     /**
@@ -91,6 +98,25 @@ class Topic extends \yii\db\ActiveRecord
             'created_at' => '创建时间',
             'updated_at' => '修改时间',
         ];
+    }
+
+    /**
+     * #根据话题id获取简要信息[id=>1, name=>'text']
+     */
+    public static function getSimpleData($topic_id){
+        return self::find()
+            ->select(['id','name'])
+            ->where(['id'=>$topic_id])
+            ->asArray()
+            ->one();
+    }
+
+    /**
+     * 关联标签
+     */
+    public function getTags(){
+        return $this->hasMany(Tag::class, ['topic_id' => 'id'])
+            ->select(['id', 'topic_id', 'name']);
     }
 
     /**

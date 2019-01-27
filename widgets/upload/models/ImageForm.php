@@ -26,6 +26,7 @@ class ImageForm extends Model
             ['image', 'image', 'extensions' => 'png, jpg, gif, jpeg',
                 'minWidth' => 100, 'maxWidth' => 1000,
                 'minHeight' => 100, 'maxHeight' => 1000,
+                'message' => '请选择一个宽高不超过1000像素的图片。'
             ],
         ];
     }
