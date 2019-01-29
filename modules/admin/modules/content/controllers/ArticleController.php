@@ -5,14 +5,19 @@ namespace app\modules\admin\modules\content\controllers;
 use app\modules\admin\models\Tag;
 use app\modules\admin\models\Topic;
 use app\widgets\select2\actions\SelectAction;
+use Prophecy\Exception\Doubler\MethodNotFoundException;
 use Yii;
 use app\modules\admin\models\Article;
 use app\modules\admin\models\SearchArticle;
 use app\modules\admin\controllers\BaseController;
+use yii\base\Exception;
+use yii\base\UnknownMethodException;
 use yii\helpers\VarDumper;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\widgets\upload\actions\UploadAction;
+use yii\web\Response;
 
 /**
  * ArticleController implements the CRUD actions for Article model.
@@ -233,6 +238,141 @@ class ArticleController extends BaseController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    
+    /**
+     * 批量操作
+     */
+    public function actionOperate(){
+
+
+        $ids = Yii::$app->request->get('ids');
+        $operate = Yii::$app->request->get('operate');
+
+        //数据验证
+        if(empty($ids) || empty($operate) || !is_array($ids) || count($ids) > 20){
+            throw new BadRequestHttpException('请求错误。');
+        }
+
+
+
+        try{
+
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            //调用可变函数
+            return $this->$operate($ids);
+
+        }catch (UnknownMethodException $e){
+            //函数未定义直接跳到列表页
+            Yii::error($e->getMessage(), __METHOD__);
+            return $this->redirect(['index']);
+
+        }catch (Exception $e){
+
+            //返回错误信息
+            Yii::error($e->getMessage(), __METHOD__);
+            return [
+                'errcode' => 1,
+                'message' => $e->getMessage(),
+            ];
+
+        }
+    }
+
+
+    /**
+     * 批量删除
+     */
+    private function batchDelete($ids){
+
+        $affect = Article::updateAll([
+            //属性
+            'status' => Article::STATUS_RECYCLE
+        ],[
+            //条件
+            'and',
+            ['in', 'id', $ids],
+            ['!=', 'status', Article::STATUS_RECYCLE]
+
+        ]);
+
+        if($affect === false){
+            throw new Exception('批量删除文章失败，请重试。');
+        }
+        return [
+            'errcode' => 0,
+            'message' => '批量删除文章成功。',
+        ];
+    }
+    /**
+     * 批量恢复
+     */
+    private function batchRestore($ids){
+        $affect = Article::updateAll([
+            //属性
+            'status' => Article::STATUS_NORMAL
+        ],[
+            //条件
+            'and',
+            ['in', 'id', $ids],
+            ['=', 'status', Article::STATUS_RECYCLE]
+
+        ]);
+
+        if($affect === false){
+            throw new Exception('批量恢复文章失败，请重试。');
+        }
+        return [
+            'errcode' => 0,
+            'message' => '批量恢复文章成功。',
+        ];
+    }
+    /**
+     * 批量发布
+     */
+    private function batchPublish($ids){
+        $affect = Article::updateAll([
+            //属性
+            'status' => Article::STATUS_NORMAL
+        ],[
+            //条件
+            'and',
+            ['in', 'id', $ids],
+            ['=', 'status', Article::STATUS_DRAFT]
+
+        ]);
+
+        if($affect === false){
+            throw new Exception('批量发布文章失败，请重试。');
+        }
+        return [
+            'errcode' => 0,
+            'message' => '批量发布文章成功。',
+        ];
+    }
+    /**
+     * 批量审核
+     */
+    private function batchCheck($ids){
+        $affect = Article::updateAll([
+            //属性
+            'check' => Article::CHECK_ADOPT
+        ],[
+            //条件
+            'and',
+            ['in', 'id', $ids],
+            ['=', 'status', Article::CHECK_WAIT]
+
+        ]);
+
+        if($affect === false){
+            throw new Exception('批量审核文章失败，请重试。');
+        }
+        return [
+            'errcode' => 0,
+            'message' => '批量审核文章成功。',
+        ];
     }
 
 

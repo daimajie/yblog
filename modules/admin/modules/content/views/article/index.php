@@ -5,6 +5,9 @@ use yii\grid\GridView;
 use app\modules\admin\models\Article;
 use app\components\Helper;
 use yii\helpers\Url;
+use app\assets\LayerAsset;
+
+LayerAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\admin\models\SearchArticle */
@@ -15,23 +18,8 @@ $status = (int) $searchModel->status;
 
 $this->title = '文章列表';
 $this->params['breadcrumbs'][] = $this->title;
+$batchList = include_once('batchOperate.php');
 
-
-//定义下拉菜单
-$dropBtn = <<<DROP
-<div class="btn-group dropup">
-  <button type="button" class="btn btn-info btn-flat">批量操作</button>
-  <button type="button" class="btn btn-info btn-flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="caret"></span>
-    <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <ul class="dropdown-menu">
-    <li><a href="#">批量删除</a></li>
-    <li><a href="#">批量恢复</a></li>
-    <li><a href="#">批量审核</a></li>
-  </ul>
-</div>
-DROP;
 
 
 
@@ -66,6 +54,7 @@ DROP;
     </div>
     <div class="box-body table-responsive no-padding">
         <?= GridView::widget([
+            'id' => 'grid',
             'dataProvider' => $dataProvider,
             'layout' => "{items}\n{summary}\n{pager}",
             'columns' => [
@@ -74,7 +63,7 @@ DROP;
                     'headerOptions' => ['id'=>'select-all'],
                     'name' => 'article_ids[]',
                     'footerOptions' => ['colspan' => 12],
-                    'footer' => $dropBtn
+                    'footer' => $batchList
                 ],
                 [
                     'class' => 'yii\grid\SerialColumn',
@@ -216,4 +205,35 @@ DROP;
         ]); ?>
     </div>
 </div>
+
+<?php
+$operateUrl = Url::to(['article/operate'], true);
+$batch = <<<OPERATE
+$('#operate_art a').on('click',function(){
+    var operate = $(this).data('operate');
+    var ids = $('#grid').yiiGridView('getSelectedRows');
+       
+    if( ids.length <= 0 || !operate) return;
+    
+    //如果是删除就询问一下
+    if(operate === 'batchDelete'){
+        if(!confirm('您确定要批量删除吗?')) return;
+    }
+    
+    $.ajax({
+        url: '{$operateUrl}',
+        type: 'GET',
+        data: {operate:operate, ids:ids},
+        success : function(d){
+            if(d.errcode === 0){
+                window.location.reload();
+            }
+            layer.msg(d.message);
+        }
+    });
+});
+
+OPERATE;
+
+$this->registerJs($batch);
 
