@@ -14,7 +14,7 @@ use yii\helpers\Url;
 <div class="article-form box box-primary">
     <?php $form = ActiveForm::begin([
         'id' => 'article_form',
-        'enableClientValidation' => false
+        //'enableClientValidation' => false
     ]); ?>
     <div class="box-body table-responsive">
         <?= $form->field($model, 'status')->hiddenInput([

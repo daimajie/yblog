@@ -16,7 +16,7 @@ use yii\helpers\Url;
 ])?>
 
 <?php
-$token =  Yii::$app->request->getCsrfToken();
+//$token =  Yii::$app->request->getCsrfToken();
 
 $selectUrl = Yii::$app->urlManager->createAbsoluteUrl(['/admin/content/article/select']);
 $js = <<<SCRIPT

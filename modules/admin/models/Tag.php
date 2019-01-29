@@ -71,6 +71,12 @@ class Tag extends \yii\db\ActiveRecord
             ->andWhere(['name'=>$this->name])
             ->count();
 
+        if ( $count && !$this->isNewRecord ){
+            $this->addError($attribute, '不能使用原名称.');
+            return false;
+        }
+
+
         if ( $count ){
             $this->addError($attribute, '该话题下已存在同名标签.');
             return false;
@@ -179,5 +185,37 @@ class Tag extends \yii\db\ActiveRecord
         return ($limit - $count);
     }
 
+    /**
+     * 删除标签
+     */
+    public function discard(){
+        $transaction = self::getDb()->beginTransaction();
+        try {
+            //删除标签关联信息
+            if(ArticleTag::deleteAll(['tag_id'=>$this->id]) === false){
+                throw new Exception('删除标签关联失败，请重试。');
+            }
+
+            //删除标签自身
+            if(!$this->delete()){
+                throw new Exception('删除标签失败，请重试。');
+            }
+
+            $transaction->commit();
+            return true;
+        } catch(\Exception $e) {
+            $transaction->rollBack();
+            //Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+
+        } catch(\Throwable $e) {
+            $transaction->rollBack();
+            //Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+
+        }
+        return false;
+
+    }
 
 }
