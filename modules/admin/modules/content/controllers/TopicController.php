@@ -6,6 +6,7 @@ use Yii;
 use app\modules\admin\models\Topic;
 use app\modules\admin\models\SearchTopic;
 use app\modules\admin\controllers\BaseController;
+use yii\base\Exception;
 use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -132,8 +133,11 @@ class TopicController extends BaseController
      */
     public function actionDelete($id)
     {
-        if( $this->findModel($id)->del() === false )
-            Yii::$app->session->setFlash('error','删除话题失败，请重试。');
+        try{
+            $this->findModel($id)->del();
+        }catch (Exception $e){
+            Yii::$app->session->setFlash('error',$e->getMessage());
+        }
 
         return $this->redirect(['index']);
     }

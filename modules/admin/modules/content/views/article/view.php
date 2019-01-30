@@ -48,7 +48,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format'=>'html',
                     'attribute' => 'image',
                     'value' => function($model){
-                        return Html::img(Helper::showImage($model->image), ['width'=>200]);
+                        if(!empty($model->image))
+                            return Html::img(Helper::showImage($model->image), ['width'=>200]);
+                        return '无图片';
                     },
                 ],
                 'brief',

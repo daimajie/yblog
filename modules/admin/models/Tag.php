@@ -144,6 +144,7 @@ class Tag extends \yii\db\ActiveRecord
 
     /**
      * #根据话题获取标签
+     * @return array #[id => name, id2 => name2]
      */
     public static function getTagsByTopic($topic_id){
         if(intval($topic_id) <= 0)

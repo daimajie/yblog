@@ -4,6 +4,7 @@ namespace app\modules\admin\models;
 
 use app\components\Helper;
 use Yii;
+use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 
@@ -100,6 +101,7 @@ class Topic extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * #根据话题id获取简要信息[id=>1, name=>'text']
      */
@@ -109,6 +111,15 @@ class Topic extends \yii\db\ActiveRecord
             ->where(['id'=>$topic_id])
             ->asArray()
             ->one();
+    }
+
+    /**
+     * 检测当前话题下包含文章数目
+     * @return int #包含文章数目
+     */
+    public function hasArticlesCount(){
+        //检测是否包含文章
+        return Article::find()->where(['topic_id'=>$this->id])->count();
     }
 
     /**
@@ -162,11 +173,39 @@ class Topic extends \yii\db\ActiveRecord
      * 删除话题
      */
     public function del(){
-        //删除图片
-        Helper::delImage($this->image);
+        $transaction = self::getDb()->beginTransaction();
+        try{
+            //检测是否包含文章
+            if($this->hasArticlesCount()){
+                throw new Exception('请先删除该话题下所有的文章。');
+            }
 
-        return $this->delete();
+            //删除当前话题下所有的标签数据
+            //1. 获取当前话题下所有标签的id
+            $tag_ids = array_keys(Tag::getTagsByTopic($this->id));
+            //2. 删除标签
+            if(Tag::deleteAll(['topic_id'=>$this->id]) === false){
+                throw new Exception('删除话题中的标签失败,请重试。');
+            }
+
+            //删除图片
+            Helper::delImage($this->image);
+
+            //删除话题自身
+            if( !$this->delete() ){
+                throw new Exception('删除话题失败,请重试。');
+            }
+
+            $transaction->commit();
+            return true;
+
+        }catch(Exception $e){
+            $transaction->rollBack();
+            throw $e;
+        }
+
     }
+
 
 
 }
