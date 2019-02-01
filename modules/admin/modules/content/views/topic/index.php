@@ -11,6 +11,10 @@ use yii\helpers\Url;
 
 $this->title = '话题列表';
 $this->params['breadcrumbs'][] = $this->title;
+
+//展示状态
+$status = (int)(isset($searchModel->status) ? $searchModel->status : 0);
+
 ?>
 <div class="topic-index box box-primary">
     <div class="box-header with-border">
@@ -77,7 +81,30 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => ['date', 'php:Y-m-d']
                 ],
 
-                ['class' => 'yii\grid\ActionColumn'],
+                //['class' => 'yii\grid\ActionColumn'],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'header' => '<a href="javascript:;">操作</a>',
+                    'template' => '{view} {update} {delete} {discard}',
+                    'buttons'=>[
+
+                        'discard' => function ($url, $model, $key) {
+                            return Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>', $url, [
+                                'class'=>'ui blue basic button',
+                                'title' => '彻底删除',
+                                'data' => [
+                                    'confirm' => '您确定要彻底删除该话题吗?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        },
+
+                    ],
+                    'visibleButtons' => [
+                        'delete'  => $status === Topic::STATUS_RECYCLE ? false : true,
+                        'discard' => $status === Topic::STATUS_RECYCLE ? true : false,
+                    ],
+                ],
             ],
         ]); ?>
     </div>

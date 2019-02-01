@@ -30,7 +30,20 @@ if (!$model->isNewRecord) {
 
     </div>
     <div class="box-footer">
-        <?= Html::submitButton('保存', ['class' => 'btn btn-success btn-flat']) ?>
+        <?= Html::button('保存', ['class' => 'btn btn-success btn-flat','id'=>'submit_btn']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>
+<?php
+//禁止重复提交
+$js = <<<SCRIPT
+$('#submit_btn').on('click', function(){
+    if($(this).prop('disabled')) return;
+    $(this).prop({
+        disabled:"disabled"
+    });
+    $('#form_operate').submit();
+});
+SCRIPT;
+$this->registerJs($js);
+

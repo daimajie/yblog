@@ -127,6 +127,19 @@ class Topic extends \yii\db\ActiveRecord
     }
 
     /**
+     * 检测当前话题下包含的公示文章数目
+     * @return int #包含文章数目
+     */
+    public function hasPublishArticlesCount(){
+        //检测是否包含文章
+        return Article::find()->where([
+            'and',
+            ['topic_id'=>$this->id],
+            ['!=', 'status', Article::STATUS_RECYCLE]
+        ])->count();
+    }
+
+    /**
      * 关联标签
      */
     public function getTags(){
@@ -174,19 +187,19 @@ class Topic extends \yii\db\ActiveRecord
     }
 
     /**
-     * 删除话题
+     * 彻底删除话题
      */
     public function discard(){
         $transaction = self::getDb()->beginTransaction();
         try{
             //检测是否包含文章
             if($this->hasArticlesCount()){
-                throw new Exception('请先删除该话题下所有的文章。');
+                throw new Exception('请先彻底删除该话题下所有的文章。');
             }
 
             //删除当前话题下所有的标签数据
             //1. 获取当前话题下所有标签的id
-            $tag_ids = array_keys(Tag::getTagsByTopic($this->id));
+            //$tag_ids = array_keys(Tag::getTagsByTopic($this->id));
             //2. 删除标签
             if(Tag::deleteAll(['topic_id'=>$this->id]) === false){
                 throw new Exception('删除话题中的标签失败,请重试。');
@@ -209,6 +222,30 @@ class Topic extends \yii\db\ActiveRecord
         }
 
     }
+
+    /**
+     * 删除话题至回收站
+     */
+    public function del(){
+        try{
+            //检测是否包含公示文章
+            if($this->hasPublishArticlesCount()){
+                throw new Exception('请先删除该话题下所有的文章。');
+            }
+
+            if($this->updateAttributes(['status'=>Topic::STATUS_RECYCLE]) === false){
+                throw new Exception('删除话题失败,请重试。');
+            }
+
+            return true;
+
+        }catch(Exception $e){
+            throw $e;
+        }
+
+    }
+
+
 
 
 

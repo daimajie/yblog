@@ -191,7 +191,7 @@ class ArticleController extends BaseController
         if($affect === false){
             //提示一下
             Yii::$app->session->setFlash('error', '删除文章失败，请重试。');
-            return $this->refresh();
+            return $this->redirect(['article/view','id'=>$id]);
         }
 
         return $this->redirect(['index']);
@@ -205,7 +205,7 @@ class ArticleController extends BaseController
 
         if( !$model->discard() ){
             Yii::$app->session->setFlash('error', '删除文章失败，请重试。');
-            return $this->refresh();
+            return $this->redirect(['article/view','id'=>$id]);
         }
         return $this->redirect(['index']);
     }

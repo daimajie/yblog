@@ -55,8 +55,11 @@ class SearchTopic extends Topic
         //排除回收站数据 或只显示回收站数据
         if(!isset($params['status']))
             $query->andFilterWhere(['!=', 'status', Topic::STATUS_RECYCLE]);
-        if(isset($params['status']) && (int)$params['status']===Topic::STATUS_RECYCLE)
+        if(isset($params['status']) && (int)$params['status']===Topic::STATUS_RECYCLE){
+
+            $this->status = $params['status'];
             $query->andFilterWhere(['status' => Topic::STATUS_RECYCLE]);
+        }
 
 
 

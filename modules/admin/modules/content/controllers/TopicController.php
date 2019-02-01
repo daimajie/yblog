@@ -133,11 +133,12 @@ class TopicController extends BaseController
      */
     public function actionDelete($id)
     {
-        $affect = $this->findModel($id)->updateAttributes(['status'=>Topic::STATUS_RECYCLE]);
-        if($affect === false){
-            //提示一下
-            Yii::$app->session->setFlash('error', '删除话题失败，请重试。');
-            return $this->refresh();
+
+        try{
+            $this->findModel($id)->del();
+        }catch (Exception $e){
+            Yii::$app->session->setFlash('error',$e->getMessage());
+            return $this->redirect(['topic/view','id'=>$id]);
         }
 
         return $this->redirect(['index']);
@@ -151,6 +152,7 @@ class TopicController extends BaseController
             $this->findModel($id)->discard();
         }catch (Exception $e){
             Yii::$app->session->setFlash('error',$e->getMessage());
+            return $this->redirect(['topic/view','id'=>$id]);
         }
 
         return $this->redirect(['index']);
