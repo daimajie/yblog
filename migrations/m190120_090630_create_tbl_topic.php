@@ -19,7 +19,7 @@ class m190120_090630_create_tbl_topic extends Migration
             'image' => $this->string(125)->notNull()->defaultValue('')->comment('话题封面'),
             'desc' => $this->string(225)->notNull()->defaultValue('')->comment('话题描述'),
             'count' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('收录文章'),
-            'status' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(1)->comment('话题状态: 1 正常,2 完结,3 冻结'),
+            'status' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(1)->comment('话题状态: 1 正常,2 完结,3 删除'),
             'check' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(1)->comment('审核状态: 1 待审核,2 审核通过,3 审核失败'),
             'secrecy' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(1)->comment('私有话题: 1 私有,2 公开'),
             'user_id' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('创建者'),

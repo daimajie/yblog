@@ -52,21 +52,31 @@ class SearchTopic extends Topic
 
         $this->load($params);
 
+        //排除回收站数据 或只显示回收站数据
+        if(!isset($params['status']))
+            $query->andFilterWhere(['!=', 'status', Topic::STATUS_RECYCLE]);
+        if(isset($params['status']) && (int)$params['status']===Topic::STATUS_RECYCLE)
+            $query->andFilterWhere(['status' => Topic::STATUS_RECYCLE]);
+
+
 
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
+
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status ,
+            //'status' => $this->status ,
             'check' => $this->check,
             'secrecy' => $this->secrecy,
         ]);
+
+
 
         $query->andFilterWhere(['like', 'name', $this->name]);
 

@@ -25,6 +25,10 @@ use yii\behaviors\BlameableBehavior;
  */
 class Topic extends \yii\db\ActiveRecord
 {
+    const STATUS_NORMAL  =  1; //正常使用
+    const STATUS_FINISH  =  2; //完结
+    const STATUS_RECYCLE =  3; //删除
+
     const SCENARIO_STATUS = 'status';
 
     public function behaviors()
@@ -172,7 +176,7 @@ class Topic extends \yii\db\ActiveRecord
     /**
      * 删除话题
      */
-    public function del(){
+    public function discard(){
         $transaction = self::getDb()->beginTransaction();
         try{
             //检测是否包含文章

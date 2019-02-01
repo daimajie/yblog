@@ -7,6 +7,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use app\assets\LayerAsset;
+use app\modules\admin\models\Topic;
 
 LayerAsset::register($this);
 
@@ -20,13 +21,24 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="topic-view box box-primary">
     <div class="box-header">
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-flat']) ?>
-        <?= Html::a('删除', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger btn-flat',
-            'data' => [
-                'confirm' => '您确定要删除该话题吗?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php
+        if($model->status === Topic::STATUS_RECYCLE)
+            echo Html::a('彻底删除', ['discard', 'id' => $model->id], [
+                'class' => 'btn btn-warning btn-flat',
+                'data' => [
+                    'confirm' => '您确定要彻底删除该话题吗?',
+                    'method' => 'post',
+                ],
+            ]);
+        else
+            echo Html::a('删除', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger btn-flat',
+                'data' => [
+                    'confirm' => '您确定要将该话题放置回收站吗?',
+                    'method' => 'post',
+                ],
+            ]);
+        ?>
     </div>
     <?php $form = ActiveForm::begin([
             'action' => Url::to(['view','id'=>$model->id]),
@@ -54,9 +66,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                     'value' => function($model){
                         $input =  Html::activeRadioList($model, 'status', [
-                                '1' => '正常',
-                                '2' => '完结',
-                                '3' => '冻结',
+                                Topic::STATUS_NORMAL => '正常',
+                                Topic::STATUS_FINISH => '完结',
+                                Topic::STATUS_RECYCLE => '回收站',
                         ]);
                         $error = Html::error($model, 'status', ['class' => 'text-danger']);
                         return $input . $error;

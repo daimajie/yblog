@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\models\Topic;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\admin\models\SearchTopic */
@@ -25,9 +26,8 @@ use yii\widgets\ActiveForm;
 
     <?php echo $form->field($model, 'status')->dropDownList([
             '' => '使用状态',
-            '1' => '正常',
-            '2' => '完结',
-            '3' => '冻结',
+            Topic::STATUS_NORMAL => '正常',
+            Topic::STATUS_FINISH => '完结',
     ]) ?>
 
     <?php echo $form->field($model, 'check')->dropDownList([

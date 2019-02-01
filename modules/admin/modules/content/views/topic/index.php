@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\modules\admin\models\Topic;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\admin\models\SearchTopic */
@@ -14,6 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-header with-border">
         <div class="pull-left">
             <?= Html::a('创建话题', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
+            <?php
+            echo Html::a('回收站', Url::current(['status'=>Topic::STATUS_RECYCLE]), [
+                'class' => 'btn btn-warning btn-flat '
+            ]) ?>
         </div>
         <div class="pull-right">
             <?php echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -34,8 +40,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'status',
                     'enableSorting' => false,
                     'value' => function($model){
-                        $tmp = ['正常','完结','冻结'];
-                        return $tmp[$model->status - 1];
+                        $tmp = [
+                            Topic::STATUS_NORMAL => '正常',
+                            Topic::STATUS_FINISH => '完结',
+                            Topic::STATUS_RECYCLE => '回收站'
+                        ];
+                        return $tmp[$model->status];
                     }
                 ],
                 [
