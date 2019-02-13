@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use app\modules\admin\models\Article;
+use app\modules\admin\models\content\Article;
 use app\components\Helper;
 use yii\helpers\Url;
 use app\assets\LayerAsset;
@@ -10,7 +10,7 @@ use app\assets\LayerAsset;
 LayerAsset::register($this);
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\admin\models\SearchArticle */
+/* @var $searchModel app\modules\admin\models\content\SearchArticle */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 //当前展示状态(1公示文章 2草稿 3回收站)
@@ -104,9 +104,9 @@ $batchList = include_once('batchOperate.php');
                     'attribute' => 'check',
                     'value' => function($model){
                         $tmp = [
-                            ARTICLE::CHECK_WAIT => '待审核',
-                            ARTICLE::CHECK_ADOPT => '审核通过',
-                            ARTICLE::CHECK_DENIAL => '审核失败',
+                            Article::CHECK_WAIT => '待审核',
+                            Article::CHECK_ADOPT => '审核通过',
+                            Article::CHECK_DENIAL => '审核失败',
                         ];
 
                         return $tmp[$model->check];

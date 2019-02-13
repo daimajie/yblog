@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\Tag */
+/* @var $model app\modules\admin\models\content\Tag */
 /* @var $form yii\widgets\ActiveForm */
 $validationUrl = ['validate-form'];
 if (!$model->isNewRecord) {

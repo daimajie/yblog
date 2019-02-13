@@ -5,10 +5,10 @@ use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use app\components\Helper;
-use app\modules\admin\models\Article;
+use app\modules\admin\models\content\Article;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\Article */
+/* @var $model app\modules\admin\models\content\Article */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => '文章列表', 'url' => ['index']];
@@ -72,9 +72,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'raw',
                     'value' => function($model){
                         $input = Html::activeRadioList($model, 'check', [
-                            ARTICLE::CHECK_WAIT => '待审核',
-                            ARTICLE::CHECK_ADOPT => '审核通过',
-                            ARTICLE::CHECK_DENIAL => '审核失败',
+                            Article::CHECK_WAIT => '待审核',
+                            Article::CHECK_ADOPT => '审核通过',
+                            Article::CHECK_DENIAL => '审核失败',
                         ]) ;
                         $error = Html::error($model, 'status', ['class' => 'text-danger']);
                         return $input . $error;

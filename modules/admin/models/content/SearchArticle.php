@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\admin\models;
+namespace app\modules\admin\models\content;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\admin\models\Topic;
+
 
 /**
- * SearchTopic represents the model behind the search form of `app\modules\admin\models\Topic`.
+ * SearchArticle represents the model behind the search form of `app\modules\admin\models\Article`.
  */
-class SearchTopic extends Topic
+class SearchArticle extends Article
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SearchTopic extends Topic
     public function rules()
     {
         return [
-            [['id', 'status', 'check', 'secrecy','category_id'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'status', 'check','topic_id', 'user_id'], 'integer'],
+            [['status','check'],'in', 'range' => [1,2,3]],
         ];
     }
 
@@ -41,7 +41,7 @@ class SearchTopic extends Topic
      */
     public function search($params)
     {
-        $query = Topic::find()->with(['category'/*,'user'*/]);
+        $query = Article::find()->with(['topic'/*, 'user'*/]);
 
         // add conditions that should always apply here
 
@@ -50,40 +50,28 @@ class SearchTopic extends Topic
             'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
         ]);
 
+        //状态信息赋值
+        $this->status = isset($params['status']) ? $params['status'] : Article::STATUS_NORMAL;
+
         $this->load($params);
-
-        //排除回收站数据 或只显示回收站数据
-        if(!isset($params['status']))
-            $query->andFilterWhere(['!=', 'status', Topic::STATUS_RECYCLE]);
-        if(isset($params['status']) && (int)$params['status']===Topic::STATUS_RECYCLE){
-
-            $this->status = $params['status'];
-            $query->andFilterWhere(['status' => Topic::STATUS_RECYCLE]);
-        }
-
 
 
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
-
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            //'status' => $this->status ,
+            'status' => $this->status,
             'check' => $this->check,
-            'secrecy' => $this->secrecy,
-            'category_id' => $this->category_id,
+            'topic_id' => $this->topic_id,
+            'user_id' => $this->user_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
-
-
-
-        $query->andFilterWhere(['like', 'name', $this->name]);
-
         return $dataProvider;
     }
 }

@@ -5,7 +5,7 @@ namespace app\modules\admin\modules\content;
 /**
  * content module definition class
  */
-class Model extends \yii\base\Module
+class Module extends \yii\base\Module
 {
     /**
      * {@inheritdoc}

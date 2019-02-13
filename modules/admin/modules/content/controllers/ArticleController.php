@@ -2,17 +2,16 @@
 
 namespace app\modules\admin\modules\content\controllers;
 
-use app\modules\admin\models\Tag;
-use app\modules\admin\models\Topic;
+use app\modules\admin\models\content\Tag;
+use app\modules\admin\models\content\Topic;
 use app\widgets\select2\actions\SelectAction;
 use Prophecy\Exception\Doubler\MethodNotFoundException;
 use Yii;
-use app\modules\admin\models\Article;
-use app\modules\admin\models\SearchArticle;
+use app\modules\admin\models\content\Article;
+use app\modules\admin\models\content\SearchArticle;
 use app\modules\admin\controllers\BaseController;
 use yii\base\Exception;
 use yii\base\UnknownMethodException;
-use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

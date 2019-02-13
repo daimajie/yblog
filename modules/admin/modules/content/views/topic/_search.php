@@ -2,10 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\admin\models\Topic;
+use app\modules\admin\models\content\Topic;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\SearchTopic */
+/* @var $model app\modules\admin\models\content\SearchTopic */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -27,17 +27,17 @@ use app\modules\admin\models\Topic;
     <?php echo $form->field($model, 'category_id')->dropDownList($category_items,['prompt'=>'选择所属分类']) ?>
 
     <?php echo $form->field($model, 'status')->dropDownList([
-            '' => '使用状态',
+            //'' => '使用状态',
             Topic::STATUS_NORMAL => '正常',
             Topic::STATUS_FINISH => '完结',
-    ]) ?>
+    ],['prompt'=>'使用状态']) ?>
 
     <?php echo $form->field($model, 'check')->dropDownList([
-        '' => '审核状态',
+        //'' => '审核状态',
         '1' => '等待审核',
         '2' => '审核通过',
         '3' => '审核失败',
-    ]) ?>
+    ],['prompt'=>'审核状态']) ?>
 
 
     <div class="form-group">

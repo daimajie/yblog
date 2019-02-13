@@ -2,16 +2,14 @@
 
 namespace app\modules\admin\modules\content\controllers;
 
-use app\modules\admin\models\Category;
+use app\modules\admin\models\content\Category;
 use Yii;
-use app\modules\admin\models\Topic;
-use app\modules\admin\models\SearchTopic;
+use app\modules\admin\models\content\Topic;
+use app\modules\admin\models\content\SearchTopic;
 use app\modules\admin\controllers\BaseController;
 use yii\base\Exception;
-use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
 use app\widgets\upload\actions\UploadAction;
 
 /**

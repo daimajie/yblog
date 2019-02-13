@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\admin\models;
+namespace app\modules\admin\models\content;
 
 use app\components\Helper;
 use Yii;
@@ -9,7 +9,6 @@ use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\helpers\Json;
-use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "{{%article}}".

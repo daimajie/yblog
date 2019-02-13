@@ -7,7 +7,7 @@ use app\widgets\select2\Select2;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\Article */
+/* @var $model app\modules\admin\models\content\Article */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

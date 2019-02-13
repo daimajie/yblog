@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\Tag */
+/* @var $model app\modules\admin\models\content\Tag */
 
 $this->title = '修改标签: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => '标签列表', 'url' => ['index']];

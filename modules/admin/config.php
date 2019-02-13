@@ -9,11 +9,13 @@ return [
     'layout' => 'main',
 
     'modules' => [
+        //内容管理
         'content' => [
-            //内容管理
-            'class' => 'app\modules\admin\modules\content\Model',
-
-
+            'class' => 'app\modules\admin\modules\content\Module',
+        ],
+        //用户管理
+        'member' => [
+            'class' => 'app\modules\admin\modules\member\Module',
         ],
     ],
     'components' => [

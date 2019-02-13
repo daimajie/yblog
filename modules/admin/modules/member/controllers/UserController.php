@@ -1,18 +1,19 @@
 <?php
 
-namespace app\modules\admin\modules\content\controllers;
+namespace app\modules\admin\modules\member\controllers;
 
+use app\modules\admin\models\member\UserForm;
 use Yii;
-use app\modules\admin\models\content\Category;
-use app\modules\admin\models\content\SearchCategory;
+use app\modules\admin\models\member\UserForm as User;
+use app\modules\admin\models\member\SearchUser;
 use app\modules\admin\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CategoryController implements the CRUD actions for Category model.
+ * UserController implements the CRUD actions for User model.
  */
-class CategoryController extends BaseController
+class UserController extends BaseController
 {
     /**
      * @inheritdoc
@@ -30,12 +31,12 @@ class CategoryController extends BaseController
     }
 
     /**
-     * Lists all Category models.
+     * Lists all User models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SearchCategory();
+        $searchModel = new SearchUser();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,27 +46,48 @@ class CategoryController extends BaseController
     }
 
     /**
-     * Displays a single Category model.
+     * Displays a single User model.
      * @param string $id
      * @return mixed
      */
     public function actionView($id)
     {
+
+        $model = $this->findModel($id);
+
+        if(Yii::$app->request->isPost){
+            //设置场景
+            $model->scenario = UserForm::SCENARIO_STATUS;
+
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                //设置状态成功
+                $this->refresh();
+
+            }else{
+                //设置状态失败
+                //do nothing
+            }
+
+        }
+
+
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
     /**
-     * Creates a new Category model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Category();
+        $model = new User();
+        $model->scenario = UserForm::SCENARIO_ADD;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->store()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -75,7 +97,7 @@ class CategoryController extends BaseController
     }
 
     /**
-     * Updates an existing Category model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -83,8 +105,9 @@ class CategoryController extends BaseController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = UserForm::SCENARIO_PUT;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->renew()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -94,32 +117,28 @@ class CategoryController extends BaseController
     }
 
     /**
-     * Deletes an existing Category model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
      */
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
-        if( !$model->del() ){
-            //删除失败
-            Yii::$app->session->setFlash('error',$model->getFirstError('name'));
-        }
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Category model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Category the loaded model
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Category::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

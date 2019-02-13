@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\admin\models;
+namespace app\modules\admin\models\member;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\admin\models\Category;
+use app\modules\admin\models\member\User;
 
 /**
- * SearchCategory represents the model behind the search form of `app\modules\admin\models\Category`.
+ * SearchUser represents the model behind the search form of `app\modules\admin\models\member\User`.
  */
-class SearchCategory extends Category
+class SearchUser extends User
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SearchCategory extends Category
     public function rules()
     {
         return [
-            [['id', 'user_id', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'desc'], 'safe'],
+            [['id', 'status', 'author', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'nickname', 'email', 'image', 'auth_key', 'password_hash', 'password_reset_token'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SearchCategory extends Category
      */
     public function search($params)
     {
-        $query = Category::find()/*->with(['user'])*/;
+        $query = User::find();
 
         // add conditions that should always apply here
 
@@ -61,13 +61,23 @@ class SearchCategory extends Category
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'status' => $this->status,
+            'author' => $this->author,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'desc', $this->desc]);
+        $query->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'nickname', $this->nickname])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'image', $this->image])
+            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
+            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
+            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token]);
+
+        if(!empty($this->author) && $this->author >= 0){
+            $query->andFilterWhere(['>=', 'author', 0]);
+        }
 
         return $dataProvider;
     }

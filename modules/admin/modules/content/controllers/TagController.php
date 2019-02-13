@@ -3,12 +3,10 @@
 namespace app\modules\admin\modules\content\controllers;
 
 use Yii;
-use app\modules\admin\models\Tag;
-use yii\data\ActiveDataProvider;
+use app\modules\admin\models\content\Tag;
 use app\modules\admin\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-/****/
 use yii\base\Exception;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;

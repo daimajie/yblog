@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use app\widgets\upload\Upload;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\Topic */
+/* @var $model app\modules\admin\models\content\Topic */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

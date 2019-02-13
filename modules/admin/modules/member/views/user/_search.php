@@ -2,14 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\admin\models\content\Article;
-use app\widgets\select2\Select2;
+
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\content\SearchArticle */
+/* @var $model app\modules\admin\models\member\SearchUser */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="article-search">
+<div class="user-search">
+
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
@@ -21,19 +21,15 @@ use app\widgets\select2\Select2;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'check')->dropDownList([
-        '' => '全部文章',
-        Article::CHECK_WAIT => '待审核',
-        Article::CHECK_ADOPT => '审核通过',
-        Article::CHECK_DENIAL => '审核失败',
-    ]) ?>
 
-    <?= $form->field($model, 'topic_id')->widget(Select2::class,[
-        //当下拉框改变后触发的js回调函数,参数一个，是选择后的id值
-        'width' => '185px'
-    ]) ?>
+    <?= $form->field($model, 'username')->textInput(['placeholder'=>'用户名']) ?>
 
+    <?= $form->field($model, 'nickname')->textInput(['placeholder'=>'昵称']) ?>
 
+    <?= $form->field($model, 'author')->dropDownList([
+        '-1' => '读者',
+        '0' => '作者'
+    ],['prompt'=>'搜索角色']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary  btn-flat']) ?>
