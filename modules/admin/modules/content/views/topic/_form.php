@@ -16,6 +16,8 @@ use app\widgets\upload\Upload;
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+        <?= $form->field($model, 'category_id')->dropDownList($category_items,['prompt'=>'选择所属分类'])?>
+
         <?= $form->field($model, 'image')->widget(Upload::class) ?>
 
         <?= $form->field($model, 'desc')->textarea(['rows'=>5]) ?>

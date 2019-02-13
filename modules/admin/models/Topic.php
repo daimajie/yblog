@@ -66,7 +66,9 @@ class Topic extends \yii\db\ActiveRecord
             [['status', 'check'], 'in', 'range' => [1,2,3]],
 
             //crud
-            [['secrecy', 'name', 'image','desc'], 'required'],
+            [['secrecy', 'name', 'image','desc', 'category_id'], 'required'],
+
+            [['category_id'], 'exist', 'targetClass' => Category::class, 'targetAttribute' => 'id'],
 
             [['secrecy'], 'in', 'range' => [1, 2]],
 
@@ -100,6 +102,7 @@ class Topic extends \yii\db\ActiveRecord
             'check' => '审核状态',      //: 1 待审核,2 审核通过,3 审核失败',
             'secrecy' => '展示状态',    //: 1 私有,2 公开',
             'user_id' => '创建者',
+            'category_id' => '所属分类',
             'created_at' => '创建时间',
             'updated_at' => '修改时间',
         ];
@@ -147,6 +150,14 @@ class Topic extends \yii\db\ActiveRecord
             ->select(['id', 'topic_id', 'name']);
     }
 
+    /**
+     * 关联分类
+     */
+    public function getCategory(){
+        return $this->hasOne(Category::class, ['id'=>'category_id'])
+            ->select(['id','name','user_id']);
+
+    }
     /**
      * 创建话题
      * @return bool

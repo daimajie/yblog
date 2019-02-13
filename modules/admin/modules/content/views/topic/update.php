@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $model->name;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'category_items'=>$category_items
     ]) ?>
 
 </div>

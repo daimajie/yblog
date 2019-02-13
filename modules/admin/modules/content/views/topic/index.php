@@ -26,7 +26,10 @@ $status = (int)(isset($searchModel->status) ? $searchModel->status : 0);
             ]) ?>
         </div>
         <div class="pull-right">
-            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+            <?php echo $this->render('_search', [
+                'model' => $searchModel,
+                'category_items' => $category_items
+            ]); ?>
         </div>
     </div>
     <div class="box-body table-responsive no-padding">
@@ -50,6 +53,16 @@ $status = (int)(isset($searchModel->status) ? $searchModel->status : 0);
                             Topic::STATUS_RECYCLE => '回收站'
                         ];
                         return $tmp[$model->status];
+                    }
+                ],
+                [
+                    'label' => '所属分类',
+                    'value' => function($model){
+                        if($model->category_id){
+
+                            return '《 ' . $model->category->name . ' 》';
+                        }
+                        return '';
                     }
                 ],
                 [

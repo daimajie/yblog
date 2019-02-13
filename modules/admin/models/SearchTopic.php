@@ -18,7 +18,7 @@ class SearchTopic extends Topic
     public function rules()
     {
         return [
-            [['id', 'status', 'check', 'secrecy'], 'integer'],
+            [['id', 'status', 'check', 'secrecy','category_id'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -41,7 +41,7 @@ class SearchTopic extends Topic
      */
     public function search($params)
     {
-        $query = Topic::find();
+        $query = Topic::find()->with(['category'/*,'user'*/]);
 
         // add conditions that should always apply here
 
@@ -77,6 +77,7 @@ class SearchTopic extends Topic
             //'status' => $this->status ,
             'check' => $this->check,
             'secrecy' => $this->secrecy,
+            'category_id' => $this->category_id,
         ]);
 
 

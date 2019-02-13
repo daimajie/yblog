@@ -5,12 +5,12 @@ namespace app\modules\admin\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\admin\models\Article;
+use app\modules\admin\models\Category;
 
 /**
- * SearchArticle represents the model behind the search form of `app\modules\admin\models\Article`.
+ * SearchCategory represents the model behind the search form of `app\modules\admin\models\Category`.
  */
-class SearchArticle extends Article
+class SearchCategory extends Category
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SearchArticle extends Article
     public function rules()
     {
         return [
-            [['id', 'status', 'check','topic_id', 'user_id'], 'integer'],
-            [['status','check'],'in', 'range' => [1,2,3]],
+            [['id', 'user_id', 'created_at', 'updated_at'], 'integer'],
+            [['name', 'desc'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SearchArticle extends Article
      */
     public function search($params)
     {
-        $query = Article::find()->with(['topic'/*, 'user'*/]);
+        $query = Category::find()/*->with(['user'])*/;
 
         // add conditions that should always apply here
 
@@ -50,12 +50,7 @@ class SearchArticle extends Article
             'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
         ]);
 
-        //状态信息赋值
-        $this->status = isset($params['status']) ? $params['status'] : Article::STATUS_NORMAL;
-
         $this->load($params);
-
-
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -65,13 +60,15 @@ class SearchArticle extends Article
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'status' => $this->status,
-            'check' => $this->check,
-            'topic_id' => $this->topic_id,
+            'id' => $this->id,
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
+
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'desc', $this->desc]);
+
         return $dataProvider;
     }
 }

@@ -75,6 +75,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
                 [
+                    'attribute' => 'category_id',
+                    'value' => function($model){
+                        return '《 ' . $model->category->name . ' 》';
+                    }
+                ],
+                [
                     'attribute' => 'check',
                     'format' => 'raw',
                     'value' => function($model){
