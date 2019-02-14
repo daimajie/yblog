@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\member\User */
+/* @var $model app\models\member\User */
 
 $this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => '用户列表', 'url' => ['index']];

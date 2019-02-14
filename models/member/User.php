@@ -1,9 +1,11 @@
 <?php
 
-namespace app\modules\admin\models\member;
+namespace app\models\member;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\AttributeBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -21,12 +23,21 @@ use yii\behaviors\TimestampBehavior;
  * @property string $created_at 注册时间
  * @property string $updated_at 修改时间
  */
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
     public function behaviors()
     {
         return [
             TimestampBehavior::class,
+            [
+                'class' => AttributeBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'nickname',
+                ],
+                'value' => function ($event) {
+                    return '_' . $this->username;
+                },
+            ]
         ];
     }
 
@@ -123,7 +134,7 @@ class User extends \yii\db\ActiveRecord
             return null;
         }
         $timestamp = (int)substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['member']['passwordResetTokenExpire'];
+        $expire = Yii::$app->params['passwordResetTokenExpire'];
         if( $timestamp + $expire < time() ){
             return null;
         }

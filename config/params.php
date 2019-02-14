@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'adminEmail' => 'admin@example.com',
+    'adminEmail' => 'daimajie@qq.com',
 
     //后台应用参数
     'admin_app' => [
@@ -20,6 +20,12 @@ return [
         'createLimit' => 3, //创建文章时可同时创建多少个新标签
         'articleLimit' => 3, //一篇文章最多可关联三个标签( !!!注意： 该数应该大于等于createLimit )
     ],
+
+    //邮箱验证码session key
+    'email_key' => 'email_key',
+
+    //密码重置token有效时间
+    'passwordResetTokenExpire' => 60 * 30
 
 
 ];

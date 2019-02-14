@@ -7,10 +7,8 @@
  * Time : 16:25
  */
 
-namespace app\modules\admin\models\member;
+namespace app\models\member;
 
-
-use yii\helpers\VarDumper;
 
 class UserForm extends User
 {

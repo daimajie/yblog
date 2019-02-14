@@ -2,10 +2,10 @@
 
 namespace app\modules\admin\modules\member\controllers;
 
-use app\modules\admin\models\member\UserForm;
+use app\models\member\UserForm;
 use Yii;
-use app\modules\admin\models\member\UserForm as User;
-use app\modules\admin\models\member\SearchUser;
+use app\models\member\UserForm as User;
+use app\models\member\SearchUser;
 use app\modules\admin\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
