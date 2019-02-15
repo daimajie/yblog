@@ -11,7 +11,7 @@ $config = [
     'timeZone' => 'Asia/Shanghai',
     'language' => 'zh-CN',
     'charset' => 'utf-8',
-
+    'defaultRoute' => 'index/index',
 
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -46,7 +46,7 @@ $config = [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.qq.com',
                 'username' => 'daimajie@qq.com',
-                'password' => 'okaeomwrcoebbjaf',
+                'password' => '******',
                 'port' => '465',
                 'encryption' => 'ssl',
             ],

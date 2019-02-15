@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\admin\models\content;
+namespace app\models\content;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -24,11 +24,11 @@ class Category extends \yii\db\ActiveRecord
             [
                 'class' => TimestampBehavior::class,
             ],
-            /*[
+            [
                 'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'user_id',
                 'updatedByAttribute' => null,
-            ]*/
+            ]
         ];
     }
     /**

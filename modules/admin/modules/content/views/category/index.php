@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\admin\models\content\SearchCategory */
+/* @var $searchModel app\models\content\SearchCategory */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '创建分类';

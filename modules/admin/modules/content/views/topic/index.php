@@ -2,11 +2,11 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use app\modules\admin\models\content\Topic;
+use app\models\content\Topic;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\admin\models\content\SearchTopic */
+/* @var $searchModel app\models\content\SearchTopic */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '话题列表';

@@ -3,8 +3,8 @@
 namespace app\modules\admin\modules\content\controllers;
 
 use Yii;
-use app\modules\admin\models\content\Category;
-use app\modules\admin\models\content\SearchCategory;
+use app\models\content\Category;
+use app\models\content\SearchCategory;
 use app\modules\admin\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

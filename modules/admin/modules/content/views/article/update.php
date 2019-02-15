@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\content\Article */
+/* @var $model app\models\content\Article */
 
 $this->title = '修改文章: ' . $model->title;
 $this->params['breadcrumbs'][] = ['label' => '文章列表', 'url' => ['index']];

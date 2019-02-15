@@ -5,10 +5,10 @@ use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use app\components\Helper;
-use app\modules\admin\models\content\Article;
+use app\models\content\Article;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\content\Article */
+/* @var $model app\models\content\Article */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => '文章列表', 'url' => ['index']];
@@ -58,13 +58,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'status',
                     'format' => 'raw',
                     'value' => function($model){
-                        $input = Html::activeRadioList($model, 'status', [
+                        /*$input = Html::activeRadioList($model, 'status', [
                             Article::STATUS_NORMAL => '公示状态',
                             Article::STATUS_DRAFT => '草稿箱',
                             Article::STATUS_RECYCLE => '回收站',
                         ]);
                         $error = Html::error($model, 'status', ['class' => 'text-danger']);
-                        return $input . $error;
+                        return $input . $error;*/
+                        $ret = [
+                            Article::STATUS_NORMAL => '公示状态',
+                            Article::STATUS_DRAFT => '草稿箱',
+                            Article::STATUS_RECYCLE => '回收站',
+                        ];
+
+                        return '<strong>'.$ret[$model->status] . '</strong>';
                     }
                 ],
                 [

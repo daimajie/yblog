@@ -1,15 +1,16 @@
 <?php
 
-namespace app\modules\admin\models\content;
+namespace app\models\content;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
+
 /**
- * SearchCategory represents the model behind the search form of `app\modules\admin\models\Category`.
+ * SearchArticle represents the model behind the search form of `app\modules\admin\models\Article`.
  */
-class SearchCategory extends Category
+class SearchArticle extends Article
 {
     /**
      * @inheritdoc
@@ -17,8 +18,8 @@ class SearchCategory extends Category
     public function rules()
     {
         return [
-            [['id', 'user_id', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'desc'], 'safe'],
+            [['id', 'status', 'check','topic_id', 'user_id'], 'integer'],
+            [['status','check'],'in', 'range' => [1,2,3]],
         ];
     }
 
@@ -40,7 +41,7 @@ class SearchCategory extends Category
      */
     public function search($params)
     {
-        $query = Category::find()/*->with(['user'])*/;
+        $query = Article::find()->with(['topic'/*, 'user'*/]);
 
         // add conditions that should always apply here
 
@@ -49,7 +50,12 @@ class SearchCategory extends Category
             'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
         ]);
 
+        //状态信息赋值
+        $this->status = isset($params['status']) ? $params['status'] : Article::STATUS_NORMAL;
+
         $this->load($params);
+
+
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -59,15 +65,13 @@ class SearchCategory extends Category
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'status' => $this->status,
+            'check' => $this->check,
+            'topic_id' => $this->topic_id,
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'desc', $this->desc]);
-
         return $dataProvider;
     }
 }

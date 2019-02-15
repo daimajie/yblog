@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\content\Tag */
+/* @var $model app\models\content\Tag */
 
 $this->title = '创建标签';
 $this->params['breadcrumbs'][] = ['label' => '标签列表', 'url' => ['index']];

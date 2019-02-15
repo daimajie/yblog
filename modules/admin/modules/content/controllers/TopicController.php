@@ -2,10 +2,10 @@
 
 namespace app\modules\admin\modules\content\controllers;
 
-use app\modules\admin\models\content\Category;
+use app\models\content\Category;
 use Yii;
-use app\modules\admin\models\content\Topic;
-use app\modules\admin\models\content\SearchTopic;
+use app\models\content\Topic;
+use app\models\content\SearchTopic;
 use app\modules\admin\controllers\BaseController;
 use yii\base\Exception;
 use yii\web\NotFoundHttpException;
@@ -36,7 +36,14 @@ class TopicController extends BaseController
     public function actions()
     {
         return [
-            'upload' => UploadAction::class,
+            'upload' => [
+                'class' => UploadAction::class,
+                'subDir' => 'topic',
+                'thumb' => [
+                    'width' => 390,
+                    'height' => 293
+                ]
+            ],
         ];
     }
 

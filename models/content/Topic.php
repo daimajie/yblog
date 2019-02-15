@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\admin\models\content;
+namespace app\models\content;
 
 use app\components\Helper;
 use Yii;
@@ -37,11 +37,11 @@ class Topic extends \yii\db\ActiveRecord
             [
                 'class' => TimestampBehavior::class,
             ],
-            /*[
+            [
                 'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'user_id',
                 'updatedByAttribute' => null,
-            ]*/
+            ]
         ];
     }
 
@@ -74,10 +74,31 @@ class Topic extends \yii\db\ActiveRecord
 
             [['name'], 'string', 'max' => 18],
 
+            //每个用户不能建立同名话题
+            [['name'], 'uniqueOnUser'],
+
             [['image'], 'string', 'max' => 125],
 
             [['desc'], 'string', 'max' => 225],
         ];
+    }
+
+    public function uniqueOnUser($attr){
+        if($this->hasErrors())
+            return false;
+
+        //检测当前用户是否创建过同名话题
+        $mun = self::find()->where([
+            'user_id' => Yii::$app->user->getId(),
+            'name' => $this->name,
+            'category_id' => $this->category_id
+        ])->count();
+
+        if($mun){
+            $this->addError($attr, '您已经创建了该话题了，不能再次创建。');
+            return false;
+        }
+        return true;
     }
 
     public function scenarios()

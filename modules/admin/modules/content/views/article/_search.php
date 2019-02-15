@@ -2,10 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\admin\models\content\Article;
+use app\models\content\Article;
 use app\widgets\select2\Select2;
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\content\SearchArticle */
+/* @var $model app\models\content\SearchArticle */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

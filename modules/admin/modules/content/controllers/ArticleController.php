@@ -2,13 +2,13 @@
 
 namespace app\modules\admin\modules\content\controllers;
 
-use app\modules\admin\models\content\Tag;
-use app\modules\admin\models\content\Topic;
+use app\components\events\ArticlePutEvent;
+use app\models\content\Tag;
+use app\models\content\Topic;
 use app\widgets\select2\actions\SelectAction;
-use Prophecy\Exception\Doubler\MethodNotFoundException;
 use Yii;
-use app\modules\admin\models\content\Article;
-use app\modules\admin\models\content\SearchArticle;
+use app\models\content\Article;
+use app\models\content\SearchArticle;
 use app\modules\admin\controllers\BaseController;
 use yii\base\Exception;
 use yii\base\UnknownMethodException;
@@ -53,12 +53,21 @@ class ArticleController extends BaseController
                 'class' => UploadAction::class,
                 'subDir' => 'article',
                 'thumb' => [
-                    'width' => 670,
-                    'height' => 335
+                    'width' => 270,
+                    'height' => 203
                 ]
             ],
         ];
     }
+
+    public function actionTest(){
+
+        @Article::test();
+
+        die;
+
+    }
+
 
     /**
      * Lists all Article models.
@@ -87,9 +96,15 @@ class ArticleController extends BaseController
         if(Yii::$app->request->isPost){
             $model->scenario = Article::SCENARIO_STATUS;
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                //设置状态成功
-                $this->refresh();
+            if ($model->load(Yii::$app->request->post())) {
+                if( $model->save() ){
+
+
+
+                    //设置状态成功
+                    $this->refresh();
+                }
+
 
             }else{
                 //设置状态失败
@@ -113,7 +128,8 @@ class ArticleController extends BaseController
         $model = new Article();
 
         if ($model->load(Yii::$app->request->post()) && $model->store()) {
-
+            //触发计数事件
+            $model->trigger(Article::EVENT_AFTER_ADD);
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -148,8 +164,16 @@ class ArticleController extends BaseController
         $model = $this->findModel($id);
 
 
-        if ($model->load(Yii::$app->request->post()) && $model->modify()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $event = $this->generateEvent($model);
+
+            if( $model->modify() ){
+                //修改成功
+                //触发计数事件
+                $model->trigger(Article::EVENT_AFTER_PUT, $event);
+
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
 
             //保留模型数据
@@ -186,12 +210,15 @@ class ArticleController extends BaseController
      */
     public function actionDelete($id)
     {
-        $affect = $this->findModel($id)->updateAttributes(['status'=>Article::STATUS_RECYCLE]);
+        $model = $this->findModel($id);
+        $affect = $model->updateAttributes(['status'=>Article::STATUS_RECYCLE]);
         if($affect === false){
             //提示一下
             Yii::$app->session->setFlash('error', '删除文章失败，请重试。');
             return $this->redirect(['article/view','id'=>$id]);
         }
+        //触发计数事件
+        $model->trigger(Article::EVENT_AFTER_REC);
 
         return $this->redirect(['index']);
     }
@@ -213,12 +240,15 @@ class ArticleController extends BaseController
      * 恢复文章
      */
     public function actionRestore($id){
-        $affect = $this->findModel($id)->updateAttributes(['status'=>Article::STATUS_NORMAL]);
+        $model = $this->findModel($id);
+        $affect = $model->updateAttributes(['status'=>Article::STATUS_NORMAL]);
         if($affect === false){
             //提示一下
             Yii::$app->session->setFlash('error', '恢复文章失败，请重试。');
             return $this->refresh();
         }
+        //触发计数事件
+        $model->trigger(Article::EVENT_AFTER_RES);
 
         return $this->redirect(['index']);
     }
@@ -372,6 +402,34 @@ class ArticleController extends BaseController
             'errcode' => 0,
             'message' => '批量审核文章成功。',
         ];
+    }
+
+    /**
+     * $生成文章修改事件 携带数据
+     * @param $model
+     */
+    private function generateEvent($model){
+        if(!( $model instanceof Article)){
+            return null;
+        }
+
+        $event = new ArticlePutEvent();
+        $event->status = $model->status;
+        $event->check = $model->check;
+        $event->topic_id = $model->topic_id;
+
+        //如果修改过一些属性
+        if($model->getDirtyAttributes(['status'])){
+            $event->oldStatus = $model->getOldAttribute('status');
+        }
+        if($model->getDirtyAttributes(['check'])){
+            $event->oldStatus = $model->getOldAttribute('check');
+        }
+        if($model->getDirtyAttributes(['topic_id'])){
+            $event->oldStatus = $model->getOldAttribute('topic_id');
+        }
+
+        return $event;
     }
 
 

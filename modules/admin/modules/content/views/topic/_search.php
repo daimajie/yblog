@@ -2,10 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\admin\models\content\Topic;
+use app\models\content\Topic;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\content\SearchTopic */
+/* @var $model app\models\content\SearchTopic */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

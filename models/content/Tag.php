@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\admin\models\content;
+namespace app\models\content;
 
 use Yii;
 use yii\base\Exception;
@@ -26,11 +26,11 @@ class Tag extends \yii\db\ActiveRecord
             [
                 'class' => TimestampBehavior::class,
             ],
-            /*[
+            [
                 'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'user_id',
                 'updatedByAttribute' => null,
-            ]*/
+            ]
         ];
     }
 

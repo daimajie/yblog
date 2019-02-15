@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use app\widgets\upload\Upload;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\content\Topic */
+/* @var $model app\models\content\Topic */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -18,7 +18,13 @@ use app\widgets\upload\Upload;
 
         <?= $form->field($model, 'category_id')->dropDownList($category_items,['prompt'=>'选择所属分类'])?>
 
-        <?= $form->field($model, 'image')->widget(Upload::class) ?>
+        <?= $form->field($model, 'image')->widget(Upload::class,[
+            'info' => '请选择一张图片作为话题封面.<br/>(推荐尺寸 390 * 293)',
+            'thumb' => [
+                'width' => 390,
+                'height' => 293
+            ]
+        ]) ?>
 
         <?= $form->field($model, 'desc')->textarea(['rows'=>5]) ?>
 

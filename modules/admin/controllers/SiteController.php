@@ -10,14 +10,13 @@
 namespace app\modules\admin\controllers;
 
 
-use yii\web\Controller;
 
 /**
  * 公共控制器
  * Class SiteController
  * @package app\modules\admin\controllers
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     /**
      * {@inheritdoc}

@@ -6,7 +6,7 @@
  * Date : 2019/1/29
  * Time : 15:26
  */
-use app\modules\admin\models\content\Article;
+use app\models\content\Article;
 
 //定义下拉菜单
 $li = '';

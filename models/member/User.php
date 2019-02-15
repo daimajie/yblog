@@ -2,9 +2,10 @@
 
 namespace app\models\member;
 
+use app\models\content\Article;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\behaviors\AttributeBehavior;
+//use yii\behaviors\AttributeBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -29,7 +30,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             TimestampBehavior::class,
-            [
+            /*[
                 'class' => AttributeBehavior::class,
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => 'nickname',
@@ -37,7 +38,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
                 'value' => function ($event) {
                     return '_' . $this->username;
                 },
-            ]
+            ]*/
         ];
     }
 
@@ -86,6 +87,19 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'updated_at' => '修改时间',
         ];
     }
+
+    //获取当前作者文章数目 如果不是作者返回false
+    public function getArticleSum(){
+        if($this->author < 0){
+            return false;
+        }
+        return Article::find()->where(['user_id'=>$this->id])->count();
+    }
+
+
+
+
+    /************/
 
     //生成密码
     public function generatePasswordHash($password){
@@ -145,13 +159,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
     public function validateAuthKey($authKey){
-        $ret = $this->getAuthKey() === $authKey;
-        if($ret){
-            //更新最后登录时间
-            $this->lasttime = time();
-            return $this->save(false);
-        }
-        return false;
+        return $this->getAuthKey() === $authKey;
     }
     public function getAuthKey(){
         return $this->auth_key;

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use app\modules\admin\models\content\Article;
+use app\models\content\Article;
 use app\components\Helper;
 use yii\helpers\Url;
 use app\assets\LayerAsset;
@@ -10,7 +10,7 @@ use app\assets\LayerAsset;
 LayerAsset::register($this);
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\admin\models\content\SearchArticle */
+/* @var $searchModel app\models\content\SearchArticle */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 //当前展示状态(1公示文章 2草稿 3回收站)

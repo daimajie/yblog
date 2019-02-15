@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\admin\models\content;
+namespace app\models\content;
 
 use app\components\Helper;
 use Yii;
@@ -8,7 +8,9 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
+use yii\db\ActiveRecord;
 use yii\helpers\Json;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -39,9 +41,16 @@ class Article extends ArticleForm
     const CHECK_ADOPT = 2;
     const CHECK_DENIAL = 3;
 
+    //自定义事件 (写文章后 放置回收站后 进行话题文章计数)
+    const EVENT_AFTER_ADD =  'add'; //添加事件 create
+    const EVENT_AFTER_REC =  'rec'; //放置回收站事件 delete
+    const EVENT_AFTER_PUT =  'put'; //修改事件 update
+    const EVENT_AFTER_RES =  'res'; //恢复事件 restore
 
 
     const SCENARIO_STATUS = 'status';
+
+
 
     public function behaviors()
     {
@@ -49,12 +58,82 @@ class Article extends ArticleForm
             [
                 'class' => TimestampBehavior::class,
             ],
-            /*[
+            [
                 'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'user_id',
                 'updatedByAttribute' => null,
-            ]*/
+            ]
         ];
+    }
+
+    //绑定事件
+    public function init()
+    {
+        parent::init();
+
+        $this->on(self::EVENT_AFTER_ADD, [$this, 'articleHandler'], 'add');
+        $this->on(self::EVENT_AFTER_REC, [$this, 'articleHandler'], 'rec');
+        //$this->on(self::EVENT_AFTER_PUT, [$this, 'articleHandler'], 'put');
+        $this->on(self::EVENT_AFTER_RES, [$this, 'articleHandler'], 'res');
+
+        $this->on(self::EVENT_AFTER_PUT, [$this, 'articlePutHandler']);
+    }
+
+    public function articleHandler($event){
+
+        try{
+            $model = $event->sender;
+            if(!($model instanceof ActiveRecord)){
+                throw new Exception('事件参数错误。');
+            }
+
+            //非审核通过的文章 和 非公示文章 不做任何操作
+            if($model->check != self::CHECK_ADOPT || $model->status != self::STATUS_NORMAL){
+                return;
+            }
+
+            $topic_id = $event->sender->topic_id;
+            $operate = $event->data;
+
+            //验证数据
+            if($topic_id <= 0 || empty($operate)){
+                throw new Exception('事件参数错误。');
+            }
+
+            /**以下是单一模型操作 (还有批量操作) **/
+            //create
+            if($operate === 'add'){
+                Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+            }
+            //delete
+            if($operate === 'rec'){
+                Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);
+            }
+            //update
+            /*if($operate === 'put' && $model->getDirtyAttributes(['topic_id'])){
+                Topic::updateAllCounters(['count'=>-1],['id'=>$model->getOldAttribute('topic_id')]);
+                //Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+            }
+            if($operate === 'put' && !$model->getDirtyAttributes(['topic_id'])){
+                //Topic::updateAllCounters(['count'=>-1],['id'=>$model->getOldAttribute('topic_id')]);
+                Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+            }*/
+            //restore
+            if($operate === 'res'){
+                Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+            }
+        }catch (Exception $e){
+            //记录日志
+            Yii::error($e->getMessage(), __METHOD__);
+            //throw $e;
+        }
+
+
+
+    }
+
+    public function articlePutHandler($event){
+
     }
 
     /**

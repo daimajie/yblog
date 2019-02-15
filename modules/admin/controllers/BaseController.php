@@ -14,5 +14,10 @@ use yii\web\Controller;
 
 class BaseController extends Controller
 {
+    public function init()
+    {
+        if(parent::init()){
 
+        }
+    }
 }

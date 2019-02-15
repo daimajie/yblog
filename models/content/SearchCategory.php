@@ -1,15 +1,15 @@
 <?php
 
-namespace app\modules\admin\models\content;
+namespace app\models\content;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * SearchTopic represents the model behind the search form of `app\modules\admin\models\Topic`.
+ * SearchCategory represents the model behind the search form of `app\modules\admin\models\Category`.
  */
-class SearchTopic extends Topic
+class SearchCategory extends Category
 {
     /**
      * @inheritdoc
@@ -17,8 +17,8 @@ class SearchTopic extends Topic
     public function rules()
     {
         return [
-            [['id', 'status', 'check', 'secrecy','category_id'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'user_id', 'created_at', 'updated_at'], 'integer'],
+            [['name', 'desc'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class SearchTopic extends Topic
      */
     public function search($params)
     {
-        $query = Topic::find()->with(['category'/*,'user'*/]);
+        $query = Category::find()/*->with(['user'])*/;
 
         // add conditions that should always apply here
 
@@ -51,37 +51,22 @@ class SearchTopic extends Topic
 
         $this->load($params);
 
-        //排除回收站数据 或只显示回收站数据
-        if(!isset($params['status']))
-            $query->andFilterWhere(['!=', 'status', Topic::STATUS_RECYCLE]);
-        if(isset($params['status']) && (int)$params['status']===Topic::STATUS_RECYCLE){
-
-            $this->status = $params['status'];
-            $query->andFilterWhere(['status' => Topic::STATUS_RECYCLE]);
-        }
-
-
-
-
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
-
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            //'status' => $this->status ,
-            'check' => $this->check,
-            'secrecy' => $this->secrecy,
-            'category_id' => $this->category_id,
+            'user_id' => $this->user_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
-
-
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'desc', $this->desc]);
 
         return $dataProvider;
     }

@@ -3,7 +3,7 @@
 namespace app\modules\admin\modules\content\controllers;
 
 use Yii;
-use app\modules\admin\models\content\Tag;
+use app\models\content\Tag;
 use app\modules\admin\controllers\BaseController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

@@ -124,8 +124,14 @@ class UserController extends BaseController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
+        //当前用户有文章禁止删除
+        if($model->getArticleSum()){
+            Yii::$app->session->setFlash('error', '当前用户发表了文章，禁止删除。');
+            return $this->redirect(['user/view', 'id'=>$model->id]);
+        }
+        $model->delete();
         return $this->redirect(['index']);
     }
 

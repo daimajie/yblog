@@ -17,7 +17,7 @@ class m190201_104536_create_user_tbl extends Migration
         $this->createTable(self::TBL_NAME,[
             'id'        => $this->primaryKey()->unsigned()->comment('主键'),
             'username'  => $this->string(18)->notNull()->unique()->defaultValue('')->comment('用户名'),
-            'nickname'  => $this->string(18)->notNull()->unique()->defaultValue('')->comment('昵称'),
+            'nickname'  => $this->string(18)->notNull()->defaultValue('')->comment('昵称'),
             'email'     => $this->string(64)->notNull()->unique()->defaultValue('')->comment('邮箱'),
             'image'     => $this->string(64)->notNull()->defaultValue('')->comment('头像'),
             'status'    => $this->tinyInteger()->unsigned()->notNull()->defaultValue(10)->comment('状态'),

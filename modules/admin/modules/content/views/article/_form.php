@@ -7,7 +7,7 @@ use app\widgets\select2\Select2;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\content\Article */
+/* @var $model app\models\content\Article */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -26,7 +26,11 @@ use yii\helpers\Url;
         <?= $form->field($model, 'brief')->textarea(['rows' => 3]) ?>
 
         <?= $form->field($model, 'image')->widget(Upload::class,[
-                'info' => '请选择一张图片作为文章封面.'
+            'info' => '请选择一张图片作为文章封面.<br/>(推荐尺寸 270 * 203)',
+            'thumb' => [
+                'width' => 270,
+                'height' => 203
+            ]
         ]) ?>
 
         <?= $form->field($model, 'topic_id')->widget(Select2::class,[

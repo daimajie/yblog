@@ -7,12 +7,12 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use app\assets\LayerAsset;
-use app\modules\admin\models\content\Topic;
+use app\models\content\Topic;
 
 LayerAsset::register($this);
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\content\Topic */
+/* @var $model app\models\content\Topic */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => '话题列表', 'url' => ['index']];

@@ -7,7 +7,7 @@
  * Time : 14:09
  */
 
-namespace app\modules\admin\models\content;
+namespace app\models\content;
 
 
 use yii\base\Exception;
