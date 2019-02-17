@@ -16,14 +16,14 @@ switch ($status){
         break;
     case Article::STATUS_DRAFT: //草稿箱(批量删除 批量发布)
         $li .= '<li><a data-operate="batchDelete" href="javascript:void(0);">批量删除</a></li>';
-        $li .= '<li><a data-operate="batchPublish" href="javascript:void(0);">批量发布</a></li>';
+        //$li .= '<li><a data-operate="batchPublish" href="javascript:void(0);">批量发布</a></li>';
         break;
     case Article::STATUS_NORMAL: //列表页(批量删除)
         $li .= '<li><a data-operate="batchDelete" href="javascript:void(0);">批量删除</a></li>';
         break;
 }
 //如果展示的是未审核 展示批量审核通过
-if(isset($searchModel->check) && (int)$searchModel->check === Article::CHECK_WAIT){
+if(isset($searchModel->check) && (int)$searchModel->check === Article::CHECK_WAIT && $status != Article::STATUS_DRAFT){
     $li .= '<li><a data-operate="batchCheck" href="javascript:void(0);">批量审核</a></li>';
 }
 

@@ -20,6 +20,6 @@ class ArticlePutEvent extends Event
     public $oldCheck;
     public $oldTopic_id;
 
-
+    public $article_id;
 
 }

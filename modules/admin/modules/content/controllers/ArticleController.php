@@ -12,6 +12,7 @@ use app\models\content\SearchArticle;
 use app\modules\admin\controllers\BaseController;
 use yii\base\Exception;
 use yii\base\UnknownMethodException;
+use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -60,13 +61,6 @@ class ArticleController extends BaseController
         ];
     }
 
-    public function actionTest(){
-
-        @Article::test();
-
-        die;
-
-    }
 
 
     /**
@@ -97,8 +91,13 @@ class ArticleController extends BaseController
             $model->scenario = Article::SCENARIO_STATUS;
 
             if ($model->load(Yii::$app->request->post())) {
-                if( $model->save() ){
+                //生成事件数据
+                $event = $this->generateEvent($model);
 
+
+                if( $model->save() ){
+                    //触发修改审核状态的事件
+                    $model->trigger(Article::EVENT_AFTER_CHECK, $event);
 
 
                     //设置状态成功
@@ -165,7 +164,9 @@ class ArticleController extends BaseController
 
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->check = Article::CHECK_WAIT; //编辑过的文章要重新审核
             $event = $this->generateEvent($model);
+
 
             if( $model->modify() ){
                 //修改成功
@@ -268,6 +269,7 @@ class ArticleController extends BaseController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
     
     
     /**
@@ -287,10 +289,26 @@ class ArticleController extends BaseController
 
 
         try{
+            //计数数据
+            switch ($operate) {
+                case 'batchCheck':
+                    $count = Article::getCheckCountNum($ids);
+                    break;
+                case 'batchDelete':
+                    $count = Article::getCountNum($ids);
+                    break;
+                case 'batchRestore':
+                    $count = Article::getRestoreCountNum($ids);
+                    break;
+                default:
+                    $count = [];
+                    break;
+            }
+
 
             Yii::$app->response->format = Response::FORMAT_JSON;
             //调用可变函数
-            return $this->$operate($ids);
+            return $this->$operate($ids, $count);
 
         }catch (UnknownMethodException $e){
             //函数未定义直接跳到列表页
@@ -308,12 +326,17 @@ class ArticleController extends BaseController
 
         }
     }
+    public function actionTest(){
+        $count = Article::getCountNum([1]);
+        Article::batchOperateCount($count, 'dec');
+        die;
+    }
 
 
     /**
      * 批量删除
      */
-    private function batchDelete($ids){
+    private function batchDelete($ids, $count){
 
         $affect = Article::updateAll([
             //属性
@@ -329,6 +352,11 @@ class ArticleController extends BaseController
         if($affect === false){
             throw new Exception('批量删除文章失败，请重试。');
         }
+
+        //批量删除 话题收录数减操作***(非公示审核通过的文章不管)
+        Article::batchOperateCount($count, 'dec');
+
+
         return [
             'errcode' => 0,
             'message' => '批量删除文章成功。',
@@ -337,7 +365,7 @@ class ArticleController extends BaseController
     /**
      * 批量恢复
      */
-    private function batchRestore($ids){
+    private function batchRestore($ids, $count){
         $affect = Article::updateAll([
             //属性
             'status' => Article::STATUS_NORMAL
@@ -352,6 +380,10 @@ class ArticleController extends BaseController
         if($affect === false){
             throw new Exception('批量恢复文章失败，请重试。');
         }
+
+        //批量恢复 话题收录数加操作***(非公示审核通过的文章不管)
+        Article::batchOperateCount($count);
+
         return [
             'errcode' => 0,
             'message' => '批量恢复文章成功。',
@@ -360,7 +392,7 @@ class ArticleController extends BaseController
     /**
      * 批量发布
      */
-    private function batchPublish($ids){
+    /*private function batchPublish($ids, $count){
         $affect = Article::updateAll([
             //属性
             'status' => Article::STATUS_NORMAL
@@ -379,25 +411,31 @@ class ArticleController extends BaseController
             'errcode' => 0,
             'message' => '批量发布文章成功。',
         ];
-    }
+    }*/
     /**
      * 批量审核
      */
-    private function batchCheck($ids){
+    private function batchCheck($ids, $count){
         $affect = Article::updateAll([
             //属性
             'check' => Article::CHECK_ADOPT
         ],[
             //条件
-            'and',
-            ['in', 'id', $ids],
-            ['=', 'status', Article::CHECK_WAIT]
+            'id' => $ids,
+            'check' => Article::CHECK_WAIT, //等待审核的
+            'status' => Article::STATUS_NORMAL//公示文章
+
 
         ]);
 
         if($affect === false){
             throw new Exception('批量审核文章失败，请重试。');
         }
+
+        //批量审核 话题收录数减操作***
+        Article::batchOperateCount($count);
+
+
         return [
             'errcode' => 0,
             'message' => '批量审核文章成功。',
@@ -417,20 +455,20 @@ class ArticleController extends BaseController
         $event->status = $model->status;
         $event->check = $model->check;
         $event->topic_id = $model->topic_id;
+        $event->article_id = $model->id;
 
         //如果修改过一些属性
         if($model->getDirtyAttributes(['status'])){
             $event->oldStatus = $model->getOldAttribute('status');
         }
         if($model->getDirtyAttributes(['check'])){
-            $event->oldStatus = $model->getOldAttribute('check');
+            $event->oldCheck = $model->getOldAttribute('check');
         }
         if($model->getDirtyAttributes(['topic_id'])){
-            $event->oldStatus = $model->getOldAttribute('topic_id');
+            $event->topic_id = $model->getOldAttribute('topic_id');
         }
 
         return $event;
     }
-
 
 }

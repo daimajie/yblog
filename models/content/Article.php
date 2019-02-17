@@ -2,6 +2,7 @@
 
 namespace app\models\content;
 
+use app\components\events\ArticlePutEvent;
 use app\components\Helper;
 use Yii;
 use yii\base\Exception;
@@ -10,7 +11,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
-use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -46,8 +46,10 @@ class Article extends ArticleForm
     const EVENT_AFTER_REC =  'rec'; //放置回收站事件 delete
     const EVENT_AFTER_PUT =  'put'; //修改事件 update
     const EVENT_AFTER_RES =  'res'; //恢复事件 restore
+    const EVENT_AFTER_CHECK =  'check'; //恢复事件 restore
+    const EVENT_AFTER_BATCH = 'batch'; //批量操作
 
-
+    //场景
     const SCENARIO_STATUS = 'status';
 
 
@@ -73,10 +75,10 @@ class Article extends ArticleForm
 
         $this->on(self::EVENT_AFTER_ADD, [$this, 'articleHandler'], 'add');
         $this->on(self::EVENT_AFTER_REC, [$this, 'articleHandler'], 'rec');
-        //$this->on(self::EVENT_AFTER_PUT, [$this, 'articleHandler'], 'put');
         $this->on(self::EVENT_AFTER_RES, [$this, 'articleHandler'], 'res');
 
         $this->on(self::EVENT_AFTER_PUT, [$this, 'articlePutHandler']);
+        $this->on(self::EVENT_AFTER_CHECK, [$this, 'articleCheckHandler']);
     }
 
     public function articleHandler($event){
@@ -109,33 +111,100 @@ class Article extends ArticleForm
             if($operate === 'rec'){
                 Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);
             }
-            //update
-            /*if($operate === 'put' && $model->getDirtyAttributes(['topic_id'])){
-                Topic::updateAllCounters(['count'=>-1],['id'=>$model->getOldAttribute('topic_id')]);
-                //Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
-            }
-            if($operate === 'put' && !$model->getDirtyAttributes(['topic_id'])){
-                //Topic::updateAllCounters(['count'=>-1],['id'=>$model->getOldAttribute('topic_id')]);
-                Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
-            }*/
             //restore
             if($operate === 'res'){
                 Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
             }
         }catch (Exception $e){
             //记录日志
-            Yii::error($e->getMessage(), __METHOD__);
-            //throw $e;
+            //Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
         }
 
 
 
     }
 
+    /**
+     * #修改文章事件
+     * #重新发布 要重新审核 统计数要减一
+     * @param $event
+     */
     public function articlePutHandler($event){
+        try{
+            if(!($event instanceof ArticlePutEvent)){
+                return;
+            }
+
+            //1.判断文章编辑之前是否被收录过
+            $status = isset($event->oldStatus) ? $event->oldStatus:$event->status;
+            $check = isset($event->oldCheck) ? $event->oldCheck:$event->check;
+
+            $topic_id = isset($event->oldTopic_id)?$event->oldTopic_id : $event->topic_id;
+
+
+            if($status == self::STATUS_NORMAL && $check == self::CHECK_ADOPT){
+                //2.判断文章话题是否更改(没改-话题收录减一，改了-原来话题收录减一)
+                Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);
+            }
+        }catch (Exception $e){
+            //记录日志
+            //Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+
+        }
+
 
     }
 
+    /**
+     * 修改文章审核状态时 改变话题收录数目
+     * @param $event
+     */
+    public function articleCheckHandler($event){
+        try{
+            if(!($event instanceof ArticlePutEvent)){
+                return;
+            }
+
+            //获取新旧状态值
+            $status = $event->status;
+            $check = $event->check;
+            $oldCheck = isset($event->oldCheck) ? $event->oldCheck: '';
+            $topic_id = $event->topic_id;
+
+            //如果审核状态没有改变 或是不是公示文章 不做任务计数操作
+            if(empty($oldCheck) || $status != self::STATUS_NORMAL)
+                return;
+
+
+            //1.如果由待审核转为审核通过
+            if($check == self::CHECK_ADOPT && $oldCheck < $check){
+                Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+            }
+
+            //2.如果由审核通过转为待审核
+            if($oldCheck == self::CHECK_ADOPT && $oldCheck > $check){
+                Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);
+            }
+
+            //3.如果由什么通过转为审核失败
+            if($oldCheck == self::CHECK_ADOPT && $oldCheck < $check){
+                Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);
+            }
+
+            //4.如果由什么失败转为什么通过
+            if($check == self::CHECK_ADOPT && $oldCheck > $check){
+                Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+            }
+        }catch (Exception $e){
+            //记录日志
+            //Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
+
+
+    }
     /**
      * {@inheritdoc}
      */
@@ -150,7 +219,7 @@ class Article extends ArticleForm
     public function rules()
     {
         return array_merge(parent::rules(),[
-            [['status', 'check'], 'required', 'on'=>self::SCENARIO_STATUS],
+            [[/*'status', */'check'], 'required', 'on'=>self::SCENARIO_STATUS],
 
             [['title', 'brief', 'topic_id'], 'required'],
 
@@ -168,7 +237,7 @@ class Article extends ArticleForm
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_STATUS] = ['status', 'check'];
+        $scenarios[self::SCENARIO_STATUS] = [/*'status', */'check'];
         return $scenarios;
     }
 
@@ -516,7 +585,86 @@ class Article extends ArticleForm
     }
 
 
+    /**
+     * #再批量操作文章的时候 获取每个话题统计的操作数目
+     * #如 话题1 里两个文章要删除,话题2删除1篇文章 将得到 [1 => 2, 2 => 1]
+     * #如上操作的统计数目 必须是 公示审核通过的文章(因为其他的文章不在统计数目里面)
+     * @param $ids
+     * @return array
+     */
+    public static function getCountNum(array $ids){
+        $topics = self::find()
+            ->where([
+                'check' => self::CHECK_ADOPT, //审核通过的
+                'status' => self::STATUS_NORMAL, //公示文章
+                'id' => $ids
+            ])
+            ->select(['topic_id'])
+            ->column();
 
+        return array_count_values($topics);
+    }
+
+    /**
+     * #获取要恢复文章的统计数 只计算审核通过并且不是公示文章的数据(因为非公示非审核不在统计数目之中)
+     * @param array $ids
+     * @return array
+     */
+    public static function getRestoreCountNum(array $ids){
+        $topics = self::find()
+            ->where([
+                'check' => self::CHECK_ADOPT, //审核通过的
+                //'status' => self::STATUS_NORMAL, //公示文章
+                'id' => $ids
+            ])
+            ->andWhere(['!=', 'status', self::STATUS_NORMAL])
+            ->select(['topic_id'])
+            ->column();
+
+        return array_count_values($topics);
+    }
+
+    /**
+     * #当批量审核通过时 获取每个话题应该添加的计数
+     * @param $ids
+     * @return array
+     */
+    public static function getCheckCountNum($ids){
+        $topics = self::find()
+            ->where([
+                'check' => self::CHECK_WAIT, //等待审核的
+                'status' => self::STATUS_NORMAL, //公示文章
+                'id' => $ids
+            ])
+            ->select(['topic_id'])
+            ->column();
+
+        return array_count_values($topics);
+    }
+
+
+    /**
+     * 批量操作时 对于话题收录数的操作
+     */
+    public static function batchOperateCount($count, $sign='inc'){
+        if(empty($count))
+            return;
+
+        try{
+            foreach ($count as $k => $v){
+                //$k为要改变的话题id  $v为要加减的数目
+                $v = $sign == 'inc' ? $v : -$v;
+
+                Topic::updateAllCounters(['count' => $v],['id'=>$k]);
+            }
+
+        }catch (Exception $e){
+            //记录日志
+            //Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
+
+    }
 
 
 
