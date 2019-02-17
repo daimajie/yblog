@@ -4,13 +4,16 @@ namespace app\models\content;
 
 use app\components\events\ArticlePutEvent;
 use app\components\Helper;
+use app\models\member\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -84,10 +87,10 @@ class Article extends ArticleForm
     public function articleHandler($event){
 
         try{
-            $model = $event->sender;
-            if(!($model instanceof ActiveRecord)){
+            if(!($event instanceof ArticlePutEvent)){
                 throw new Exception('事件参数错误。');
             }
+            $model = $event->sender;
 
             //非审核通过的文章 和 非公示文章 不做任何操作
             if($model->check != self::CHECK_ADOPT || $model->status != self::STATUS_NORMAL){
@@ -95,6 +98,7 @@ class Article extends ArticleForm
             }
 
             $topic_id = $event->sender->topic_id;
+            $user_id = $event->sender->user_id;
             $operate = $event->data;
 
             //验证数据
@@ -106,14 +110,20 @@ class Article extends ArticleForm
             //create
             if($operate === 'add'){
                 Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+
+                User::updateAllCounters(['author'=>1],['id'=>$user_id]);
             }
             //delete
             if($operate === 'rec'){
                 Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);
+
+                User::updateAllCounters(['author'=>-1],['id'=>$user_id]);
             }
             //restore
             if($operate === 'res'){
                 Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+
+                User::updateAllCounters(['author'=>1],['id'=>$user_id]);
             }
         }catch (Exception $e){
             //记录日志
@@ -133,7 +143,7 @@ class Article extends ArticleForm
     public function articlePutHandler($event){
         try{
             if(!($event instanceof ArticlePutEvent)){
-                return;
+                throw new Exception('事件参数错误。');
             }
 
             //1.判断文章编辑之前是否被收录过
@@ -141,11 +151,14 @@ class Article extends ArticleForm
             $check = isset($event->oldCheck) ? $event->oldCheck:$event->check;
 
             $topic_id = isset($event->oldTopic_id)?$event->oldTopic_id : $event->topic_id;
+            $user_id = $event->user_id;
 
 
             if($status == self::STATUS_NORMAL && $check == self::CHECK_ADOPT){
                 //2.判断文章话题是否更改(没改-话题收录减一，改了-原来话题收录减一)
                 Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);
+
+                User::updateAllCounters(['author'=>-1],['id'=>$user_id]);
             }
         }catch (Exception $e){
             //记录日志
@@ -172,6 +185,7 @@ class Article extends ArticleForm
             $check = $event->check;
             $oldCheck = isset($event->oldCheck) ? $event->oldCheck: '';
             $topic_id = $event->topic_id;
+            $user_id = $event->user_id;
 
             //如果审核状态没有改变 或是不是公示文章 不做任务计数操作
             if(empty($oldCheck) || $status != self::STATUS_NORMAL)
@@ -181,21 +195,29 @@ class Article extends ArticleForm
             //1.如果由待审核转为审核通过
             if($check == self::CHECK_ADOPT && $oldCheck < $check){
                 Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+
+                User::updateAllCounters(['author'=>1],['id'=>$user_id]);
             }
 
             //2.如果由审核通过转为待审核
             if($oldCheck == self::CHECK_ADOPT && $oldCheck > $check){
                 Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);
+
+                User::updateAllCounters(['author'=>-1],['id'=>$user_id]);
             }
 
             //3.如果由什么通过转为审核失败
             if($oldCheck == self::CHECK_ADOPT && $oldCheck < $check){
                 Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);
+
+                User::updateAllCounters(['author'=>-1],['id'=>$user_id]);
             }
 
             //4.如果由什么失败转为什么通过
             if($check == self::CHECK_ADOPT && $oldCheck > $check){
                 Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
+
+                User::updateAllCounters(['author'=>1],['id'=>$user_id]);
             }
         }catch (Exception $e){
             //记录日志
@@ -584,6 +606,28 @@ class Article extends ArticleForm
         return true;
     }
 
+    public static function getCounter($ids){
+        $counter = self::find()
+            ->where([
+                'check' => self::CHECK_ADOPT, //审核通过的
+                'status' => self::STATUS_NORMAL, //公示文章
+                'id' => $ids
+            ])
+            ->select(['topic_id','user_id'])
+            ->asArray()
+            ->all();
+
+        $topic_c = ArrayHelper::getColumn($counter,'topic_id');
+        $user_c = ArrayHelper::getColumn($counter, 'user_id');
+
+        return [
+            'user_count' => array_count_values($user_c),
+            'topic_count' => array_count_values($topic_c)
+        ];
+
+
+    }
+
 
     /**
      * #再批量操作文章的时候 获取每个话题统计的操作数目
@@ -593,16 +637,23 @@ class Article extends ArticleForm
      * @return array
      */
     public static function getCountNum(array $ids){
-        $topics = self::find()
+        $counter = self::find()
             ->where([
                 'check' => self::CHECK_ADOPT, //审核通过的
                 'status' => self::STATUS_NORMAL, //公示文章
                 'id' => $ids
             ])
-            ->select(['topic_id'])
-            ->column();
+            ->select(['topic_id','user_id'])
+            ->asArray()
+            ->all();
 
-        return array_count_values($topics);
+        $topic_c = ArrayHelper::getColumn($counter,'topic_id');
+        $user_c = ArrayHelper::getColumn($counter, 'user_id');
+
+        return [
+            'user_count' => array_count_values($user_c),
+            'topic_count' => array_count_values($topic_c)
+        ];
     }
 
     /**
@@ -611,17 +662,24 @@ class Article extends ArticleForm
      * @return array
      */
     public static function getRestoreCountNum(array $ids){
-        $topics = self::find()
+        $counter = self::find()
             ->where([
                 'check' => self::CHECK_ADOPT, //审核通过的
                 //'status' => self::STATUS_NORMAL, //公示文章
                 'id' => $ids
             ])
             ->andWhere(['!=', 'status', self::STATUS_NORMAL])
-            ->select(['topic_id'])
-            ->column();
+            ->select(['topic_id','user_id'])
+            ->asArray()
+            ->all();
 
-        return array_count_values($topics);
+        $topic_c = ArrayHelper::getColumn($counter,'topic_id');
+        $user_c = ArrayHelper::getColumn($counter, 'user_id');
+
+        return [
+            'user_count' => array_count_values($user_c),
+            'topic_count' => array_count_values($topic_c)
+        ];
     }
 
     /**
@@ -630,16 +688,23 @@ class Article extends ArticleForm
      * @return array
      */
     public static function getCheckCountNum($ids){
-        $topics = self::find()
+        $counter = self::find()
             ->where([
                 'check' => self::CHECK_WAIT, //等待审核的
                 'status' => self::STATUS_NORMAL, //公示文章
                 'id' => $ids
             ])
-            ->select(['topic_id'])
-            ->column();
+            ->select(['topic_id','user_id'])
+            ->asArray()
+            ->all();
 
-        return array_count_values($topics);
+        $topic_c = ArrayHelper::getColumn($counter,'topic_id');
+        $user_c = ArrayHelper::getColumn($counter, 'user_id');
+
+        return [
+            'user_count' => array_count_values($user_c),
+            'topic_count' => array_count_values($topic_c)
+        ];
     }
 
 
@@ -647,15 +712,22 @@ class Article extends ArticleForm
      * 批量操作时 对于话题收录数的操作
      */
     public static function batchOperateCount($count, $sign='inc'){
-        if(empty($count))
+        if(empty($count['user_count']) || empty($count['topic_count']))
             return;
 
         try{
-            foreach ($count as $k => $v){
+            foreach ($count['topic_count'] as $k => $v){
                 //$k为要改变的话题id  $v为要加减的数目
                 $v = $sign == 'inc' ? $v : -$v;
 
                 Topic::updateAllCounters(['count' => $v],['id'=>$k]);
+            }
+
+            foreach ($count['user_count'] as $k => $v){
+                //$k为要改变的话题id  $v为要加减的数目
+                $v = $sign == 'inc' ? $v : -$v;
+
+                User::updateAllCounters(['author' => $v],['id'=>$k]);
             }
 
         }catch (Exception $e){

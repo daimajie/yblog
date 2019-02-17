@@ -22,4 +22,6 @@ class ArticlePutEvent extends Event
 
     public $article_id;
 
+    public $user_id;
+
 }

@@ -326,12 +326,6 @@ class ArticleController extends BaseController
 
         }
     }
-    public function actionTest(){
-        $count = Article::getCountNum([1]);
-        Article::batchOperateCount($count, 'dec');
-        die;
-    }
-
 
     /**
      * 批量删除
@@ -456,6 +450,7 @@ class ArticleController extends BaseController
         $event->check = $model->check;
         $event->topic_id = $model->topic_id;
         $event->article_id = $model->id;
+        $event->user_id = $model->user_id;
 
         //如果修改过一些属性
         if($model->getDirtyAttributes(['status'])){
