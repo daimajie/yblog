@@ -76,7 +76,7 @@ class Article extends ArticleForm
     {
         parent::init();
 
-        $this->on(self::EVENT_AFTER_ADD, [$this, 'articleHandler'], 'add');
+        //$this->on(self::EVENT_AFTER_ADD, [$this, 'articleHandler'], 'add');
         $this->on(self::EVENT_AFTER_REC, [$this, 'articleHandler'], 'rec');
         $this->on(self::EVENT_AFTER_RES, [$this, 'articleHandler'], 'res');
 
@@ -90,29 +90,37 @@ class Article extends ArticleForm
             if(!($event instanceof ArticlePutEvent)){
                 throw new Exception('事件参数错误。');
             }
-            $model = $event->sender;
+
+            $operate = $event->data;
+            $topic_id = $event->topic_id;
+            $user_id = $event->user_id;
+
+            $check = $event->check;
+            $status = $event->status;
+            $oldStatus = $event->oldStatus;
+
 
             //非审核通过的文章 和 非公示文章 不做任何操作
-            if($model->check != self::CHECK_ADOPT || $model->status != self::STATUS_NORMAL){
+            if($check != self::CHECK_ADOPT){
+                return;
+            }
+            //草稿箱
+            if($status == self::STATUS_DRAFT || $oldStatus == self::STATUS_DRAFT){
+                return;
+            }
+            //非放置回收站 或 恢复文章 不做任何事
+            if($status != self::STATUS_NORMAL && $oldStatus != self::STATUS_NORMAL){
                 return;
             }
 
-            $topic_id = $event->sender->topic_id;
-            $user_id = $event->sender->user_id;
-            $operate = $event->data;
-
-            //验证数据
-            if($topic_id <= 0 || empty($operate)){
-                throw new Exception('事件参数错误。');
-            }
 
             /**以下是单一模型操作 (还有批量操作) **/
             //create
-            if($operate === 'add'){
+            /*if($operate === 'add'){
                 Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
 
                 User::updateAllCounters(['author'=>1],['id'=>$user_id]);
-            }
+            }*/
             //delete
             if($operate === 'rec'){
                 Topic::updateAllCounters(['count'=>-1],['id'=>$topic_id]);

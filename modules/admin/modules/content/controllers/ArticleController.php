@@ -127,8 +127,8 @@ class ArticleController extends BaseController
         $model = new Article();
 
         if ($model->load(Yii::$app->request->post()) && $model->store()) {
-            //触发计数事件
-            $model->trigger(Article::EVENT_AFTER_ADD);
+            //触发计数事件(新建文章初始都是待审核 所以不需要计数)
+            //$model->trigger(Article::EVENT_AFTER_ADD);
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -212,14 +212,19 @@ class ArticleController extends BaseController
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $affect = $model->updateAttributes(['status'=>Article::STATUS_RECYCLE]);
-        if($affect === false){
+        $model->status = Article::STATUS_RECYCLE;
+
+        $event = $this->generateEvent($model);
+
+
+        //$affect = $model->updateAttributes(['status'=>Article::STATUS_RECYCLE]);
+        if($model->save(false) === false){
             //提示一下
             Yii::$app->session->setFlash('error', '删除文章失败，请重试。');
             return $this->redirect(['article/view','id'=>$id]);
         }
         //触发计数事件
-        $model->trigger(Article::EVENT_AFTER_REC);
+        $model->trigger(Article::EVENT_AFTER_REC, $event);
 
         return $this->redirect(['index']);
     }
@@ -242,14 +247,18 @@ class ArticleController extends BaseController
      */
     public function actionRestore($id){
         $model = $this->findModel($id);
-        $affect = $model->updateAttributes(['status'=>Article::STATUS_NORMAL]);
-        if($affect === false){
+        $model->status = Article::STATUS_NORMAL;
+        $event = $this->generateEvent($model);
+
+
+        //$affect = $model->updateAttributes(['status'=>Article::STATUS_NORMAL]);
+        if($model->save(false) === false){
             //提示一下
             Yii::$app->session->setFlash('error', '恢复文章失败，请重试。');
             return $this->refresh();
         }
         //触发计数事件
-        $model->trigger(Article::EVENT_AFTER_RES);
+        $model->trigger(Article::EVENT_AFTER_RES, $event);
 
         return $this->redirect(['index']);
     }
