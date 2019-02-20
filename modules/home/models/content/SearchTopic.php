@@ -70,15 +70,14 @@ class SearchTopic extends Topic
         }
 
         // grid filtering conditions
-        $query->andWhere([
-            'id' => $this->id,
+        $query->andFilterWhere([
             'category_id' => $this->category_id,
             'user_id' => $this->user_id
         ]);
 
 
 
-        $query->andWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

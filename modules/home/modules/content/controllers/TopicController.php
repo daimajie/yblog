@@ -27,10 +27,9 @@ class TopicController extends BaseController
     public function actionIndex(){
 
         $searchModel = new SearchTopic();
-        $dataProvider = $searchModel->search($params = Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'params' => $params,
             'dataProvider' => $dataProvider,
             'category_items' => Category::dropItems(),
         ]);

@@ -56,9 +56,6 @@ class SearchArticle extends Article
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
-            'pagination' => [
-                'pageSize' => 1
-            ]
         ]);
 
 
@@ -89,10 +86,10 @@ class SearchArticle extends Article
 
 
 
-        // grid filtering conditions
+        //必须是当前话题的文章
         $query->andWhere(['topic_id' => $this->topic_id]);
 
-        $query->andWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

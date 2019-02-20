@@ -776,25 +776,29 @@ class Article extends ArticleForm
      * 获取查询生成器
      * @return \yii\db\ActiveQuery
      */
-    public static function getArticleQuery(){
+    public static function getArticleQuery($topic_id){
         return self::find()
             ->where([
                 'status' => self::STATUS_NORMAL,
                 'check'  => self::CHECK_ADOPT,
+                'topic_id' => $topic_id
             ]);
     }
 
     /**
      * 上一页下一页
      */
-    public static function getPrevNext($article_id){
-        $prev = static::getArticleQuery()
+    public static function getPrevNext($article_id, $topic_id){
+        if(!is_numeric($article_id) || !is_numeric($topic_id))
+            return [];
+
+        $prev = static::getArticleQuery($topic_id)
             ->orderBy(['created_at'=>SORT_ASC])
             ->where(['>', 'id', $article_id])
             ->select(['id','title'])
             ->asArray()
             ->one();
-        $next = static::getArticleQuery()
+        $next = static::getArticleQuery($topic_id)
             ->orderBy(['created_at'=>SORT_DESC])
             ->Where(['<', 'id', $article_id])
             ->select(['id', 'title'])

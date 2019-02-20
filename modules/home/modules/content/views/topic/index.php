@@ -12,7 +12,7 @@ use yii\helpers\Html;
 
 
 $this->title = '热门话题';
-
+$params = Yii::$app->request->queryParams;
 
 //$model 搜索模型
 //$category_items 分类列表数据

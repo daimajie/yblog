@@ -29,20 +29,20 @@ $title = trim(Yii::$app->request->get('title', ''));
         <div class="title-wrap">
             <div class="jumbotron jumbotron-fluid">
                 <div class="container mb-3">
-                    <h3 class="display-4"><?= Html::encode($model->name)?></h3>
-                    <p class="lead"><?= Html::encode($model->desc)?></p>
+                    <h3 class="display-4"><?= Html::encode($model['name'])?></h3>
+                    <p class="lead"><?= Html::encode($model['desc'])?></p>
                     <footer class="blockquote-footer"><ul class="entry__meta">
                             <li class="entry__meta-author">
                                 <i class="ui-author"></i>
-                                <a href="#"><?= ViewHelper::username($model->user->username,$model->user->nickname)?></a>
+                                <a href="<?= Url::to(['/home/member/user', 'id'=>$model['user']['id']])?>"><?= ViewHelper::username($model['user']['username'],$model['user']['nickname'])?></a>
                             </li>
                             <li class="entry__meta-date">
                                 <i class="ui-xing"></i>
-                                <?= $model->status == Topic::STATUS_NORMAL ? '连载中...' : '完结'?>
+                                <?= $model['status'] == Topic::STATUS_NORMAL ? '连载中...' : '完结'?>
                             </li>
                             <li class="entry__meta-comments">
                                 <i class="ui-flickr"></i>
-                                <a href="javascript:void(0);"><?= $model->count?></a>
+                                <?= $model['count']?>
                             </li>
                         </ul>
                     </footer>
@@ -99,7 +99,7 @@ $title = trim(Yii::$app->request->get('title', ''));
     <aside class="col-lg-4 sidebar sidebar--right">
         <!--search article-->
         <div class="widget widget_mc4wp_form_widget text-center">
-            <?= Html::beginForm(['view','id'=>$model->id], 'get',['class'=>'search-form']) ?>
+            <?= Html::beginForm(['view','id'=>$model['id']], 'get',['class'=>'search-form']) ?>
                 <?= Html::input('text', 'title', !empty($title)?trim($title):'', [
                     'placeholder'=>'话题名称',
                     'autocomplete'=>"off",
@@ -115,11 +115,11 @@ $title = trim(Yii::$app->request->get('title', ''));
         <div class="widget widget_tag_cloud">
             <h4 class="widget-title">云标签</h4>
             <div class="tagcloud">
-                <a class="<?= !is_numeric($tag_id)?'active':''?>" href="<?= Url::to(['', 'id'=>$model->id, 'tag_id'=>null])?>">全部</a>
+                <a class="<?= !is_numeric($tag_id)?'active':''?>" href="<?= Url::to(['', 'id'=>$model['id'], 'tag_id'=>null])?>">全部</a>
                 <?php foreach ($cloudTags as $cloudTag):?>
-                    <a class="<?= ($tag_id==$cloudTag['id'])?'active':''?>" href="<?= Url::to(['','id'=>$model->id,  'tag_id'=>$cloudTag['id']])?>"><?= $cloudTag['name']?></a>
+                    <a class="<?= ($tag_id==$cloudTag['id'])?'active':''?>" href="<?= Url::to(['','id'=>$model['id'],  'tag_id'=>$cloudTag['id']])?>"><?= $cloudTag['name']?></a>
                 <?php endforeach;?>
-                <a class="<?= empty($tag_id)?'active':''?>" href="<?= Url::to(['','id'=>$model->id,  'tag_id'=>'0'])?>">无标签</a>
+                <a class="<?= empty($tag_id)?'active':''?>" href="<?= Url::to(['','id'=>$model['id'],  'tag_id'=>'0'])?>">无标签</a>
             </div>
         </div>
 

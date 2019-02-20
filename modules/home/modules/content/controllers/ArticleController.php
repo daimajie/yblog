@@ -12,7 +12,6 @@ namespace app\modules\home\modules\content\controllers;
 
 use app\models\content\Article;
 use app\modules\home\controllers\BaseController;
-use yii\helpers\VarDumper;
 
 class ArticleController extends BaseController
 {
@@ -20,11 +19,10 @@ class ArticleController extends BaseController
     public function actionView($id){
 
         $model = $this->findModel($id);
-//        VarDumper::dump($model,10,1);die;
 
         return $this->render('view',[
             'model' => $model,
-            'prevAndNext' => Article::getPrevNext($id)
+            'prevAndNext' => Article::getPrevNext($id, $model['topic_id'])
         ]);
     }
 

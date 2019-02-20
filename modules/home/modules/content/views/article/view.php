@@ -11,6 +11,9 @@ use app\components\ViewHelper;
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
 use yii\helpers\Url;
+
+
+$this->title = $model['title'];
 ?>
 <!-- Content -->
 <div class="row">
@@ -53,7 +56,7 @@ use yii\helpers\Url;
                 <ul class="entry__meta">
                     <li class="entry__meta-author">
                         <i class="ui-author"></i>
-                        <a href="#"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
+                        <a href="<?= Url::to(['/home/member/user', 'id'=>$model['user']['id']])?>"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
                     </li>
                     <li class="entry__meta-date">
                         <i class="ui-date"></i>
@@ -61,7 +64,7 @@ use yii\helpers\Url;
                     </li>
                     <li class="entry__meta-comments">
                         <i class="ui-comments"></i>
-                        <a href="#"><?= $model['comment']?></a>
+                        <?= $model['comment']?>
                     </li>
                 </ul>
             </div>
@@ -97,7 +100,7 @@ use yii\helpers\Url;
                 <img width="100" height="100" data-src="<?= ViewHelper::avatar($model['user']['image'])?>" src="<?= ViewHelper::staticPath('img/empty.png')?>" class="avatar lazyload">
                 <div class="entry-author__info">
                     <h6 class="entry-author__name">
-                        <a href="#"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
+                        <a href="<?= Url::to(['/home/member/user', 'id'=>$model['user']['id']])?>"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
                     </h6>
                     <p style="font-size: 14px;" class="mb-0"><?= empty($model['user']['intro']) ? '这家伙很懒, 什么也没留下。' : Html::encode($model['user']['intro'])?></p>
                 </div>
@@ -127,7 +130,8 @@ use yii\helpers\Url;
                 </div>
             </nav>
 
-        </article> <!-- end standard post -->
+        </article>
+        <!-- end standard post -->
 
 
         <!-- Comments -->
