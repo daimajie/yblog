@@ -22,6 +22,9 @@ $config = [
         'admin' => [
             'class' => 'app\modules\admin\Module',
         ],
+        'home' => [
+            'class' => 'app\modules\home\Module',
+        ],
     ],
     'components' => [
         'request' => [

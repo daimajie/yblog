@@ -1,53 +1,904 @@
-<?php
+<!-- Content -->
+<div class="row">
 
-/* @var $this yii\web\View */
+    <!-- Posts -->
+    <div class="col-lg-8 blog__content mb-30">
+        <!-- Latest News -->
+        <section class="section">
+            <div class="title-wrap">
+                <h3 class="section-title">最新文章</h3>
+            </div>
 
-$this->title = 'My Yii Application';
-?>
-<div class="site-index">
+            <article class="entry post-list">
+                <div class="entry__img-holder post-list__img-holder">
+                    <a href="single-post.html">
+                        <div class="thumb-container thumb-75">
+                            <img data-src="static/assets/img/blog/list_post_img_1.jpg" src="static/assets/img/empty.png" class="entry__img lazyload" alt="">
+                        </div>
+                    </a>
+                </div>
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+                <div class="entry__body post-list__body">
+                    <div class="entry__header">
+                        <a href="#" class="entry__meta-category">business</a>
+                        <h2 class="entry__title">
+                            <a href="single-post.html">Your Business Is Talking. Do You Have the Tools to Listen?</a>
+                        </h2>
+                        <ul class="entry__meta">
+                            <li class="entry__meta-author">
+                                <i class="ui-author"></i>
+                                <a href="#">DeoThemes</a>
+                            </li>
+                            <li class="entry__meta-date">
+                                <i class="ui-date"></i>
+                                21 October, 2017
+                            </li>
+                            <li class="entry__meta-comments">
+                                <i class="ui-comments"></i>
+                                <a href="#">115</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="entry__excerpt">
+                        <p>Point of Sale hardware, the till at a shop check out, has become very complex over the past ten years. Modern POS hardware includes the cash till, bar-code readers...</p>
+                    </div>
+                </div>
+            </article>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+            <article class="entry post-list">
+                <div class="entry__img-holder post-list__img-holder">
+                    <a href="single-post.html">
+                        <div class="thumb-container thumb-75">
+                            <img data-src="static/assets/img/blog/list_post_img_2.jpg" src="static/assets/img/empty.png" class="entry__img lazyload" alt="">
+                        </div>
+                    </a>
+                </div>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+                <div class="entry__body post-list__body">
+                    <div class="entry__header">
+                        <a href="#" class="entry__meta-category">tech</a>
+                        <h2 class="entry__title">
+                            <a href="single-post.html">Removing Bitcoin payments from Steam is a smart move by Valve</a>
+                        </h2>
+                        <ul class="entry__meta">
+                            <li class="entry__meta-author">
+                                <i class="ui-author"></i>
+                                <a href="#">DeoThemes</a>
+                            </li>
+                            <li class="entry__meta-date">
+                                <i class="ui-date"></i>
+                                21 October, 2017
+                            </li>
+                            <li class="entry__meta-comments">
+                                <i class="ui-comments"></i>
+                                <a href="#">115</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="entry__excerpt">
+                        <p>Point of Sale hardware, the till at a shop check out, has become very complex over the past ten years. Modern POS hardware includes the cash till, bar-code readers...</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Ad Banner 728 -->
+            <div class="text-center pb-40">
+                <a href="#">
+                    <img src="static/assets/img/blog/placeholder_leaderboard.jpg" alt="">
+                </a>
+            </div>
+
+            <article class="entry post-list">
+                <div class="entry__img-holder post-list__img-holder">
+                    <a href="single-post.html">
+                        <div class="thumb-container thumb-75">
+                            <img data-src="static/assets/img/blog/list_post_img_3.jpg" src="static/assets/img/empty.png" class="entry__img lazyload" alt="">
+                        </div>
+                    </a>
+                </div>
+
+                <div class="entry__body post-list__body">
+                    <div class="entry__header">
+                        <a href="#" class="entry__meta-category">fashion</a>
+                        <h2 class="entry__title">
+                            <a href="single-post.html">This Is the Burberry Bag Every Fashion Girl Wanted 15 Years Ago</a>
+                        </h2>
+                        <ul class="entry__meta">
+                            <li class="entry__meta-author">
+                                <i class="ui-author"></i>
+                                <a href="#">DeoThemes</a>
+                            </li>
+                            <li class="entry__meta-date">
+                                <i class="ui-date"></i>
+                                21 October, 2017
+                            </li>
+                            <li class="entry__meta-comments">
+                                <i class="ui-comments"></i>
+                                <a href="#">115</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="entry__excerpt">
+                        <p>Point of Sale hardware, the till at a shop check out, has become very complex over the past ten years. Modern POS hardware includes the cash till, bar-code readers...</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="entry post-list">
+                <div class="entry__img-holder post-list__img-holder">
+                    <a href="single-post.html">
+                        <div class="thumb-container thumb-75">
+                            <img data-src="static/assets/img/blog/list_post_img_3.jpg" src="static/assets/img/empty.png" class="entry__img lazyload" alt="">
+                        </div>
+                    </a>
+                </div>
+
+                <div class="entry__body post-list__body">
+                    <div class="entry__header">
+                        <a href="#" class="entry__meta-category">fashion</a>
+                        <h2 class="entry__title">
+                            <a href="single-post.html">This Is the Burberry Bag Every Fashion Girl Wanted 15 Years Ago</a>
+                        </h2>
+                        <ul class="entry__meta">
+                            <li class="entry__meta-author">
+                                <i class="ui-author"></i>
+                                <a href="#">DeoThemes</a>
+                            </li>
+                            <li class="entry__meta-date">
+                                <i class="ui-date"></i>
+                                21 October, 2017
+                            </li>
+                            <li class="entry__meta-comments">
+                                <i class="ui-comments"></i>
+                                <a href="#">115</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="entry__excerpt">
+                        <p>Point of Sale hardware, the till at a shop check out, has become very complex over the past ten years. Modern POS hardware includes the cash till, bar-code readers...</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="entry post-list">
+                <div class="entry__img-holder post-list__img-holder">
+                    <a href="single-post.html">
+                        <div class="thumb-container thumb-75">
+                            <img data-src="static/assets/img/blog/list_post_img_3.jpg" src="static/assets/img/empty.png" class="entry__img lazyload" alt="">
+                        </div>
+                    </a>
+                </div>
+
+                <div class="entry__body post-list__body">
+                    <div class="entry__header">
+                        <a href="#" class="entry__meta-category">fashion</a>
+                        <h2 class="entry__title">
+                            <a href="single-post.html">This Is the Burberry Bag Every Fashion Girl Wanted 15 Years Ago</a>
+                        </h2>
+                        <ul class="entry__meta">
+                            <li class="entry__meta-author">
+                                <i class="ui-author"></i>
+                                <a href="#">DeoThemes</a>
+                            </li>
+                            <li class="entry__meta-date">
+                                <i class="ui-date"></i>
+                                21 October, 2017
+                            </li>
+                            <li class="entry__meta-comments">
+                                <i class="ui-comments"></i>
+                                <a href="#">115</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="entry__excerpt">
+                        <p>Point of Sale hardware, the till at a shop check out, has become very complex over the past ten years. Modern POS hardware includes the cash till, bar-code readers...</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- pagination -->
+            <nav class="pagination">
+                <span class="pagination__page pagination__page--current">1</span>
+                <a href="#" class="pagination__page">2</a>
+                <a href="#" class="pagination__page">3</a>
+                <a href="#" class="pagination__page">4</a>
+                <a href="#" class="pagination__page pagination__icon pagination__page--next"><i class="ui-arrow-right"></i></a>
+            </nav>
+
+        </section>
+        <!-- end latest news -->
+
+        <!-- Carousel posts -->
+        <section class="section mb-20">
+            <div class="title-wrap">
+                <h3 class="section-title section-title--sm">More News</h3>
+                <div class="carousel-nav">
+                    <button class="carousel-nav__btn carousel-nav__btn--prev" aria-label="previous slide">
+                        <i class="ui-arrow-left"></i>
+                    </button>
+                    <button class="carousel-nav__btn carousel-nav__btn--next" aria-label="next slide">
+                        <i class="ui-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Slider -->
+            <div id="owl-posts" class="owl-carousel owl-theme">
+                <article class="entry">
+                    <div class="entry__img-holder">
+                        <a href="single-post.html">
+                            <div class="thumb-container thumb-75">
+                                <img data-src="static/assets/img/blog/carousel_img_1.jpg" src="static/assets/img/blog/carousel_img_1.jpg" class="entry__img owl-lazy" alt="" />
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="entry__body">
+                        <div class="entry__header">
+                            <h2 class="entry__title entry__title--sm">
+                                <a href="single-post.html">The Surprising Way This Designer Picked the Next It Colors</a>
+                            </h2>
+                            <ul class="entry__meta">
+                                <li class="entry__meta-date">
+                                    <i class="ui-date"></i>
+                                    21 October, 2017
+                                </li>
+                                <li class="entry__meta-comments">
+                                    <i class="ui-comments"></i>
+                                    <a href="#">115</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+                <article class="entry">
+                    <div class="entry__img-holder">
+                        <a href="single-post.html">
+                            <div class="thumb-container thumb-75">
+                                <img data-src="static/assets/img/blog/carousel_img_2.jpg" src="static/assets/img/blog/carousel_img_2.jpg" class="entry__img owl-lazy" alt="" />
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="entry__body">
+                        <div class="entry__header">
+                            <h2 class="entry__title entry__title--sm">
+                                <a href="single-post.html">What Fashion Editors Are Buying for Every Kid on Our Holiday List</a>
+                            </h2>
+                            <ul class="entry__meta">
+                                <li class="entry__meta-date">
+                                    <i class="ui-date"></i>
+                                    21 October, 2017
+                                </li>
+                                <li class="entry__meta-comments">
+                                    <i class="ui-comments"></i>
+                                    <a href="#">115</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+                <article class="entry">
+                    <div class="entry__img-holder">
+                        <a href="single-post.html">
+                            <div class="thumb-container thumb-75">
+                                <img data-src="static/assets/img/blog/carousel_img_3.jpg" src="static/assets/img/blog/carousel_img_3.jpg" class="entry__img owl-lazy" alt="" />
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="entry__body">
+                        <div class="entry__header">
+                            <h2 class="entry__title entry__title--sm">
+                                <a href="single-post.html">Why Coach's Cute New Holiday Collab Is Unexpected</a>
+                            </h2>
+                            <ul class="entry__meta">
+                                <li class="entry__meta-date">
+                                    <i class="ui-date"></i>
+                                    21 October, 2017
+                                </li>
+                                <li class="entry__meta-comments">
+                                    <i class="ui-comments"></i>
+                                    <a href="#">115</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+            </div> <!-- end slider -->
+        </section>
     </div>
+    <!-- end posts -->
 
-    <div class="body-content">
+    <!-- Sidebar -->
+    <aside class="col-lg-4 sidebar sidebar--right">
+        <!-- 公众号 -->
+        <div class="widget widget_mc4wp_form_widget text-center">
+            <img width="100%" src="static/assets/img/blog/rqcode.png" alt="关注微信公众号" class="mb-3">
+            <h4 class="widget-title">扫码直接下载APP</h4>
+        </div>
 
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+        <!-- 社交工具 -->
+        <div class="widget widget-social-subscribers">
+            <ul class="widget-social-subscribers__list">
+                <li class="widget-social-subscribers__item">
+                    <a href="#" class="widget-social-subscribers__url widget-social-subscribers--facebook">
+                        <i class="ui-facebook widget-social-subscribers__icon"></i>
+                        <span class="widget-social-subscribers__number">15369</span>
+                        <span class="widget-social-subscribers__text">Fans</span>
+                    </a>
+                </li>
+                <li class="widget-social-subscribers__item">
+                    <a href="#" class="widget-social-subscribers__url widget-social-subscribers--twitter">
+                        <i class="ui-twitter widget-social-subscribers__icon"></i>
+                        <span class="widget-social-subscribers__number">15369</span>
+                        <span class="widget-social-subscribers__text">Followers</span>
+                    </a>
+                </li>
+                <li class="widget-social-subscribers__item">
+                    <a href="#" class="widget-social-subscribers__url widget-social-subscribers--google">
+                        <i class="ui-google widget-social-subscribers__icon"></i>
+                        <span class="widget-social-subscribers__number">15369</span>
+                        <span class="widget-social-subscribers__text">Followers</span>
+                    </a>
+                </li>
+                <li class="widget-social-subscribers__item">
+                    <a href="#" class="widget-social-subscribers__url widget-social-subscribers--rss">
+                        <i class="ui-rss widget-social-subscribers__icon"></i>
+                        <span class="widget-social-subscribers__number">15369</span>
+                        <span class="widget-social-subscribers__text">Subscribers</span>
+                    </a>
+                </li>
+                <li class="widget-social-subscribers__item">
+                    <a href="#" class="widget-social-subscribers__url widget-social-subscribers--youtube">
+                        <i class="ui-youtube widget-social-subscribers__icon"></i>
+                        <span class="widget-social-subscribers__number">15369</span>
+                        <span class="widget-social-subscribers__text">Subscribers</span>
+                    </a>
+                </li>
+                <li class="widget-social-subscribers__item">
+                    <a href="#" class="widget-social-subscribers__url widget-social-subscribers--instagram">
+                        <i class="ui-instagram widget-social-subscribers__icon"></i>
+                        <span class="widget-social-subscribers__number">15369</span>
+                        <span class="widget-social-subscribers__text">Followers</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+        <!-- 订阅 -->
+        <div class="widget widget_mc4wp_form_widget">
+            <h4 class="widget-title">订阅站点动态</h4>
+            <form class="mc4wp-form" method="post">
+                <div class="mc4wp-form-fields">
+                    <p>
+                        <input type="email" name="EMAIL" placeholder="你的邮箱" required="">
+                    </p>
+                    <p>
+                        <input type="submit" class="btn btn-lg btn-color" value="提交订阅">
+                    </p>
+                </div>
+            </form>
+        </div>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+        <!-- 热门文章 -->
+        <div class="widget widget-tabpost">
+            <div class="tabs widget-tabpost__tabs">
+                <ul class="tabs__list widget-tabpost__tabs-list">
+                    <li class="tabs__item widget-tabpost__tabs-item tabs__item--active">
+                        <a href="#tab-trending" class="tabs__url tabs__trigger widget-tabpost__tabs-url">Trending</a>
+                    </li>
+                    <li class="tabs__item widget-tabpost__tabs-item">
+                        <a href="#tab-latest" class="tabs__url tabs__trigger widget-tabpost__tabs-url">Latest</a>
+                    </li>
+                    <li class="tabs__item widget-tabpost__tabs-item">
+                        <a href="#tab-comments" class="tabs__url tabs__trigger widget-tabpost__tabs-url">Comments</a>
+                    </li>
+                </ul> <!-- end tabs -->
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <!-- tab content -->
+                <div class="tabs__content tabs__content-trigger widget-tabpost__tabs-content">
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+                    <div class="tabs__content-pane tabs__content-pane--active" id="tab-trending">
+                        <ul class="post-list-small">
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_1.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">Google is fixing its troubling burger emoji in Android 8.1</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_2.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">How Meditation Can Transform Your Business</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_3.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">June in Africa: Taxi wars, smarter cities and increased investments</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_4.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">PUBG Desert Map Finally Revealed, Here Are All The Details</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                        </ul>
+                    </div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                    <div class="tabs__content-pane" id="tab-latest">
+                        <ul class="post-list-small">
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_2.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">How Meditation Can Transform Your Business</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_1.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">Google is fixing its troubling burger emoji in Android 8.1</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_3.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">June in Africa: Taxi wars, smarter cities and increased investments</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_4.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">PUBG Desert Map Finally Revealed, Here Are All The Details</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                        </ul>
+                    </div>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                    <div class="tabs__content-pane" id="tab-comments">
+                        <ul class="post-list-small">
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_3.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">June in Africa: Taxi wars, smarter cities and increased investments</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_1.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">Google is fixing its troubling burger emoji in Android 8.1</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_2.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">How Meditation Can Transform Your Business</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_4.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">PUBG Desert Map Finally Revealed, Here Are All The Details</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div> <!-- end tab content -->
+            </div> <!-- end tabs -->
+        </div> <!-- end widget popular/latest posts -->
+
+        <!-- 广告 -->
+        <div class="widget widget_media_image">
+            <a href="#">
+                <img src="static/assets/img/blog/placeholder_300.jpg" alt="">
+            </a>
+        </div>
+
+        <!-- 关注作者 -->
+        <div class="widget widget-socials">
+            <h4 class="widget-title">关注作者</h4>
+            <div class="socials">
+                <a class="social social-facebook social--large" href="#" title="facebook" target="_blank" aria-label="facebook">
+                    <i class="ui-facebook"></i>
+                </a><!--
+              --><a class="social social-twitter social--large" href="#" title="twitter" target="_blank" aria-label="twitter">
+                    <i class="ui-twitter"></i>
+                </a><!--
+              --><a class="social social-google-plus social--large" href="#" title="google" target="_blank" aria-label="google">
+                    <i class="ui-google"></i>
+                </a><!--
+              --><a class="social social-instagram social--large" href="#" title="instagram" target="_blank" aria-label="instagram">
+                    <i class="ui-instagram"></i>
+                </a><!--
+              --><a class="social social-youtube social--large" href="#" title="youtube" target="_blank" aria-label="youtube">
+                    <i class="ui-youtube"></i>
+                </a><!--
+              --><a class="social social-rss social--large" href="#" title="rss" target="_blank" aria-label="rss">
+                    <i class="ui-rss"></i>
+                </a>
             </div>
         </div>
 
-    </div>
+        <!-- 热门话题 -->
+        <div class="widget widget-gallery-sm">
+            <h4 class="widget-title text-left">热门话题</h4>
+            <ul class="widget-gallery-sm__list">
+                <li class="widget-gallery-sm__item">
+                    <a href="#"><img src="static/assets/img/blog/placeholder_125.jpg" alt=""></a>
+                </li>
+                <li class="widget-gallery-sm__item">
+                    <a href="#"><img src="static/assets/img/blog/placeholder_125.jpg" alt=""></a>
+                </li>
+                <li class="widget-gallery-sm__item">
+                    <a href="#"><img src="static/assets/img/blog/placeholder_125.jpg" alt=""></a>
+                </li>
+                <li class="widget-gallery-sm__item">
+                    <a href="#"><img src="static/assets/img/blog/placeholder_125.jpg" alt=""></a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 轮播图 -->
+        <div class="widget">
+            <div id="owl-single" class="owl-carousel owl-theme">
+
+                <article class="entry">
+                    <div class="entry__img-holder mb-0">
+                        <a href="single-post.html">
+                            <div class="thumb-bg-holder">
+                                <img data-src="static/assets/img/blog/featured_post_img_1.jpg" src="static/assets/img/blog/featured_post_img_1.jpg" class="entry__img owl-lazy" alt="">
+                                <div class="bottom-gradient"></div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="thumb-text-holder">
+                        <h2 class="thumb-entry-title thumb-entry-title--sm">
+                            <a href="single-post.html">Myanmar little monk reading book outside monastery</a>
+                        </h2>
+                    </div>
+                </article>
+
+                <article class="entry">
+                    <div class="entry__img-holder mb-0">
+                        <a href="single-post.html">
+                            <div class="thumb-bg-holder">
+                                <img data-src="static/assets/img/blog/featured_post_img_2.jpg" src="static/assets/img/blog/featured_post_img_2.jpg" class="entry__img owl-lazy" alt="">
+                                <div class="bottom-gradient"></div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="thumb-text-holder">
+                        <h2 class="thumb-entry-title thumb-entry-title--sm">
+                            <a href="single-post.html">Spectacular display of northern lights illuminates sky</a>
+                        </h2>
+                    </div>
+                </article>
+
+
+            </div>
+        </div>
+
+        <!-- 最新评论 -->
+        <div class="widget widget-reviews">
+            <h4 class="widget-title">最新评论</h4>
+            <ul class="post-list-small">
+                <li class="post-list-small__item">
+                    <article class="post-list-small__entry clearfix">
+                        <div class="post-list-small__img-holder">
+                            <div class="thumb-container thumb-75">
+                                <a href="single-post.html">
+                                    <img data-src="static/assets/img/blog/review_post_1.jpg" src="static/assets/img/blog/review_post_1.jpg" alt="" class=" lazyload">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="post-list-small__body">
+                            <h3 class="post-list-small__entry-title">
+                                <a href="single-post.html">My First Impressions of iPhone X</a>
+                            </h3>
+                            <ul class="entry__meta">
+                                <li class="entry__meta-rating">
+                                    <i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star-outline"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </li>
+                <li class="post-list-small__item">
+                    <article class="post-list-small__entry clearfix">
+                        <div class="post-list-small__img-holder">
+                            <div class="thumb-container thumb-75">
+                                <a href="single-post.html">
+                                    <img data-src="static/assets/img/blog/review_post_2.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="post-list-small__body">
+                            <h3 class="post-list-small__entry-title">
+                                <a href="single-post.html">The Best Laptops for Kids</a>
+                            </h3>
+                            <ul class="entry__meta">
+                                <li class="entry__meta-rating">
+                                    <i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star-outline"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </li>
+                <li class="post-list-small__item">
+                    <article class="post-list-small__entry clearfix">
+                        <div class="post-list-small__img-holder">
+                            <div class="thumb-container thumb-75">
+                                <a href="single-post.html">
+                                    <img data-src="static/assets/img/blog/review_post_3.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="post-list-small__body">
+                            <h3 class="post-list-small__entry-title">
+                                <a href="single-post.html">PS4 Joypads Pre-Orders Start Friday in NYC</a>
+                            </h3>
+                            <ul class="entry__meta">
+                                <li class="entry__meta-rating">
+                                    <i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star-outline"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </li>
+                <li class="post-list-small__item">
+                    <article class="post-list-small__entry clearfix">
+                        <div class="post-list-small__img-holder">
+                            <div class="thumb-container thumb-75">
+                                <a href="single-post.html">
+                                    <img data-src="static/assets/img/blog/review_post_4.jpg" src="static/assets/img/empty.png" alt="" class=" lazyload">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="post-list-small__body">
+                            <h3 class="post-list-small__entry-title">
+                                <a href="single-post.html">Hands on: Parrot AR Drone 2.0 review</a>
+                            </h3>
+                            <ul class="entry__meta">
+                                <li class="entry__meta-rating">
+                                    <i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star"></i><!--
+                        --><i class="ui-star-outline"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 标签 -->
+        <div class="widget widget_tag_cloud">
+            <h4 class="widget-title">标签</h4>
+            <div class="tagcloud">
+                <a href="#">Magazine</a>
+                <a href="#">Creative</a>
+                <a href="#">Responsive</a>
+                <a href="#">Modern</a>
+                <a href="#">Tech</a>
+                <a href="#">WordPress</a>
+                <a href="#">Website</a>
+                <a href="#">News</a>
+            </div>
+        </div>
+
+    </aside> <!-- end sidebar -->
 </div>
+<!-- end content -->
+
+

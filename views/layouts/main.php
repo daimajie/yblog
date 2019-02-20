@@ -1,79 +1,424 @@
 <?php
-
-/* @var $this \yii\web\View */
-/* @var $content string */
-
-use app\widgets\Alert;
+use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
+use app\assets\MainAsset;
+use app\components\Helper;
 
-AppAsset::register($this);
+MainAsset::register($this);
+
+/*variables*/
+$isGuest = Yii::$app->user->isGuest;
+if(!$isGuest){
+    $user = Yii::$app->user->identity;
+    $avatar = $user->image;
+    $username = empty($user->nickname) ? $user->username : $user->nickname;
+}
+
+
 ?>
+
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+
+<body class="bg-light">
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
-    ?>
-
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+<!-- Preloader -->
+<div class="loader-mask">
+    <div class="loader">
+        <div></div>
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+<!-- Bg Overlay -->
+<div class="content-overlay"></div>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+<!-- Sidenav -->
+<header class="sidenav" id="sidenav">
+
+    <!-- close -->
+    <div class="sidenav__close">
+        <button class="sidenav__close-button" id="sidenav__close-button" aria-label="close sidenav">
+            <i class="ui-close sidenav__close-icon"></i>
+        </button>
     </div>
-</footer>
+
+    <!-- Nav -->
+    <nav class="sidenav__menu-container">
+
+        <?php if(!$isGuest):?>
+        <!-- user-info -->
+        <div class="media user-info">
+            <div class="media-left">
+                <a href="javascript:void(0);">
+                    <img class="media-object" src="<?= Helper::avatar($avatar)?>">
+                </a>
+            </div>
+            <div class="media-body user-body">
+                <ul class="sidenav__menu" role="menubar">
+                    <li>
+                        <a href="JavaScript:void(0);" class="sidenav__menu-link user-name"><?= $username?></a>
+                        <button class="sidenav__menu-toggle user-action" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                        <ul class="sidenav__menu-dropdown user-nav">
+                            <li><a href="<?= Url::to(['member/center'])?>" class="sidenav__menu-link">个人中心</a></li>
+                            <li><a href="<?= Url::to(['member/write'])?>" class="sidenav__menu-link">写文章</a></li>
+                            <li><a href="<?= Url::to(['admin/index'])?>" class="sidenav__menu-link">控制台</a></li>
+                            <li><a href="<?= Url::to(['index/logout'])?>" class="sidenav__menu-link">退出</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <?php else:?>
+        <div class="user-info">
+          <a href="<?= Url::to(['index/login'])?>" class="btn btn-sm btn-light">
+            <span>登录</span>
+          </a>
+          <a href="<?= Url::to(['index/logout'])?>" class="btn btn-sm btn-light">
+            <span>注册</span>
+          </a>
+        </div>
+        <?php endif?>
+
+        <ul class="sidenav__menu clearfix" role="menubar">
+            <!-- Categories -->
+            <li>
+                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--orange">World</a>
+            </li>
+            <li>
+                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--blue">Business</a>
+            </li>
+            <li>
+                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--red">Politics</a>
+            </li>
+            <li>
+                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--salad">Lifestyle</a>
+            </li>
+            <li>
+                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--purple">Tech</a>
+            </li>
+            <li>
+                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--yellow">Fashion</a>
+            </li>
+            <li>
+                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--light-blue">Sport</a>
+            </li>
+            <li>
+                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--violet">Science</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="socials sidenav__socials">
+        <a class="social social-facebook" href="#" target="_blank" aria-label="facebook">
+            <i class="ui-facebook"></i>
+        </a>
+        <a class="social social-twitter" href="#" target="_blank" aria-label="twitter">
+            <i class="ui-twitter"></i>
+        </a>
+        <a class="social social-google-plus" href="#" target="_blank" aria-label="google">
+            <i class="ui-google"></i>
+        </a>
+        <a class="social social-youtube" href="#" target="_blank" aria-label="youtube">
+            <i class="ui-youtube"></i>
+        </a>
+        <a class="social social-instagram" href="#" target="_blank" aria-label="instagram">
+            <i class="ui-instagram"></i>
+        </a>
+    </div>
+</header> <!-- end sidenav -->
+
+<main class="main oh" id="main">
+
+    <!-- Navigation -->
+    <header class="nav">
+
+        <div class="nav__holder nav--sticky">
+            <div class="container relative">
+                <div class="flex-parent">
+
+                    <!-- Side Menu Button -->
+                    <button class="nav-icon-toggle" id="nav-icon-toggle" aria-label="Open side menu">
+                      <span class="nav-icon-toggle__box">
+                        <span class="nav-icon-toggle__inner"></span>
+                      </span>
+                    </button> <!-- end Side menu button -->
+
+                    <!-- Mobile logo -->
+                    <a href="index.html" class="logo logo--mobile d-lg-none">
+                        <img class="logo__img" src="static/assets/img/logo_mobile.png" srcset="static/assets/img/logo_mobile.png 1x, static/assets/img/logo_mobile@2x.png 2x" alt="logo">
+                    </a>
+
+                    <!-- Nav-wrap -->
+                    <nav class="flex-child nav__wrap d-none d-lg-block">
+                        <ul class="nav__menu">
+
+                            <li class="active">
+                                <a href="index.html">Home</a>
+                            </li>
+
+                            <li class="nav__dropdown">
+                                <a href="#">Posts</a>
+                                <ul class="nav__dropdown-menu">
+                                    <li><a href="single-post-gallery.html">Gallery Post</a></li>
+                                    <li><a href="single-post.html">Video Post</a></li>
+                                    <li><a href="single-post.html">Audio Post</a></li>
+                                    <li><a href="single-post-quote.html">Quote Post</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav__dropdown">
+                                <a href="#">Pages</a>
+                                <ul class="nav__dropdown-menu">
+                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="search-results.html">Search Results</a></li>
+                                    <li><a href="categories.html">Categories</a></li>
+                                    <li><a href="404.html">404</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav__dropdown">
+                                <a href="#">Features</a>
+                                <ul class="nav__dropdown-menu">
+                                    <li><a href="lazyload.html">Lazy Load</a></li>
+                                    <li><a href="shortcodes.html">Shortcodes</a></li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a href="#">Purchase</a>
+                            </li>
+
+
+                        </ul> <!-- end menu -->
+                    </nav> <!-- end nav-wrap -->
+
+                    <!-- Nav Right -->
+                    <div class="nav__right nav--align-right d-lg-flex">
+
+                        <!-- Socials
+                        <div class="nav__right-item socials nav__socials d-none d-lg-flex">
+                          <a class="social social-facebook social--nobase" href="#" target="_blank" aria-label="facebook">
+                            <i class="ui-facebook"></i>
+                          </a>
+                          <a class="social social-twitter social--nobase" href="#" target="_blank" aria-label="twitter">
+                            <i class="ui-twitter"></i>
+                          </a>
+                          <a class="social social-google social--nobase" href="#" target="_blank" aria-label="google">
+                            <i class="ui-google"></i>
+                          </a>
+                          <a class="social social-youtube social--nobase" href="#" target="_blank" aria-label="youtube">
+                            <i class="ui-youtube"></i>
+                          </a>
+                          <a class="social social-instagram social--nobase" href="#" target="_blank" aria-label="instagram">
+                            <i class="ui-instagram"></i>
+                          </a>
+                        </div>
+                        -->
+                        <!-- Search -->
+                        <div class="nav__right-item nav__search">
+                            <a href="#" class="nav__search-trigger" id="nav__search-trigger">
+                                <i class="ui-search nav__search-trigger-icon"></i>
+                            </a>
+                            <div class="nav__search-box" id="nav__search-box">
+                                <form class="nav__search-form">
+                                    <input type="text" placeholder="搜索文章" class="nav__search-input">
+                                    <button type="submit" class="search-button btn btn-lg btn-color btn-button">
+                                        <i class="ui-search nav__search-icon"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div> <!-- end nav right -->
+
+                </div> <!-- end flex-parent -->
+            </div> <!-- end container -->
+
+        </div>
+    </header> <!-- end navigation -->
+
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="flex-parent align-items-center">
+
+                <!-- Logo -->
+                <a href="index.html" class="logo d-none d-lg-block">
+                    <img class="logo__img" src="static/assets/img/logo.png" srcset="static/assets/img/logo.png 1x, static/assets/img/logo@2x.png 2x" alt="logo">
+                </a>
+
+                <!-- Ad Banner 728 -->
+                <div class="text-center">
+                    <a href="#">
+                        <img src="static/assets/img/blog/placeholder_leaderboard.jpg" alt="">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- end header -->
+
+
+    <div class="main-container container mt-40" id="main-container">
+
+        <!-- Content -->
+        <?= $content ?>
+        <!-- end content -->
+
+    </div>
+    <!-- end main container -->
+
+    <!-- Footer -->
+    <footer class="footer footer--dark">
+        <div class="container">
+            <div class="footer__widgets">
+                <div class="row">
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widget">
+                            <a href="index.html">
+                                <img src="img/logo_mobile.png" srcset="img/logo_mobile.png 1x, img/logo_mobile@2x.png 2x" class="logo__img" alt="">
+                            </a>
+                            <p class="mt-20">We bring you the best Premium WordPress Themes. Deliver smart websites faster with this amazing theme. We care about our buyers.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <h4 class="widget-title">最新回复文章</h4>
+                        <ul class="post-list-small">
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_1.jpg" src="static/assets/img/empty.png" alt="" class="lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">Google is fixing its troubling burger emoji in Android 8.1</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                            <li class="post-list-small__item">
+                                <article class="post-list-small__entry clearfix">
+                                    <div class="post-list-small__img-holder">
+                                        <div class="thumb-container thumb-75">
+                                            <a href="single-post.html">
+                                                <img data-src="static/assets/img/blog/popular_post_2.jpg" src="static/assets/img/empty.png" alt="" class="lazyload">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="post-list-small__body">
+                                        <h3 class="post-list-small__entry-title">
+                                            <a href="single-post.html">How Meditation Can Transform Your Business</a>
+                                        </h3>
+                                        <ul class="entry__meta">
+                                            <li class="entry__meta-date">
+                                                <i class="ui-date"></i>
+                                                21 October, 2017
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </article>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widget widget__newsletter">
+                            <h4 class="widget-title">关注我</h4>
+
+                            <div class="socials mb-20">
+                                <a href="#" class="social social-facebook" aria-label="facebook"><i class="ui-facebook"></i></a>
+                                <a href="#" class="social social-twitter" aria-label="twitter"><i class="ui-twitter"></i></a>
+                                <a href="#" class="social social-google-plus" aria-label="google+"><i class="ui-google"></i></a>
+                                <a href="#" class="social social-youtube" aria-label="youtube"><i class="ui-youtube"></i></a>
+                                <a href="#" class="social social-instagram" aria-label="instagram"><i class="ui-instagram"></i></a>
+                            </div>
+
+                            <form class="mc4wp-form" method="post">
+                                <div class="mc4wp-form-fields">
+                                    <p>
+                                        <input type="email" name="EMAIL" placeholder="你的邮箱" required="">
+                                    </p>
+                                    <p>
+                                        <input type="submit" class="btn btn-lg btn-color" value="订阅">
+                                    </p>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widget widget_nav_menu">
+                            <h4 class="widget-title">站点链接</h4>
+                            <ul>
+                                <li><a href="about.html">关于我</a></li>
+                                <li><a href="contact.html">联系我</a></li>
+                                <li><a href="categories.html">首页</a></li>
+                                <li><a href="shortcodes.html">全部话题</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div> <!-- end container -->
+
+        <div class="footer__bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7 order-lg-2 text-right text-md-center">
+                        <div class="widget widget_nav_menu">
+                            <ul>
+                                <li><a href="#">Terms</a></li>
+                                <li><a href="#">Privacy</a></li>
+                                <li><a href="#">Advertise</a></li>
+                                <li><a href="#">Affiliates</a></li>
+                                <li><a href="#">Newsletter</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 order-lg-1 text-md-center">
+              <span class="copyright">
+                &copy; 2018 | <a href="https://github.com/daimajie/yblog">y-blog</a>
+              </span>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- end bottom footer -->
+    </footer> <!-- end footer -->
+
+    <div id="back-to-top">
+        <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>
+    </div>
+
+</main> <!-- end main-wrapper -->
+
 
 <?php $this->endBody() ?>
 </body>

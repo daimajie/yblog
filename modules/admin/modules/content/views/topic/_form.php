@@ -21,8 +21,8 @@ use app\widgets\upload\Upload;
         <?= $form->field($model, 'image')->widget(Upload::class,[
             'info' => '请选择一张图片作为话题封面.<br/>(推荐尺寸 390 * 293)',
             'thumb' => [
-                'width' => 390,
-                'height' => 293
+                'width' => 270,
+                'height' => 203
             ]
         ]) ?>
 

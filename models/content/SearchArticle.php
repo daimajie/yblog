@@ -41,7 +41,7 @@ class SearchArticle extends Article
      */
     public function search($params)
     {
-        $query = Article::find()->with(['topic'/*, 'user'*/]);
+        $query = Article::find()->with(['topic', 'user']);
 
         // add conditions that should always apply here
 

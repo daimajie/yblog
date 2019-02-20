@@ -5,6 +5,7 @@ namespace app\models\content;
 use app\components\events\ArticlePutEvent;
 use app\components\Helper;
 use app\models\member\User;
+use http\Exception\InvalidArgumentException;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -14,6 +15,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\VarDumper;
+use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -301,7 +303,13 @@ class Article extends ArticleForm
      * 关联话题
      */
     public function getTopic(){
-        return $this->hasOne(Topic::class, ['id' => 'topic_id']);
+        return $this->hasOne(Topic::class, ['id' => 'topic_id'])
+            ->select(['id','name','status','check','secrecy']);
+    }
+
+    public function getUser(){
+        return $this->hasOne(User::class, ['id'=>'user_id'])
+            ->select(['id','username','nickname', 'image']);
     }
 
     /**
@@ -748,6 +756,51 @@ class Article extends ArticleForm
 
 
 
+    /*home*/
+    /**
+     * 获取制定文章模型
+     * @param $id
+     * @return Article|array|ActiveRecord|null
+     */
+    public static function singleArticle($id){
 
+        return self::find()->with(['topic','user','tags','content'])
+            ->where([
+                'id' => $id
+            ])
+            ->asArray()
+            ->one();
+    }
+
+    /**
+     * 获取查询生成器
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getArticleQuery(){
+        return self::find()
+            ->where([
+                'status' => self::STATUS_NORMAL,
+                'check'  => self::CHECK_ADOPT,
+            ]);
+    }
+
+    /**
+     * 上一页下一页
+     */
+    public static function getPrevNext($article_id){
+        $prev = static::getArticleQuery()
+            ->orderBy(['created_at'=>SORT_ASC])
+            ->where(['>', 'id', $article_id])
+            ->select(['id','title'])
+            ->asArray()
+            ->one();
+        $next = static::getArticleQuery()
+            ->orderBy(['created_at'=>SORT_DESC])
+            ->Where(['<', 'id', $article_id])
+            ->select(['id', 'title'])
+            ->asArray()
+            ->one();
+        return ['prev' => $prev, 'next' => $next];
+    }
 
 }

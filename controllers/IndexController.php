@@ -67,15 +67,7 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        //Yii::$app->user->logout();die; 退出不了
-        var_dump(Yii::$app->user->isGuest);die;
-        /*$ret = Yii::$app->mailer->compose()
-            ->setFrom('daimajie@qq.com')
-            ->setTo('git1314@163.com')
-            ->setSubject('Message subject')
-            ->setTextBody('Plain text content')
-            ->send();
-        var_dump($ret);die;*/
+
         return $this->render('index');
     }
 

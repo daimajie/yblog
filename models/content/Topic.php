@@ -3,10 +3,14 @@
 namespace app\models\content;
 
 use app\components\Helper;
+use app\models\member\User;
 use Yii;
 use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
+use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "{{%topic}}".
@@ -25,9 +29,18 @@ use yii\behaviors\BlameableBehavior;
  */
 class Topic extends \yii\db\ActiveRecord
 {
-    const STATUS_NORMAL  =  1; //正常使用
+    const STATUS_NORMAL  =  1; //连载
     const STATUS_FINISH  =  2; //完结
     const STATUS_RECYCLE =  3; //删除
+
+    //审核状态
+    const CHECK_WAIT = 1;
+    const CHECK_ADOPT = 2;
+    const CHECK_DENIAL = 3;
+
+    //公开状态
+    const SECR_PRIVATE = '1';
+    const SECR_PUBLIC = '2';
 
     const SCENARIO_STATUS = 'status';
 
@@ -179,6 +192,23 @@ class Topic extends \yii\db\ActiveRecord
             ->select(['id','name','user_id']);
 
     }
+
+    /**
+     * 关联用户
+     */
+    public function getUser(){
+        return $this->hasOne(User::class, ['id'=>'user_id'])
+            ->select(['id','username', 'nickname']);
+
+    }
+
+    /**
+     * 关联文章
+     */
+    public function getArticles(){
+        return $this->hasMany(Article::class, ['topic_id'=>'id']);
+    }
+
     /**
      * 创建话题
      * @return bool
@@ -278,7 +308,36 @@ class Topic extends \yii\db\ActiveRecord
     }
 
 
+    /*home*/
+    //根据话题id获取话题简要信息 id 名称 描述
+    public static function findOneOfSimple($id){
+        return self::find()
+            ->select(['id','name','desc'])
+            ->where(['id'=>$id])
+            ->one();
+    }
 
+    //根据话题id获取文章列表数据 及 分页
+    public static function getArticlesByTopic($id){
+        $query = Article::find()
+            ->where(['topic_id' => $id])
+            ->with(['topic','user']);
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                    'id' => SORT_DESC,
+                ]
+            ],
+        ]);
+
+        return $provider;
+    }
 
 
 }

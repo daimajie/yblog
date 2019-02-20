@@ -11,10 +11,22 @@ namespace app\components;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\helpers\FileHelper;
+use yii\helpers\Html;
 
 
 class Helper
 {
+
+    /**
+     * 显示用户头像
+     */
+    public static function avatar($img){
+        if(empty($img))
+            return Yii::$app->params['user_properties']['defaultAvatar'];
+
+        return $img;
+    }
+
     /**
      * #生成上传路径及随机文件名
      * @param $subDir string #分类目录

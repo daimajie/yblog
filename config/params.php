@@ -25,7 +25,12 @@ return [
     'email_key' => 'email_key',
 
     //密码重置token有效时间
-    'passwordResetTokenExpire' => 60 * 30
+    'passwordResetTokenExpire' => 60 * 30,
+
+    //用户配置
+    'user_properties' => [
+        'defaultAvatar' => '/static/assets/img/avatar.jpg',
+    ]
 
 
 ];

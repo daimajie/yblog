@@ -40,13 +40,16 @@ class SearchTopic extends Topic
      */
     public function search($params)
     {
-        $query = Topic::find()->with(['category'/*,'user'*/]);
+        $query = Topic::find()->with(['category','user']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
+            'pagination' => [
+                //'pageSize' => 1,
+            ],
         ]);
 
         $this->load($params);
