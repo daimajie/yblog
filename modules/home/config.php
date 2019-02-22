@@ -13,6 +13,10 @@ return [
         'content' => [
             'class' => 'app\modules\home\modules\content\Module',
         ],
+        //活动记录
+        'motion' => [
+            'class' => 'app\modules\home\modules\motion\Module',
+        ],
 
     ],
     'components' => [

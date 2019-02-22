@@ -17,6 +17,10 @@ return [
         'member' => [
             'class' => 'app\modules\admin\modules\member\Module',
         ],
+        //用户管理
+        'motion' => [
+            'class' => 'app\modules\admin\modules\motion\Module',
+        ],
     ],
     'components' => [
 

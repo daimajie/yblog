@@ -9,8 +9,6 @@ use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\data\ActiveDataProvider;
-use yii\data\Pagination;
-use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "{{%topic}}".

@@ -37,7 +37,16 @@ class MainAsset extends AssetBundle
 
     ];
     public $depends = [
-        'yii\web\YiiAsset',
+        //'yii\web\YiiAsset',
         //'yii\bootstrap\BootstrapAsset',
     ];
+
+    //定义按需加载JS方法
+    public static function addScript($view, $jsfile) {
+        $view->registerJsFile($jsfile, ['depends' => static::class]);
+    }
+    //定义按需加载css方法
+    public static function addCss($view, $cssfile) {
+        $view->registerCssFile($cssfile, ['depends' => static::class]);
+    }
 }
