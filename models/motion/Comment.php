@@ -5,6 +5,7 @@ namespace app\models\motion;
 use app\models\content\Article;
 use app\models\member\User;
 use Yii;
+use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\data\Pagination;
@@ -38,6 +39,63 @@ class Comment extends \yii\db\ActiveRecord
             ]
         ];
     }
+
+
+
+    /**
+     * 定义事务操作 (在插入 删除时开启事务)
+     * @return array
+     */
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL
+        ];
+    }
+
+    //文章评论数维护
+    //新增评论 加一
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        //如果是新增评论 计数
+        if($insert){
+            $this->commentCounter(1);
+        }
+    }
+
+    //删除评论加一
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        //判断是否拥有回复数据
+        $count = 1;
+        if($this->parent_id == 0){
+            $affect = self::deleteAll(['parent_id' => $this->id]);
+            if($affect === false){
+                throw new Exception('删除评论的回复失败，请重试。');
+            }
+            $count += $affect;
+        }
+
+
+        $this->commentCounter( -$count );
+
+    }
+
+    //递增递减方法
+    private function commentCounter($count){
+        try{
+            Article::updateAllCounters(['comment'=>$count],['id'=>$this->article_id]);
+        }catch (Exception $e){
+            //记录日志
+            Yii::error($e->getMessage(), __CLASS__);
+        }
+    }
+
+
     /**
      * {@inheritdoc}
      */
@@ -93,11 +151,10 @@ class Comment extends \yii\db\ActiveRecord
      */
     public static function getComments($article_id, $page, $limit){
 
-        $query = self::find()
-            ->where(['article_id' => $article_id])
-            ->andWhere(['parent_id'  => 0]);
+        $query = self::find()->where(['article_id' => $article_id]);
+        $number = $query->count();
 
-        $count = $query->count();
+        $count = $query->andWhere(['parent_id'  => 0])->count();
         $pagination = new Pagination(['totalCount' => $count]);
         $pagination->pageParam = 'page';
         $pagination->pageSizeParam = 'limit';
@@ -118,7 +175,7 @@ class Comment extends \yii\db\ActiveRecord
         static::processData($comments);
 
         return [
-            'count' => $count,
+            'count' => $number,
             'comments' => $comments ? $comments : null,
             'pagination' => static::getPager($pagination),
         ];

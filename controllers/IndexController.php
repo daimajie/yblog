@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\EmailService;
+use app\components\Helper;
 use app\models\member\ForgetForm;
 use Yii;
 use yii\base\Exception;
@@ -16,6 +17,8 @@ use app\models\member\ContactForm;
 
 class IndexController extends Controller
 {
+    const EMAIL_LIMIT_KEY = 'email_limit';
+
     /**
      * {@inheritdoc}
      */
@@ -203,8 +206,8 @@ class IndexController extends Controller
             if( !filter_var($email, FILTER_VALIDATE_EMAIL) )
                 throw new Exception('邮箱地址错误.');
 
-            //邮件限速 5分钟内只能发送1条
-            if( !EmailService::sendLimit(3, 300) ){
+            //邮件限速 5分钟内只能发送3条
+            if( !Helper::setLimit(self::EMAIL_LIMIT_KEY, 3, 300) ){
                 throw new Exception('发送邮件太多，休息一下吧。');
             }
 

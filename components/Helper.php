@@ -158,4 +158,39 @@ class Helper
         }
         return $result;
     }
+
+    /**
+     * 限速功能
+     * @param string $key session 键
+     * @param int $num 单位时间内发送条数
+     * @param int $term 单位时间
+     * @return bool
+     */
+    public static function setLimit($key, $num = 5, $term = 900){
+        $session = Yii::$app->getSession();
+        if( !$session->has($key) ){
+            $arr = [
+                'start' => time(),
+                'count' => 0,
+                'term' => $term
+            ];
+            $session->set($key, $arr);
+        }
+
+        $data = $session[$key];
+
+        //判断在一定时间内是否超过限制
+        if($data['count'] >= $num && ( time() - $data['start'] ) < $data['term']){
+            return false;
+        }
+
+        //重新记录
+        if( $data['count'] >= $num ){
+            $data['start'] = time();
+            $data['count'] = 0;
+        }
+        $data['count']++; //发送一次递增一次
+        $session[$key] = $data;//保存回session
+        return true;
+    }
 }

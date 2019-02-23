@@ -51,7 +51,7 @@ MainAsset::addScript($this,'/static/libs/art-template/template-web.js');
     {{if comments}}
     <ul class="comment-list">
         {{each comments $val $key}}
-        <li class="comment">
+        <li class="comment parent-comment" data-parent-id="{{@ $val.id}}">
             <div class="comment-body">
                 <div class="comment-avatar">
                     <img width="50" height="50" src="{{@ $val.user.image}}">
@@ -62,7 +62,7 @@ MainAsset::addScript($this,'/static/libs/art-template/template-web.js');
                         <a href="javascript:void(0);" class="comment-date">{{@ $val.created_at}}</a>
                     </div>
                     <p>{{@ $val.content}}</p>
-                    <a data-id="{{@ $val.id}}" href="javascript:void(0);" class="comment-reply reply"><small>回复</small></a>
+                    <a href="javascript:void(0);" class="comment-reply reply"><small>回复</small></a>
                     {{if $val.owner}}
                     <a data-id="{{@ $val.id}}" href="javascript:void(0);" class="comment-reply delete"><small>删除</small></a>
                     {{/if}}
@@ -82,7 +82,7 @@ MainAsset::addScript($this,'/static/libs/art-template/template-web.js');
                                 <a href="#" class="comment-date">{{@ $v.created_at}}</a>
                             </div>
                             <p>{{@ $v.content}}</p>
-                            <a data-id="{{@ $val.id}}" href="javascript:void(0);" class="comment-reply reply"><small>回复</small></a>
+                            <a href="javascript:void(0);" class="comment-reply reply"><small>回复</small></a>
                             {{if $v.owner}}
                             <a data-id="{{@ $v.id}}" href="javascript:void(0);" class="comment-reply delete"><small>删除</small></a>
                             {{/if}}
@@ -97,13 +97,13 @@ MainAsset::addScript($this,'/static/libs/art-template/template-web.js');
     </ul>
     {{@ pagination}}
     {{else}}
-        暂无评论，快来点评一下吧。
+        <div class="text-center">暂无评论，快来点评一下吧。</div>
     {{/if}}
 </script>
 
 <script id="input_tpl" type="text/html">
-<div class="search-form">
-    <input type="text" placeholder="恢复当前用户..." class="search-input reply-input">
+<div class="search-form reply-form">
+    <input type="text" placeholder="回复当前用户..." class="search-input reply-input">
     <button type="submit" class="search-button btn btn-lg btn-color btn-button reply-btn">
         <i class="ui-success search-icon"></i>
     </button>
@@ -115,12 +115,14 @@ MainAsset::addScript($this,'/static/libs/art-template/template-web.js');
 $commitPath = Url::to(['/home/motion/comment/create']);
 $fetchPath = Url::to(['/home/motion/comment/fetch']);
 $replyPath = Url::to(['/home/motion/comment/reply']);
+$deletePath = Url::to(['/home/motion/comment/delete']);
 $js = <<<SCRIPT
     //提交评论操作
     var comment = {
         //请求地址
         commitPath : '',
         fetchPath : '',
+        firstPagerPath : '',
         replyPath : '',
         
         //query对象
@@ -133,11 +135,15 @@ $js = <<<SCRIPT
         article_id : '',
     
     
-        init : function(commitPath, fetchPath, replyPath, container, article_id){
+        init : function(commitPath, fetchPath, replyPath, deletePath, container, article_id){
             //属性初始化
             comment.commitPath = commitPath;
             comment.fetchPath = fetchPath;
+            comment.firstPagerPath = fetchPath;
             comment.replyPath = replyPath;
+            comment.deletePath = deletePath;
+            
+            
             comment.container = $(container),
             comment.input = $(container).find('#comment_input');
             comment.btn = $(container).find('#comment_btn');
@@ -150,7 +156,91 @@ $js = <<<SCRIPT
             //绑定事件
             comment.onCommit();
             
+            //刷新分页
+            comment.pager();
             
+            //显示回复框
+            comment.replyForm();
+            
+            //回复删除事件绑定
+            comment.reply();
+            comment.delete();
+            
+        },
+        
+        
+        //渲染评论列表
+        refresh : function(data){
+            //渲染模板
+            var html = template('comments_tpl',data);
+            $('#comment_list').html(html);
+            
+            //回到评论顶端
+            $(window).scrollTop(comment.list.offset().top - 60);
+            
+        },
+        
+        //回复提交
+        reply : function(){
+            comment.container.on('click', 'button.reply-btn', function(e){
+                if($(this).hasClass('btn-disabled')) return;
+                
+                //禁止重复点击
+                $(this).addClass('btn-disabled');
+            
+                var reply = $(this).closest('.reply-form').find('.reply-input');
+                
+                var parent_id = $(this).closest('.parent-comment').data('parent-id');
+                var content = reply.val();
+                
+                if(content.length <= 0) return;
+                
+                
+                //提交回复
+                comment.commit(parent_id, content, reply, $(this));
+                
+                return false;
+            });
+        },
+        
+        //回复删除
+        delete : function(){
+            comment.container.on('click', 'a.delete', function(e){
+                var id = $(this).data('id');
+                
+                layer.confirm('您确定要删除当前评论吗？', {
+                  btn: ['是的','取消']
+                }, function(){
+                    $.ajax({
+                        url : comment.deletePath,
+                        type : 'POST',
+                        data : {comment_id:id},
+                        success : function(d){
+                            if(d.errcode === 0){
+                                //删除成功 刷新评论
+                                comment.fetch();
+                            }
+                            layer.msg(d.message);
+                        }
+                    });
+                    
+                    layer.close(layer.index);
+                    return false;
+                });
+                
+                
+            });
+        },
+        
+        //回复框显示
+        replyForm : function(){
+            comment.container.on('click', 'a.reply', function(e){
+                //先清空所有输入框
+                comment.container.find('.reply-form').remove();
+                
+                $(this).before(template('input_tpl'));
+                return false;
+            });
         },
         
         //ajax分页
@@ -159,11 +249,8 @@ $js = <<<SCRIPT
                 var href = $(this).attr('href');
                 if(href.length <= 0) return;
                 
-                //回到评论顶端
-                $(window).scrollTop(comment.list.offset().top - 60);
-                
                 //显示loading...
-                comment.list.html('loading...');
+                comment.list.html('<div class="text-center"><b>Loading...</b></div>');
                 
                 //请求数据
                 comment.fetchPath = href;
@@ -176,40 +263,6 @@ $js = <<<SCRIPT
             
         },
         
-        //渲染评论列表
-        refresh : function(data){
-            //渲染模板
-            var html = template('comments_tpl',data);
-            $('#comment_list').html(html);
-            
-            //刷新分页
-            comment.pager();
-            
-            //回复删除事件绑定
-            comment.reply();
-            comment.delete();
-        },
-        
-        //回复
-        reply : function(){
-            comment.container.on('click', 'a.reply', function(e){
-                var parent_id = $(this).data('id');
-                alert(parent_id);
-                
-                
-                return false;
-            });
-        },
-        
-        //删除
-        delete : function(){
-            comment.container.on('click', 'a.delete', function(e){
-                alert('delete');
-                
-                
-                return false;
-            });
-        },
         
         //获取评论列表
         fetch : function(){
@@ -246,32 +299,32 @@ $js = <<<SCRIPT
                 if(content.length <= 0) return;
                 
                 //提交评论
-                comment.commit(comment.article_id, 0, content);
+                comment.commit(0, content, comment.input, comment.btn);
                 
             });
         },
         
         //提交评论
-        commit : function(parent_id, content){
+        commit : function(parent_id, content, oInput, oBtn){
             $.ajax({
                 url  : comment.commitPath,
                 type : 'POST',
                 data : {article_id:comment.article_id, parent_id:parent_id, content:content},
                 success : function(d){
                     if(d.errcode === 0){
-                        //提交成功
-                        /**刷新评论列表**/
-                        console.log('刷新评论');
-                        
                         //清空内容
-                        comment.input.val('');
+                        oInput.val('');
+                        
+                        //提交成功刷新评论列表
+                        comment.fetchPath = comment.firstPagerPath;
+                        comment.fetch();
                     }else{
                         //失败提示
                         layer.msg(d.message);
                     }
                     
                     //可再次提交
-                    comment.btn.removeClass('btn-disabled');
+                    oBtn.removeClass('btn-disabled');
                     return;
                 }
             });
@@ -280,7 +333,7 @@ $js = <<<SCRIPT
     }
     
     //初始化
-    comment.init("{$commitPath}", "{$fetchPath}", "{$replyPath}", '#comment_wrap', "{$model['id']}");
+    comment.init("{$commitPath}", "{$fetchPath}", "{$replyPath}", "{$deletePath}", '#comment_wrap', "{$model['id']}");
 SCRIPT;
 $this->registerJs($js);
 
