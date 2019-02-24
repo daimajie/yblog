@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\EmailService;
 use app\components\Helper;
+use app\modules\home\models\content\SearchArticle;
 use app\models\member\ForgetForm;
 use Yii;
 use yii\base\Exception;
@@ -18,6 +19,7 @@ use app\models\member\ContactForm;
 class IndexController extends Controller
 {
     const EMAIL_LIMIT_KEY = 'email_limit';
+    const SEARCH_LIMIT_KEY = 'search_limit';
 
     /**
      * {@inheritdoc}
@@ -53,6 +55,7 @@ class IndexController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
+
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
@@ -70,8 +73,64 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new SearchArticle();
+        $dataProvider = $searchModel->search([]);
+        return $this->render('index',[
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
-        return $this->render('index');
+    /**
+     * Displays contact page.
+     *
+     * @return Response|string
+     */
+    public function actionContact()
+    {
+        $model = new ContactForm();
+        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+            Yii::$app->session->setFlash('contactFormSubmitted');
+
+            return $this->refresh();
+        }
+        return $this->render('contact', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Displays about page.
+     *
+     * @return string
+     */
+    public function actionAbout()
+    {
+        return $this->render('about');
+    }
+
+    /**
+     * #搜索页
+     * @return string
+     */
+    public function actionSearch(){
+
+        //搜索也要限制频率(5分钟可搜索3次)
+        if( !Helper::setLimit(self::SEARCH_LIMIT_KEY, 3, 300) ){
+            throw new Exception('搜索次数太多了，休息一下吧。');
+        }
+
+        //没有搜索参数就返回到首页
+        $params = Yii::$app->request->queryParams;
+        if(empty($params['title']))
+            return $this->goHome();
+
+        $searchModel = new SearchArticle();
+        $dataProvider = $searchModel->search($params);
+
+        //VarDumper::dump($dataProvider,10,1);die;
+        return $this->render('search', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -239,33 +298,6 @@ class IndexController extends Controller
         }
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 
 
 }

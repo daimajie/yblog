@@ -76,6 +76,7 @@ $params = Yii::$app->request->queryParams;
                     'tag'=>'nav',
                     'class' => 'pagination',
                 ],
+                'maxButtonCount' => 5,
                 'linkOptions' =>[
                     'class' => 'pagination__page'
                 ],

@@ -3,11 +3,9 @@
 namespace app\modules\home\models\content;
 
 use app\models\content\Article;
-use app\models\content\ArticleTag;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use yii\helpers\VarDumper;
 
 
 /**
@@ -22,7 +20,7 @@ class SearchArticle extends Article
     {
         return [
             [['topic_id'], 'integer'],
-            [['title'], 'string'],
+            [['title'], 'string', 'max' => 32],
             [['title'], 'trim']
         ];
     }
@@ -37,30 +35,34 @@ class SearchArticle extends Article
 
     /**
      * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
      */
     public function search($params)
     {
         $query = Article::find()
             ->with(['user'])
             ->where([
-                'check' => self::CHECK_ADOPT,
-                'status' => self::STATUS_NORMAL,
+                'check' => self::CHECK_ADOPT, //审核通过的文章
+                'status' => self::STATUS_NORMAL,//公示文章
             ]);
 
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
+//            'pagination' => ['pageSize'=>1]
         ]);
+
+        //**错误页(只显示最近一个月评论最多的文章)
+        if(isset($params['isError']) && $params['isError']){
+            $query
+                ->andWhere(['>=', 'created_at', strtotime('-30day')])
+                ->orderBy(['comment' => SORT_DESC]);
+            return $dataProvider;
+        }
 
 
         $this->title = !empty($params['title'])?trim($params['title']):'';
-        $this->topic_id = $params['id'];
+        $this->topic_id = !empty($params['id'])?$params['id']:null;
 
         //验证文章标题数据
         if(!$this->validate()){
@@ -85,9 +87,8 @@ class SearchArticle extends Article
 
 
 
-
         //必须是当前话题的文章
-        $query->andWhere(['topic_id' => $this->topic_id]);
+        $query->andFilterWhere(['topic_id' => $this->topic_id]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);
 

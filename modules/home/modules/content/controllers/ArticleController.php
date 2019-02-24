@@ -12,6 +12,7 @@ namespace app\modules\home\modules\content\controllers;
 
 use app\models\content\Article;
 use app\modules\home\controllers\BaseController;
+use yii\web\NotFoundHttpException;
 
 class ArticleController extends BaseController
 {
@@ -37,6 +38,6 @@ class ArticleController extends BaseController
             return $model;
 
         }
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('您请求的页面不存在.');
     }
 }

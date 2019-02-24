@@ -38,6 +38,7 @@ class CommentController extends BaseController
         $searchModel = new SearchComment();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -54,24 +55,6 @@ class CommentController extends BaseController
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
-
-    /*******************************************************************************
-     * Creates a new Comment model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Comment();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
     }
 
     /**
@@ -101,7 +84,12 @@ class CommentController extends BaseController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+
+        //删除(如果是评论 连同回复一起删除)
+        if($this->findModel($id)->delete() === false){
+            Yii::$app->session->setFlash('error', '删除评论失败,请重试。');
+            $this->redirect(['view', 'id' => $id]);
+        }
 
         return $this->redirect(['index']);
     }

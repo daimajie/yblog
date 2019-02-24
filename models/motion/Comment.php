@@ -127,9 +127,9 @@ class Comment extends \yii\db\ActiveRecord
     {
         return [
             'id' => '主键',
-            'content' => '评论内容',
+            'content' => '内容',
             'article_id' => '评论文章',
-            'parent_id' => '回复',
+            'parent_id' => '回复的评论',
             'user_id' => '用户',
             'created_at' => '评论时间',
         ];
@@ -143,6 +143,11 @@ class Comment extends \yii\db\ActiveRecord
     public function getReplys(){
         return $this->hasMany(static::class, ['parent_id'=>'id'])
             ->select(['id', 'article_id', 'parent_id', 'user_id', 'content','created_at']);
+    }
+    //关联评论
+    public function getParent(){
+        return $this->hasOne(static::class, ['id'=>'parent_id'])
+            ->select(['id','content','created_at']);
     }
 
     /**

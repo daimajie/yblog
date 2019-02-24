@@ -151,7 +151,7 @@ $js = <<<SCRIPT
             comment.article_id = article_id;
             
             //显示评论
-            comment.fetch();
+            comment.fetch(false);
             
             //绑定事件
             comment.onCommit();
@@ -170,13 +170,14 @@ $js = <<<SCRIPT
         
         
         //渲染评论列表
-        refresh : function(data){
+        refresh : function(data, toTop){
             //渲染模板
             var html = template('comments_tpl',data);
             $('#comment_list').html(html);
             
             //回到评论顶端
-            $(window).scrollTop(comment.list.offset().top - 60);
+            if(toTop)
+                $(window).scrollTop(comment.list.offset().top - 60);
             
         },
         
@@ -254,7 +255,7 @@ $js = <<<SCRIPT
                 
                 //请求数据
                 comment.fetchPath = href;
-                comment.fetch();
+                comment.fetch(true);
                 
                 
                 e.preventDefault();
@@ -265,7 +266,7 @@ $js = <<<SCRIPT
         
         
         //获取评论列表
-        fetch : function(){
+        fetch : function(toTop){
             $.ajax({
                 url : comment.fetchPath,
                 type : 'GET',
@@ -273,7 +274,7 @@ $js = <<<SCRIPT
                 success : function(d){
                     if(d.errcode === 0){
                         //获取成功 刷新评论列表
-                        comment.refresh(d.data);
+                        comment.refresh(d.data, toTop);
                         return;
                     }
                     console.log(d.message);
@@ -317,7 +318,7 @@ $js = <<<SCRIPT
                         
                         //提交成功刷新评论列表
                         comment.fetchPath = comment.firstPagerPath;
-                        comment.fetch();
+                        comment.fetch(true);
                     }else{
                         //失败提示
                         layer.msg(d.message);

@@ -60,6 +60,9 @@ $title = trim(Yii::$app->request->get('title', ''));
             'dataProvider' => $dataProvider,
             'itemView' => '_article',
             'layout' => "<div class='row mb-30'>{items}</div>{pager}",
+            'viewParams' => [
+                'count' => count($dataProvider->getModels())
+            ],
             'options' => [
                 'tag' => false
             ],
@@ -74,6 +77,7 @@ $title = trim(Yii::$app->request->get('title', ''));
                     'tag'=>'nav',
                     'class' => 'pagination',
                 ],
+                'maxButtonCount' => 5,
                 'linkOptions' =>[
                     'class' => 'pagination__page'
                 ],

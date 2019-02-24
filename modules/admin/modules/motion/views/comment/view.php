@@ -7,16 +7,16 @@ use yii\widgets\DetailView;
 /* @var $model app\models\motion\Comment */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '评论列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="comment-view box box-primary">
     <div class="box-header">
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-flat']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-flat']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger btn-flat',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '您确定要删除该评论吗?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -26,10 +26,28 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
                 'id',
+                [
+                        'attribute' => 'user_id',
+                    'value' => function($model){
+                        return $model->user->username;
+                    }
+                ],
+                [
+                    'attribute' => 'created_at',
+                    'format' => ['date', 'php:Y-m-d']
+                ],
+                [
+                    'attribute' => 'parent_id',
+                    'value' => function($model){
+
+                        if($model->parent_id > 0)
+                            return '(ID-'. $model->parent_id .') 内容- '.$model->parent->content;
+                        else
+                            return '此信息为评论。';
+                    },
+
+                ],
                 'content',
-                'parent_id',
-                'user_id',
-                'created_at:datetime',
             ],
         ]) ?>
     </div>

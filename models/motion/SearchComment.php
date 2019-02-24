@@ -12,14 +12,19 @@ use app\models\motion\Comment;
  */
 class SearchComment extends Comment
 {
+    public $start_time;
+    public $end_time;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'parent_id', 'user_id', 'created_at'], 'integer'],
-            [['content'], 'safe'],
+            /*[['id', 'parent_id', 'user_id', 'created_at'], 'integer'],
+            [['content'], 'safe'],*/
+
+            [['end_time', 'start_time'], 'date', 'format' => 'php:Y-m-d'],
         ];
     }
 
@@ -52,6 +57,7 @@ class SearchComment extends Comment
 
         $this->load($params);
 
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -59,14 +65,10 @@ class SearchComment extends Comment
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'parent_id' => $this->parent_id,
-            'user_id' => $this->user_id,
-            'created_at' => $this->created_at,
-        ]);
-
-        $query->andFilterWhere(['like', 'content', $this->content]);
+        if(!empty($this->start_time) && !empty($this->end_time)){
+            $query->andFilterWhere(['>=', 'created_at', strtotime($this->start_time)]);
+            $query->andFilterWhere(['<=', 'created_at', strtotime($this->end_time)]);
+        }
 
         return $dataProvider;
     }
