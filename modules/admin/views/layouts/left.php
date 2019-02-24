@@ -60,8 +60,6 @@ $username = empty($user->nickname) ? $user->username : $user->nickname;
                         'items' => [
                             ['label' => '会员管理', 'icon' => '', 'url' => ['/admin/member/user'],],
                             ['label' => '评论管理', 'icon' => '', 'url' => ['/admin/motion/comment'],],
-                            ['label' => '留言管理', 'icon' => '', 'url' => ['/admin/motion/contact'],],
-                            ['label' => '用户申请', 'icon' => '', 'url' => ['/admin/motion/apply'],],
                         ],
                     ],
 

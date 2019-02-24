@@ -3,6 +3,7 @@
 namespace app\modules\admin\modules\content\controllers;
 
 use app\components\events\ArticlePutEvent;
+use app\models\content\Category;
 use app\models\content\Tag;
 use app\models\content\Topic;
 use app\widgets\select2\actions\SelectAction;
@@ -75,6 +76,7 @@ class ArticleController extends BaseController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'category' => Category::find()->select(['name'])->indexBy('id')->column()
         ]);
     }
 

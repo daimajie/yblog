@@ -18,7 +18,7 @@ class SearchArticle extends Article
     public function rules()
     {
         return [
-            [['id', 'status', 'check','topic_id', 'user_id'], 'integer'],
+            [['id', 'status', 'check','topic_id', 'user_id', 'category_id'], 'integer'],
             [['status','check'],'in', 'range' => [1,2,3]],
         ];
     }
@@ -68,6 +68,7 @@ class SearchArticle extends Article
             'status' => $this->status,
             'check' => $this->check,
             'topic_id' => $this->topic_id,
+            'category_id' => $this->category_id,
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

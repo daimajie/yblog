@@ -49,7 +49,7 @@ $batchList = include_once('batchOperate.php');
             </div>
         </div>
         <div class="pull-right">
-            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+            <?php echo $this->render('_search', ['model' => $searchModel,'category'=> $category]); ?>
         </div>
     </div>
     <div class="box-body table-responsive no-padding">

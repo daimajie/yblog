@@ -28,6 +28,8 @@ use app\widgets\select2\Select2;
         Article::CHECK_DENIAL => '审核失败',
     ]) ?>
 
+    <?= $form->field($model, 'category_id')->dropDownList($category,['prompt'=>'选择分类']) ?>
+
     <?= $form->field($model, 'topic_id')->widget(Select2::class,[
         //当下拉框改变后触发的js回调函数,参数一个，是选择后的id值
         'width' => '185px'

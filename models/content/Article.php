@@ -5,17 +5,15 @@ namespace app\models\content;
 use app\components\events\ArticlePutEvent;
 use app\components\Helper;
 use app\models\member\User;
-use http\Exception\InvalidArgumentException;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
-use yii\helpers\VarDumper;
-use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -69,7 +67,17 @@ class Article extends ArticleForm
                 'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'user_id',
                 'updatedByAttribute' => null,
-            ]
+            ],
+            [
+                'class' => AttributeBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'category_id',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'category_id',
+                ],
+                'value' => function ($event) {
+                    return Topic::find()->where(['id'=>$this->topic_id])->select(['category_id'])->scalar();
+                },
+            ],
         ];
     }
 
@@ -290,6 +298,7 @@ class Article extends ArticleForm
             'visited' => '访问次数',
             'comment' => '评论数',
             'topic_id' => '所属话题',
+            'category_id' => '所属分类',
             'user_id' => '作者',
             'content_id' => '文章id',
             'created_at' => '创建时间',

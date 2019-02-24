@@ -3,11 +3,11 @@
 use yii\db\Migration;
 
 /**
- * Class m190221_071716_alter_comment_tbl
+ * Class m190224_141423_alter_article_tbl
  */
-class m190221_071716_alter_comment_tbl extends Migration
+class m190224_141423_alter_article_tbl extends Migration
 {
-    const TBL_NAME = '{{%comment}}';
+    const TBL_NAME = '{{%article}}';
     /**
      * {@inheritdoc}
      */
@@ -15,14 +15,14 @@ class m190221_071716_alter_comment_tbl extends Migration
     {
         $this->addColumn(
             self::TBL_NAME,
-            'article_id',
-            $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('评论文章')->after('content')
+            'category_id',
+            $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('文章分类')->after('topic_id')
         );
 
         $this->createIndex(
-            'idx-article_id',
+            'idx-category_id',
             self::TBL_NAME,
-            'article_id'
+            'category_id'
         );
     }
 
@@ -31,7 +31,8 @@ class m190221_071716_alter_comment_tbl extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn(self::TBL_NAME,'article_id');
+        $this->dropColumn(self::TBL_NAME,'category_id');
+
         return true;
     }
 
@@ -44,7 +45,7 @@ class m190221_071716_alter_comment_tbl extends Migration
 
     public function down()
     {
-        echo "m190221_071716_alter_comment_tbl cannot be reverted.\n";
+        echo "m190224_141423_alter_article_tbl cannot be reverted.\n";
 
         return false;
     }
