@@ -1,5 +1,9 @@
 <?php
 use yii\widgets\ListView;
+use yii\helpers\Url;
+
+
+$this->params['isHome'] = true;
 ?>
 <!-- Content -->
 <div class="row">

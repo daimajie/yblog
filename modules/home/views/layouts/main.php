@@ -3,6 +3,10 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use app\assets\MainAsset;
 use app\components\Helper;
+use app\modules\home\controllers\BaseController;
+use yii\widgets\ActiveForm;
+
+
 
 MainAsset::register($this);
 
@@ -13,8 +17,9 @@ if(!$isGuest){
     $avatar = $user->image;
     $username = empty($user->nickname) ? $user->username : $user->nickname;
 }
-
-
+/*基本数据 菜单 SEO 等*/
+$base = $this->params['base'];
+$router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
 ?>
 
 
@@ -92,29 +97,37 @@ if(!$isGuest){
 
         <ul class="sidenav__menu clearfix" role="menubar">
             <!-- Categories -->
+            <?php if(!empty($base[BaseController::CACHE_CATEGORY_LIST])):?>
             <li>
-                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--orange">World</a>
+                <a href="javascript:void(0);" class="sidenav__menu-link">内容分类</a>
+                <button class="sidenav__menu-toggle" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
+                <ul class="sidenav__menu-dropdown">
+                    <?php
+                    if(!empty($this->params['isHome'])){
+                        $router = '';
+                    }else{
+                        $router = '/home/content/topic/index';
+                    }
+                    foreach($base[BaseController::CACHE_CATEGORY_LIST] as $key => $val):
+                        ?>
+                    <li><a href="<?= Url::to([$router, 'category_id'=>$key])?>" class="sidenav__menu-link"><?= $val?></a></li>
+                    <?php endforeach;?>
+                </ul>
+            </li>
+            <?php endif;?>
+
+            <!-- nav -->
+            <li>
+                <a href="<?= Url::to(['/home/index/index'])?>" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--orange"><i class="ui-home"></i> 网站首页</a>
             </li>
             <li>
-                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--blue">Business</a>
+                <a href="<?= Url::to(['/home/content/topic/index'])?>" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--blue"><small>HOT</small> 热门话题</a>
             </li>
             <li>
-                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--red">Politics</a>
+                <a href="<?= Url::to(['/home/index/about'])?>" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--salad"><i class="ui-author"></i> 关于我</a>
             </li>
             <li>
-                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--salad">Lifestyle</a>
-            </li>
-            <li>
-                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--purple">Tech</a>
-            </li>
-            <li>
-                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--yellow">Fashion</a>
-            </li>
-            <li>
-                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--light-blue">Sport</a>
-            </li>
-            <li>
-                <a href="#" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--violet">Science</a>
+                <a href="<?= Url::to(['/home/index/contact'])?>" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--purple"><i class="ui-email"></i> 联系我</a>
             </li>
         </ul>
     </nav>
@@ -162,82 +175,52 @@ if(!$isGuest){
                     <!-- Nav-wrap -->
                     <nav class="flex-child nav__wrap d-none d-lg-block">
                         <ul class="nav__menu">
-
                             <li class="active">
-                                <a href="index.html">Home</a>
+                                <a href="<?= Url::to(['/home/index/index'])?>">首页</a>
                             </li>
-
-                            <li class="nav__dropdown">
-                                <a href="#">Posts</a>
-                                <ul class="nav__dropdown-menu">
-                                    <li><a href="single-post-gallery.html">Gallery Post</a></li>
-                                    <li><a href="single-post.html">Video Post</a></li>
-                                    <li><a href="single-post.html">Audio Post</a></li>
-                                    <li><a href="single-post-quote.html">Quote Post</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="nav__dropdown">
-                                <a href="#">Pages</a>
-                                <ul class="nav__dropdown-menu">
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="search-results.html">Search Results</a></li>
-                                    <li><a href="categories.html">Categories</a></li>
-                                    <li><a href="404.html">404</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="nav__dropdown">
-                                <a href="#">Features</a>
-                                <ul class="nav__dropdown-menu">
-                                    <li><a href="lazyload.html">Lazy Load</a></li>
-                                    <li><a href="shortcodes.html">Shortcodes</a></li>
-                                </ul>
-                            </li>
-
+                            <?php if(!empty($base[BaseController::CACHE_CATEGORY_LIST])):?>
+                                <li class="nav__dropdown">
+                                    <a href="javascript:void(0);">内容分类</a>
+                                    <ul class="nav__dropdown-menu">
+                                        <?php foreach($base[BaseController::CACHE_CATEGORY_LIST] as $key => $val):?>
+                                            <li><a href="<?= Url::to([$router, 'category_id'=>$key])?>"><?= $val?></a></li>
+                                        <?php endforeach;?>
+                                    </ul>
+                                </li>
+                            <?php endif;?>
                             <li>
-                                <a href="#">Purchase</a>
+                                <a href="<?= Url::to(['/home/content/topic/index'])?>">热门话题</a>
                             </li>
-
-
+                            <li>
+                                <a href="<?= Url::to(['/home/index/about'])?>">关于我</a>
+                            </li>
+                            <li>
+                                <a href="<?= Url::to(['/home/index/contact'])?>">联系我</a>
+                            </li>
                         </ul> <!-- end menu -->
                     </nav> <!-- end nav-wrap -->
 
                     <!-- Nav Right -->
                     <div class="nav__right nav--align-right d-lg-flex">
-
-                        <!-- Socials
-                        <div class="nav__right-item socials nav__socials d-none d-lg-flex">
-                          <a class="social social-facebook social--nobase" href="#" target="_blank" aria-label="facebook">
-                            <i class="ui-facebook"></i>
-                          </a>
-                          <a class="social social-twitter social--nobase" href="#" target="_blank" aria-label="twitter">
-                            <i class="ui-twitter"></i>
-                          </a>
-                          <a class="social social-google social--nobase" href="#" target="_blank" aria-label="google">
-                            <i class="ui-google"></i>
-                          </a>
-                          <a class="social social-youtube social--nobase" href="#" target="_blank" aria-label="youtube">
-                            <i class="ui-youtube"></i>
-                          </a>
-                          <a class="social social-instagram social--nobase" href="#" target="_blank" aria-label="instagram">
-                            <i class="ui-instagram"></i>
-                          </a>
-                        </div>
-                        -->
                         <!-- Search -->
                         <div class="nav__right-item nav__search">
                             <a href="#" class="nav__search-trigger" id="nav__search-trigger">
                                 <i class="ui-search nav__search-trigger-icon"></i>
                             </a>
                             <div class="nav__search-box" id="nav__search-box">
-                                <form class="nav__search-form">
-                                    <input type="text" placeholder="搜索文章" class="nav__search-input">
+                                <?php ActiveForm::begin([
+                                    'options' => ['class'=>'nav__search-form'],
+                                    'method' => 'get',
+                                    'action' => ['/home/index/search']
+                                ])?>
+                                    <?= Html::input('text', 'title', '', [
+                                        'class'=>'nav__search-input',
+                                        'autocomplete'=>"off"
+                                    ])?>
                                     <button type="submit" class="search-button btn btn-lg btn-color btn-button">
                                         <i class="ui-search nav__search-icon"></i>
                                     </button>
-                                </form>
+                                <?php ActiveForm::end();?>
                             </div>
 
                         </div>

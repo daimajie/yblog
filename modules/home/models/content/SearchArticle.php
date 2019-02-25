@@ -19,7 +19,7 @@ class SearchArticle extends Article
     public function rules()
     {
         return [
-            [['topic_id'], 'integer'],
+            [['topic_id','category_id'], 'integer'],
             [['title'], 'string', 'max' => 32],
             [['title'], 'trim']
         ];
@@ -63,6 +63,7 @@ class SearchArticle extends Article
 
         $this->title = !empty($params['title'])?trim($params['title']):'';
         $this->topic_id = !empty($params['id'])?$params['id']:null;
+        $this->category_id = !empty($params['category_id'])?$params['category_id']:null;
 
         //验证文章标题数据
         if(!$this->validate()){
@@ -89,6 +90,8 @@ class SearchArticle extends Article
 
         //必须是当前话题的文章
         $query->andFilterWhere(['topic_id' => $this->topic_id]);
+
+        $query->andFilterWhere(['category_id' => $this->category_id]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);
 

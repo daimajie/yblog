@@ -6,7 +6,7 @@
  * Time: 13:17
  */
 return [
-    'layout' => '/main',
+    'layout' => 'main',
 
     'modules' => [
         //内容管理

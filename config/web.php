@@ -11,7 +11,7 @@ $config = [
     'timeZone' => 'Asia/Shanghai',
     'language' => 'zh-CN',
     'charset' => 'utf-8',
-    'defaultRoute' => 'index/index',
+    'defaultRoute' => 'home/index/index',
 
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
