@@ -17,6 +17,10 @@ return [
         'motion' => [
             'class' => 'app\modules\home\modules\motion\Module',
         ],
+        //用户中心
+        'member' => [
+            'class' => 'app\modules\home\modules\member\Module',
+        ],
 
     ],
     'components' => [

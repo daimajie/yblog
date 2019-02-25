@@ -12,6 +12,7 @@ use yii\data\Pagination;
 use yii\helpers\Html;
 use app\components\ViewHelper;
 use yii\widgets\LinkPager;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%comment}}".
@@ -196,6 +197,7 @@ class Comment extends \yii\db\ActiveRecord
             $comment['created_at'] = ViewHelper::time($comment['created_at']);
             $comment['user']['image'] = ViewHelper::avatar($comment['user']['image']);
             $comment['user']['username'] = ViewHelper::username($comment['user']['username'],$comment['user']['nickname']);
+            $comment['user']['index'] = Url::to(['/home/member/author/index', 'id'=>$comment['user']['id']]);
             $comment['owner'] = (!Yii::$app->user->isGuest) && ($comment['user']['id'] === Yii::$app->user->id);
             if(!empty($comment['replys'])){
                 static::processData($comment['replys']);

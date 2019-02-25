@@ -40,7 +40,7 @@ $config = [
             'loginUrl' => ['index/login']
         ],
         'errorHandler' => [
-            'errorAction' => 'index/error',
+            'errorAction' => 'home/index/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

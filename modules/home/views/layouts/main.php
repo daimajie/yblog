@@ -16,6 +16,7 @@ if(!$isGuest){
     $user = Yii::$app->user->identity;
     $avatar = $user->image;
     $username = empty($user->nickname) ? $user->username : $user->nickname;
+    $isAuthor = $user->author >= 0;
 }
 /*基本数据 菜单 SEO 等*/
 $base = $this->params['base'];
@@ -75,10 +76,12 @@ $router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
                         <a href="JavaScript:void(0);" class="sidenav__menu-link user-name"><?= $username?></a>
                         <button class="sidenav__menu-toggle user-action" aria-haspopup="true" aria-label="Open dropdown"><i class="ui-arrow-down"></i></button>
                         <ul class="sidenav__menu-dropdown user-nav">
-                            <li><a href="<?= Url::to(['member/center'])?>" class="sidenav__menu-link">个人中心</a></li>
-                            <li><a href="<?= Url::to(['member/write'])?>" class="sidenav__menu-link">写文章</a></li>
-                            <li><a href="<?= Url::to(['admin/index'])?>" class="sidenav__menu-link">控制台</a></li>
-                            <li><a href="<?= Url::to(['index/logout'])?>" class="sidenav__menu-link">退出</a></li>
+                            <?php if($isAuthor):?>
+                            <li><a href="<?= Url::to(['/home/member/author/index','id'=>$user->id])?>" class="sidenav__menu-link">作者主页</a></li>
+                            <li><a href="<?= Url::to(['/home/member/author/write'])?>" class="sidenav__menu-link">写文章</a></li>
+                            <?php endif;?>
+                            <li><a href="<?= Url::to(['/home/member/user/setting'])?>" class="sidenav__menu-link">账号设置</a></li>
+                            <li><a href="<?= Url::to(['/home/index/logout'])?>" class="sidenav__menu-link">退出</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -118,7 +121,7 @@ $router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
 
             <!-- nav -->
             <li>
-                <a href="<?= Url::to(['/home/index/index'])?>" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--orange"><i class="ui-home"></i> 网站首页</a>
+                <a href="/" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--orange"><i class="ui-home"></i> 网站首页</a>
             </li>
             <li>
                 <a href="<?= Url::to(['/home/content/topic/index'])?>" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--blue"><small>HOT</small> 热门话题</a>
@@ -176,7 +179,7 @@ $router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
                     <nav class="flex-child nav__wrap d-none d-lg-block">
                         <ul class="nav__menu">
                             <li class="active">
-                                <a href="<?= Url::to(['/home/index/index'])?>">首页</a>
+                                <a href="/">首页</a>
                             </li>
                             <?php if(!empty($base[BaseController::CACHE_CATEGORY_LIST])):?>
                                 <li class="nav__dropdown">

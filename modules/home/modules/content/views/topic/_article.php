@@ -33,7 +33,7 @@ use yii\helpers\Url;
                 <ul class="entry__meta">
                     <li class="entry__meta-author">
                         <i class="ui-author"></i>
-                        <a href="<?= Url::to(['/home/member/user','id'=>$model->user->id])?>"><?= ViewHelper::username($model->user->username, $model->user->nickname)?></a>
+                        <a href="<?= Url::to(['/home/member/author/index','id'=>$model->user->id])?>"><?= ViewHelper::username($model->user->username, $model->user->nickname)?></a>
                     </li>
                     <li class="entry__meta-date">
                         <i class="ui-date"></i>

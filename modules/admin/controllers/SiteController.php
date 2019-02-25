@@ -29,4 +29,8 @@ class SiteController extends BaseController
             ],
         ];
     }
+
+    public function actionIndex(){
+        echo 'admin index';
+    }
 }

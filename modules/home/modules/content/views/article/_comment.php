@@ -54,10 +54,12 @@ MainAsset::addScript($this,'/static/libs/art-template/template-web.js');
         <li class="comment parent-comment" data-parent-id="{{@ $val.id}}">
             <div class="comment-body">
                 <div class="comment-avatar">
+                    <a href="{{@ $val.user.index}}">
                     <img width="50" height="50" src="{{@ $val.user.image}}">
+                    </a>
                 </div>
                 <div class="comment-text">
-                    <h6 class="comment-author">{{@ $val.user.username}}</h6>
+                    <h6 class="comment-author"><a href="{{@ $val.user.index}}">{{@ $val.user.username}}</a></h6>
                     <div class="comment-metadata">
                         <a href="javascript:void(0);" class="comment-date">{{@ $val.created_at}}</a>
                     </div>

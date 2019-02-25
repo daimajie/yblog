@@ -43,7 +43,10 @@ class TopicController extends BaseController
     public function actionView($id){
 
         $model = $this->findModel($id);
+
         $searchModel = new SearchArticle();
+        $searchModel->topic_id = $id;
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('view', [

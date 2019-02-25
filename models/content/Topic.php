@@ -336,6 +336,24 @@ class Topic extends \yii\db\ActiveRecord
 
         return $provider;
     }
+    //获取指定作者N个活跃话题
+    public static function getActiveCategoryByUser($user_id, $limit){
+        if($user_id <= 0) return [];
+        $ret = self::find()
+            ->with(['category'])
+            ->where([
+                'check' => self::CHECK_ADOPT,
+                'secrecy' => self::SECR_PUBLIC
+            ])
+            ->andWhere(['!=', 'status', self::STATUS_RECYCLE])
+            ->andWhere(['user_id'=>$user_id])
+            ->limit($limit)
+            ->orderBy(['updated_at'=>SORT_DESC])
+            ->asArray()
+            ->all();
+        return $ret;
+
+    }
 
 
 }

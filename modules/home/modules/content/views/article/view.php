@@ -32,7 +32,7 @@ $this->title = $model['title'];
                 'encode' => false,
                 'class'=>'breadcrumbs__url',
                 'label' => '<i class="ui-home"></i>',
-                'url' => ['/index']
+                'url' => '/'
             ],
 
             'activeItemTemplate' => "<li class='breadcrumbs__item breadcrumbs__item--current'>{link}</li>",
@@ -48,7 +48,7 @@ $this->title = $model['title'];
         <article class="entry">
 
             <div class="single-post__entry-header entry__header">
-                <a href="#" class="entry__meta-category"><?= Html::encode($model['topic']['name'])?></a>
+                <a href="<?= Url::to(['/home/content/topic/view', 'id'=>$model['topic']['id']])?>" class="entry__meta-category"><?= Html::encode($model['topic']['name'])?></a>
                 <h3>
                     <?= Html::encode($model['title'])?>
                 </h3>
@@ -56,7 +56,7 @@ $this->title = $model['title'];
                 <ul class="entry__meta">
                     <li class="entry__meta-author">
                         <i class="ui-author"></i>
-                        <a href="<?= Url::to(['/home/member/user', 'id'=>$model['user']['id']])?>"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
+                        <a href="<?= Url::to(['/home/member/author/index', 'id'=>$model['user']['id']])?>"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
                     </li>
                     <li class="entry__meta-date">
                         <i class="ui-date"></i>
@@ -100,7 +100,7 @@ $this->title = $model['title'];
                 <img width="100" height="100" data-src="<?= ViewHelper::avatar($model['user']['image'])?>" src="<?= ViewHelper::staticPath('img/empty.png')?>" class="avatar lazyload">
                 <div class="entry-author__info">
                     <h6 class="entry-author__name">
-                        <a href="<?= Url::to(['/home/member/user', 'id'=>$model['user']['id']])?>"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
+                        <a href="<?= Url::to(['/home/member/author/index', 'id'=>$model['user']['id']])?>"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
                     </h6>
                     <p style="font-size: 14px;" class="mb-0"><?= empty($model['user']['intro']) ? '这家伙很懒, 什么也没留下。' : Html::encode($model['user']['intro'])?></p>
                 </div>
