@@ -18,6 +18,7 @@ class Upload extends InputWidget
     public $name;
     public $info;
     public $thumb = [];
+    public $show = true;
 
 
 
@@ -55,7 +56,8 @@ class Upload extends InputWidget
                 'name' => $this->name,
                 'info' => $this->info,
                 'thumb' => $this->thumb,
-                'id' => $this->options['id']
+                'id' => $this->options['id'],
+                'show' => $this->show
             ]);
         } else {
             throw new InvalidConfigException("'model' must be specified.");

@@ -41,7 +41,7 @@ class LoginForm extends Model
 
             //登录验证🐴
             [['captcha'], 'required', 'on'=>[self::SCENARIO_LOGIN]],
-            ['captcha', 'captcha', 'captchaAction' => 'index/captcha'],
+            ['captcha', 'captcha', 'captchaAction' => '/home/index/captcha'],
 
 
             // username and password are both required

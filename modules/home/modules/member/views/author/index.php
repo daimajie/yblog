@@ -97,7 +97,7 @@ $title = trim(Yii::$app->request->get('title', ''));
                 </div>
                 <h5><i class="ui-author"></i> <?= ViewHelper::username($model->username, $model->nickname)?></h5>
                 <p><small> 文章 - <?= $model->author?>  /  话题 - <?= $topicCount?> </small></p>
-                <p class="mb-3"><?= empty($model['user']['intro']) ? '这家伙很懒, 什么也没留下。' : Html::encode($model['user']['intro'])?></p>
+                <p class="mb-3"><?= empty($model['user']['intro']) ? '博主好懒～什么也没留下！' : Html::encode($model['user']['intro'])?></p>
             </div>
         </div>
 
@@ -139,7 +139,7 @@ $title = trim(Yii::$app->request->get('title', ''));
                                 </li>
                                 <li class="entry__meta-comments">
                                     <i class="ui-flickr"></i>
-                                    <?= $val['count']?>
+                                    <?= $val['count']?>篇
                                 </li>
                             </ul>
                             <ul class="entry__meta">

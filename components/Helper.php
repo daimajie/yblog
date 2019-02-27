@@ -24,7 +24,7 @@ class Helper
         if(empty($img))
             return Yii::$app->params['user_properties']['defaultAvatar'];
 
-        return $img;
+        return self::showImage($img);
     }
 
     /**

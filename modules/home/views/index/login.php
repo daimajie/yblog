@@ -33,7 +33,7 @@ $fieldOptions2 = [
                 echo '<p class="bg-error">' .Yii::$app->session->getFlash('error'). '</p>';
         ?>
 
-        <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
+        <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
         <?= $form
             ->field($model, 'username', $fieldOptions1)
@@ -52,7 +52,7 @@ $fieldOptions2 = [
             ],
             'template' => "{label}\n{input}\n{error}<span class=\"glyphicon glyphicon-picture  form-control-feedback\"></span>",
         ])->widget(yii\captcha\Captcha::className(),[
-            'captchaAction'=>'index/captcha',
+            'captchaAction'=>'/home/index/captcha',
             'options' => ['placeholder'=>'验证码','class'=>'form-control','autocomplete'=>"off"],
             'imageOptions'=>[
                 'alt'=>'点击换图',

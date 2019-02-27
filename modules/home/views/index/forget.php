@@ -53,7 +53,7 @@ $fieldOptions2 = [
             ],
             'template' => "{label}\n{input}\n{error}<span class=\"glyphicon glyphicon-picture  form-control-feedback\"></span>",
         ])->widget(yii\captcha\Captcha::className(),[
-            'captchaAction'=>'index/captcha',
+            'captchaAction'=>'/home/index/captcha',
             'options' => [
                 'placeholder'=>'验证码',
                 'class'=>'form-control',

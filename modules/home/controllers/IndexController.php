@@ -28,12 +28,17 @@ class IndexController extends BaseController
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['logout','login','register','forget','reset_password'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['login','register','forget','reset_password'],
+                        'allow' => true,
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -190,6 +195,10 @@ class IndexController extends BaseController
     public function actionForget(){
         $this->layout = '@app/modules/admin/views/layouts/main-login';
 
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
         $model = new ForgetForm();
         $model->scenario = ForgetForm::SCENARIO_FORGET;
 
@@ -216,6 +225,10 @@ class IndexController extends BaseController
      */
     public function actionResetPassword($token){
         $this->layout = '@app/modules/admin/views/layouts/main-login';
+
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
 
         $model = new ForgetForm([
             'scenario' => ForgetForm::SCENARIO_RESET,

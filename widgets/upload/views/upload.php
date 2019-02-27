@@ -12,8 +12,11 @@ use app\components\Helper;
 
 
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@widgets/upload/static');
+$type = $show ? 'text' : 'hidden';
 ?>
-<?= Html::activeInput('text', $model, 'image',[
+
+
+<?= Html::activeInput($type, $model, 'image',[
     'class' => "form-control disabled",
     'readonly' => true,
     'id' => $id

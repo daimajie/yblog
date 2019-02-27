@@ -4327,3 +4327,13 @@ dd {
   padding: 6px 17px;
   font-size: 14px;
 }
+.setting-nav .sidenav__menu-link {
+  color: #333;
+  background-color: #f2f4f5;
+}
+.setting-nav .sidenav__menu-link:hover,
+.setting-nav .active .sidenav__menu-link,
+.setting-nav .sidenav__menu-link:focus {
+  color: #fff;
+  background-color: #fc6d41 !important;
+}

@@ -102,7 +102,7 @@ $this->title = $model['title'];
                     <h6 class="entry-author__name">
                         <a href="<?= Url::to(['/home/member/author/index', 'id'=>$model['user']['id']])?>"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
                     </h6>
-                    <p style="font-size: 14px;" class="mb-0"><?= empty($model['user']['intro']) ? '这家伙很懒, 什么也没留下。' : Html::encode($model['user']['intro'])?></p>
+                    <p style="font-size: 14px;" class="mb-0"><?= empty($model['user']['intro']) ? '博主好懒～什么也没留下！' : Html::encode($model['user']['intro'])?></p>
                 </div>
             </div>
 

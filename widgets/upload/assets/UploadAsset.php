@@ -23,7 +23,7 @@ class UploadAsset extends AssetBundle
         'webuploader-0.1.5/webuploader.min.js',
     ];
     public $depends = [
-        'yii\bootstrap\BootstrapAsset',
+        //'yii\bootstrap\BootstrapAsset',
         'app\assets\LayerAsset',
     ];
 

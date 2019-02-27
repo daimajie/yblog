@@ -42,7 +42,11 @@ $title = trim(Yii::$app->request->get('title', ''));
                             </li>
                             <li class="entry__meta-comments">
                                 <i class="ui-flickr"></i>
-                                <?= $model['count']?>
+                                <?= $model['count']?>篇
+                            </li>
+                            <li class="entry__meta-date">
+                                <i class="ui-date"></i>
+                                <?= ViewHelper::time($model['updated_at'])?>
                             </li>
                         </ul>
                     </footer>

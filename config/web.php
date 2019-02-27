@@ -37,7 +37,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\member\User',
             'enableAutoLogin' => true,
-            'loginUrl' => ['index/login']
+            'loginUrl' => ['/home/index/login']
         ],
         'errorHandler' => [
             'errorAction' => 'home/index/error',
@@ -49,7 +49,7 @@ $config = [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.qq.com',
                 'username' => 'daimajie@qq.com',
-                'password' => '******',
+                'password' => 'okaeomwrcoebbjaf',
                 'port' => '465',
                 'encryption' => 'ssl',
             ],

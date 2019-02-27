@@ -29,7 +29,7 @@ use yii\helpers\Url;
                     </li>
                     <li class="entry__meta-comments">
                         <i class="ui-flickr"></i>
-                        <?= $model->count ?>
+                        <?= $model->count ?>篇
                     </li>
                 </ul>
             </div>
