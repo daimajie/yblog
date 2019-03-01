@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\home\modules\content\models;
+namespace app\modules\home\modules\write\models;
 
 use app\models\content\Topic;
 use Yii;
@@ -42,12 +42,10 @@ class SearchTopic extends Topic
      */
     public function search($params, $user_id=null)
     {
-        //排除 私密话题 待审核和审核失败 以及冻结的话题
         $query = Topic::find()
             ->with(['category'])
-            ->andWhere(['!=', 'status', self::STATUS_RECYCLE]);
+            ->andWhere(['!=', 'status', self::STATUS_RECYCLE]);//排除回收站的话题
 
-        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -63,18 +61,14 @@ class SearchTopic extends Topic
 
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'category_id' => $this->category_id,
-            'secrecy' => $this->secrecy
+            'secrecy' => $this->secrecy,
+            'user_id' => $this->user_id  //当前用户的话题
         ]);
-
 
 
         $query->andFilterWhere(['like', 'name', $this->name]);

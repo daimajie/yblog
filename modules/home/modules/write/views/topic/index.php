@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User : daimajie
- * Email: daimajie@qq.com
- * Date : 2019/2/28
- * Time : 11:57
- */
 use app\models\content\Topic;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -20,26 +13,21 @@ $params = Yii::$app->request->queryParams;
     <div class="col-lg-12 blog__content mb-30">
 
         <div class="title-wrap">
-            <h3>写作中心</h3>
+            <h3>写作中心 - <small>话题列表</small></h3>
         </div>
         <div class="row">
-            <!--<div class="col-lg-3 sidebar sidebar--left setting-nav">
-                <?php
-/*                //echo $this->render('_write_nav');
-                */?>
-            </div>-->
             <div class="col-lg-12 blog__content mb-30 sidebar--right">
                 <div class="row">
                     <div class="col-lg-6">
-                        <?= Html::a('<span>创建话题</span>', ['create-topic'], ['class' => 'btn btn-lg btn-color']) ?>
+                        <?= Html::a('<span>创建话题</span>', ['create'], ['class' => 'btn btn-lg btn-color']) ?>
                     </div>
                     <div class="col-lg-6">
                         <?= Html::beginForm(['index'], 'get') ?>
                         <div class="row">
                             <div class="col-md-3">
                                 <?= Html::dropDownList('secrecy', isset($params['secrecy'])?$params['secrecy']:'',[
-                                        '1' => '私有',
-                                        '2' => '公开',
+                                    '1' => '私有',
+                                    '2' => '公开',
                                 ], [
                                     'prompt'=>'选择状态',
                                 ]) ?>
@@ -72,10 +60,10 @@ $params = Yii::$app->request->queryParams;
                         'class' => '',
                     ],
                     'headerRowOptions' => [
-                            'class' => 'thead-light'
+                        'class' => 'thead-light'
                     ],
                     'tableOptions' => [
-                            'class' => 'table'
+                        'class' => 'table'
                     ],
                     'dataProvider' => $dataProvider,
                     'layout' => "{items}\n{summary}\n{pager}",
@@ -99,7 +87,6 @@ $params = Yii::$app->request->queryParams;
                             'label' => '所属分类',
                             'value' => function($model){
                                 if($model->category_id){
-
                                     return $model->category->name;
                                 }
                                 return '';
@@ -129,17 +116,17 @@ $params = Yii::$app->request->queryParams;
                         [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => '<a href="javascript:;">操作</a>',
-                            'template' => '{view-topic} {update-topic} {delete-topic}',
+                            'template' => '{view} {update} {delete}',
                             'buttons'=>[
-                                'view-topic' => function ($url, $model, $key) {
+                                'view' => function ($url, $model, $key) {
                                     return Html::a('<small>查看</small>', $url);
                                 },
 
-                                'update-topic' => function ($url, $model, $key) {
+                                'update' => function ($url, $model, $key) {
                                     return Html::a('<small>修改</small>', $url);
                                 },
 
-                                'delete-topic' => function ($url, $model, $key) {
+                                'delete' => function ($url, $model, $key) {
                                     return Html::a('<small>删除</small>', $url, [
                                         'data' => [
                                             'confirm' => '您确定要删除该话题吗?',

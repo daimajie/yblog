@@ -99,15 +99,19 @@ class Topic extends \yii\db\ActiveRecord
             return false;
 
         //检测当前用户是否创建过同名话题
-        $mun = self::find()->where([
+        $query = self::find()->where([
             'user_id' => Yii::$app->user->getId(),
             'name' => $this->name,
             'category_id' => $this->category_id,
-        ])->andWhere(['!=', 'status', self::STATUS_RECYCLE]) //排除回收站的话题
-            ->andWhere(['!=', 'id', $this->id])
-        ->count();
+        ])->andWhere(['!=', 'status', self::STATUS_RECYCLE]); //排除回收站的话题
 
-        if($mun){
+        if(!$this->isNewRecord){
+            $query->andWhere(['!=', 'id', $this->id]);
+        }
+
+        $sum = $query->count();
+
+        if($sum){
             $this->addError($attr, '您已经创建了该话题了，不能再次创建。');
             return false;
         }

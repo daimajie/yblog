@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\home\modules\content\models;
+namespace app\modules\home\modules\write\models;
 
 use app\models\content\Article;
 use Yii;
@@ -38,7 +38,8 @@ class SearchArticle extends Article
      */
     public function search($params, $user_id=null)
     {
-        $query = Article::find();
+        $query = Article::find()
+            ->andWhere(['!=', 'status', self::STATUS_RECYCLE]);//排除回收站的话题
 
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
@@ -46,13 +47,7 @@ class SearchArticle extends Article
             'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
         ]);
 
-        //**错误页(只显示最近一个月评论最多的文章)
-        if(isset($params['isError']) && $params['isError']){
-            $query
-                ->andWhere(['>=', 'created_at', strtotime('-30day')])
-                ->orderBy(['comment' => SORT_DESC]);
-            return $dataProvider;
-        }
+
 
 
         $this->attributes = $params;
@@ -65,23 +60,6 @@ class SearchArticle extends Article
         if(!$this->validate()){
             return $dataProvider;
         }
-
-
-        //获取定义标签的文章
-        if(isset($params['tag_id']) && is_numeric($params['tag_id'])){
-            $query = $query->alias('a')
-                ->leftJoin(['at'=>'{{%article_tag}}'],'a.id=at.article_id')
-                ->select(['a.*','at.*']);
-
-            if($params['tag_id'] > 0){
-                $query->andWhere(['tag_id'=>$params['tag_id']]);
-            }else{
-                $query->andWhere(['is','tag_id',null]);
-            }
-
-        }
-
-
 
 
         //必须是当前话题的文章

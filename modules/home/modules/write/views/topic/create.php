@@ -7,11 +7,7 @@
  * Time : 11:57
  */
 use app\models\content\Topic;
-use yii\grid\GridView;
 use yii\helpers\Html;
-use yii\helpers\Url;
-use app\components\Helper;
-use app\models\content\Article;
 use yii\widgets\ActiveForm;
 use app\widgets\upload\Upload;
 use app\widgets\Alert;
@@ -24,7 +20,7 @@ use app\widgets\Alert;
     <div class="col-lg-12 blog__content mb-30">
 
         <div class="title-wrap">
-            <h3>创建话题</h3>
+            <h3>写作中心 - <small>创建话题</small></h3>
         </div>
         <div class="row">
             <div class="col-lg-12 blog__content mb-30 sidebar--right">
@@ -38,13 +34,13 @@ use app\widgets\Alert;
                 <div class="row">
                     <div class="col-md-12">
                         <?php $form = ActiveForm::begin([
-                                'method' => 'post'
+                            'method' => 'post'
                         ]); ?>
 
                         <?= $form->field($model, 'name',[
-                                'options' => [
-                                        'class' => 'mb-3'
-                                ]
+                            'options' => [
+                                'class' => 'mb-3'
+                            ]
                         ])->textInput([
                             'maxlength' => true,
                             'autocomplete'=>"off",
@@ -83,53 +79,49 @@ use app\widgets\Alert;
 
 
 
+                        <?php
+                        $private = '';
+                        $public = '';
+                        if($model->secrecy == Topic::SECR_PRIVATE){
+                            $private = 'checked="checked"';
+                        }
+                        if($model->isNewRecord || $model->secrecy == Topic::SECR_PUBLIC){
+                            $public = 'checked="checked"';
+                        }
 
+                        ?>
                         <div class="radio mb-3">
-                            <?php
-                            $private = '';
-                            $public = '';
-                            if(!$model->isNewRecord){
-                                if($model->secrecy == Topic::SECR_PRIVATE){
-                                    $private = 'checked="checked"';
-                                }else{
-                                    $public = 'checked="checked"';
-                                }
-                            }
-
-                            ?>
-
                             <input <?= $public?> type="radio" class="radio-unput" name="<?= ($model->formName() . '[secrecy]')?>" id="radio2" value="2" >
                             <label for="radio2">公开话题</label>
 
                             <input <?= $private?> type="radio" class="radio-unput" name="<?= ($model->formName() . '[secrecy]')?>" id="radio1" value="1" >
-                            <label for="radio1">私募话题</label>
-
+                            <label for="radio1">私密话题</label>
                             <?= Html::error($model, 'secrecy')?>
                         </div>
 
+                        <div class="radio mb-3">
                         <?php
                         if(!$model->isNewRecord):
                             $normal = '';
                             $finish = '';
-                            if($model->status == Topic::STATUS_NORMAL){
+                            if($model->isNewRecord || $model->status == Topic::STATUS_NORMAL){
                                 $normal = 'checked="checked"';
                             }
                             if($model->status == Topic::STATUS_FINISH){
                                 $finish = 'checked="checked"';
                             }
-                        ?>
-                        <div class="radio mb-3">
+                            ?>
+
+                                <input <?= $normal?> type="radio" class="radio-unput" name="<?= ($model->formName() . '[status]')?>" id="radio3" value="1" >
+                                <label for="radio3">连载</label>
+
+                                <input <?= $finish?> type="radio" class="radio-unput" name="<?= ($model->formName() . '[status]')?>" id="radio4" value="2" >
+                                <label for="radio4">完结</label>
 
 
-                            <input <?= $normal?> type="radio" class="radio-unput" name="<?= ($model->formName() . '[status]')?>" id="radio3" value="1" >
-                            <label for="radio3">连载</label>
-
-                            <input <?= $finish?> type="radio" class="radio-unput" name="<?= ($model->formName() . '[status]')?>" id="radio4" value="2" >
-                            <label for="radio4">完结</label>
-
+                        <?php endif;?>
                             <?= Html::error($model, 'status')?>
                         </div>
-                        <?php endif;?>
 
                         <?= Html::submitButton('<span>提交保存</span>', ['class' => 'btn btn-lg']) ?>
 

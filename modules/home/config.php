@@ -21,6 +21,10 @@ return [
         'member' => [
             'class' => 'app\modules\home\modules\member\Module',
         ],
+        //写作中心
+        'write' => [
+            'class' => 'app\modules\home\modules\write\Module',
+        ],
 
     ],
     'components' => [
