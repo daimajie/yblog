@@ -21,6 +21,7 @@ if(!$isGuest){
 /*基本数据 菜单 SEO 等*/
 $base = $this->params['base'];
 $router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
+$showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] : true;
 ?>
 
 
@@ -79,7 +80,7 @@ $router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
                             <li><a href="<?= Url::to(['/home/member/user/setting'])?>" class="sidenav__menu-link">账号设置</a></li>
                             <?php if($isAuthor):?>
                             <li><a href="<?= Url::to(['/home/member/author/index','id'=>$user->id])?>" class="sidenav__menu-link">个人主页</a></li>
-                            <li><a href="<?= Url::to(['/home/member/author/write'])?>" class="sidenav__menu-link">写文章</a></li>
+                            <li><a href="<?= Url::to(['/home/content/write/index'])?>" class="sidenav__menu-link">写作中心</a></li>
                             <?php endif;?>
                             <li><?= Html::a('安全退出',['/home/index/logout'], ['data-method' => 'post','class'=>'sidenav__menu-link'])?></li>
                         </ul>
@@ -234,9 +235,11 @@ $router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
             </div> <!-- end container -->
 
         </div>
-    </header> <!-- end navigation -->
+    </header>
+    <!-- end navigation -->
 
     <!-- Header -->
+    <?php if(!isset($showHeader) || $showHeader):?>
     <div class="header">
         <div class="container">
             <div class="flex-parent align-items-center">
@@ -255,7 +258,9 @@ $router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
 
             </div>
         </div>
-    </div> <!-- end header -->
+    </div>
+    <?php endif;?>
+    <!-- end header -->
 
 
     <div class="main-container container mt-40" id="main-container">

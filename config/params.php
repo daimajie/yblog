@@ -30,6 +30,12 @@ return [
     //用户配置
     'user_properties' => [
         'defaultAvatar' => '/static/assets/img/avatar.jpg',
+    ],
+
+    //话题设置
+    'topic' => [
+        'secrecy_limit' => 5,
+        'active_limit' => 5
     ]
 
 

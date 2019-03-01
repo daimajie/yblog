@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\home\models\content;
+namespace app\modules\home\modules\content\models;
 
 use app\models\content\Article;
 use Yii;
@@ -19,7 +19,7 @@ class SearchArticle extends Article
     public function rules()
     {
         return [
-            [['topic_id','category_id','user_id'], 'integer'],
+            [['category_id'], 'integer'],
             [['title'], 'string', 'max' => 32],
             [['title'], 'trim']
         ];
@@ -38,12 +38,7 @@ class SearchArticle extends Article
      */
     public function search($params, $user_id=null)
     {
-        $query = Article::find()
-            ->with(['user'])
-            ->where([
-                'check' => self::CHECK_ADOPT, //审核通过的文章
-                'status' => self::STATUS_NORMAL,//公示文章
-            ]);
+        $query = Article::find();
 
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([

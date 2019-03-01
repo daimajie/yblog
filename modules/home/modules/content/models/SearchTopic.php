@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\home\models\content;
+namespace app\modules\home\modules\content\models;
 
 use app\models\content\Topic;
 use Yii;
@@ -18,7 +18,7 @@ class SearchTopic extends Topic
     public function rules()
     {
         return [
-            [['category_id','user_id'], 'integer'],
+            [['category_id','secrecy'], 'integer'],
             [['name'], 'string'],
             [['name'], 'trim'],
         ];
@@ -44,11 +44,7 @@ class SearchTopic extends Topic
     {
         //排除 私密话题 待审核和审核失败 以及冻结的话题
         $query = Topic::find()
-            ->with(['category','user'])
-            ->where([
-                'check' => self::CHECK_ADOPT,
-                'secrecy' => self::SECR_PUBLIC
-            ])
+            ->with(['category'])
             ->andWhere(['!=', 'status', self::STATUS_RECYCLE]);
 
         // add conditions that should always apply here
@@ -76,7 +72,7 @@ class SearchTopic extends Topic
         // grid filtering conditions
         $query->andFilterWhere([
             'category_id' => $this->category_id,
-            'user_id' => $this->user_id
+            'secrecy' => $this->secrecy
         ]);
 
 

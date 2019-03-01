@@ -8,6 +8,9 @@
  */
 use yii\helpers\Url;
 use yii\widgets\Menu;
+
+//隐藏header部分
+$this->params['showHeader'] = false;
 ?>
 <nav>
     <?php

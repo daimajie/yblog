@@ -85,7 +85,7 @@ class Topic extends \yii\db\ActiveRecord
 
             [['name'], 'string', 'max' => 18],
 
-            //每个用户不能建立同名话题
+            //每个用户不能在统一话题建立同名话题（回收站中的除外）
             [['name'], 'uniqueOnUser'],
 
             [['image'], 'string', 'max' => 125],
@@ -102,8 +102,10 @@ class Topic extends \yii\db\ActiveRecord
         $mun = self::find()->where([
             'user_id' => Yii::$app->user->getId(),
             'name' => $this->name,
-            'category_id' => $this->category_id
-        ])->count();
+            'category_id' => $this->category_id,
+        ])->andWhere(['!=', 'status', self::STATUS_RECYCLE]) //排除回收站的话题
+            ->andWhere(['!=', 'id', $this->id])
+        ->count();
 
         if($mun){
             $this->addError($attr, '您已经创建了该话题了，不能再次创建。');
@@ -213,11 +215,11 @@ class Topic extends \yii\db\ActiveRecord
      */
     public function store(){
 
+
         if( !$this->validate() ){
             return false;
 
         }
-
         return $this->save(false);
 
 
@@ -237,7 +239,7 @@ class Topic extends \yii\db\ActiveRecord
 
 
         //查看是否有修改图片
-        if($this->getDirtyAttributes(['image'])){
+        if($this->getDirtyAttributes(['image']) && $this->getOldAttribute('image')){
             //1.删除原有图片
             Helper::delImage($this->getOldAttribute('image'));
         }
