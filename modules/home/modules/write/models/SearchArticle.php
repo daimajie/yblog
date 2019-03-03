@@ -19,7 +19,8 @@ class SearchArticle extends Article
     public function rules()
     {
         return [
-            [['category_id'], 'integer'],
+            [['topic_id','category_id','status','check','user_id'], 'integer'],
+            [['status', 'check'], 'in', 'range' => [1,2]],
             [['title'], 'string', 'max' => 32],
             [['title'], 'trim']
         ];
@@ -39,7 +40,8 @@ class SearchArticle extends Article
     public function search($params, $user_id=null)
     {
         $query = Article::find()
-            ->andWhere(['!=', 'status', self::STATUS_RECYCLE]);//排除回收站的话题
+            ->andWhere(['!=', 'status', self::STATUS_RECYCLE])//排除回收站的话题
+            ->andWhere(['topic_id'=>$this->topic_id]);
 
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
@@ -63,11 +65,13 @@ class SearchArticle extends Article
 
 
         //必须是当前话题的文章
-        $query->andFilterWhere(['topic_id' => $this->topic_id]);
-
         $query->andFilterWhere(['user_id' => $this->user_id]);
 
         $query->andFilterWhere(['category_id' => $this->category_id]);
+
+        $query->andFilterWhere(['status' => $this->status]);
+
+        $query->andFilterWhere(['check' => $this->check]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);
 

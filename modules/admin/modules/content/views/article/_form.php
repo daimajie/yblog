@@ -36,7 +36,8 @@ use yii\helpers\Url;
         <?= $form->field($model, 'topic_id')->widget(Select2::class,[
                 //当下拉框改变后触发的js回调函数,参数一个，是选择后的id值
                 'searchAfterJsFun' => 'fillData.fill',
-                'selected' => $topic
+                'selected' => $topic,
+                'selectUrl' => '/admin/content/article/select'
         ]) ?>
 
         <?= $form->field($model, 'art_content')->textarea(['rows' => 16]) ?>
@@ -59,7 +60,6 @@ use yii\helpers\Url;
     </div>
     <?php ActiveForm::end(); ?>
 </div>
-<!--    <label><input type="checkbox" name="Article[tags][]" value="1"> asd</label>-->
 <?php
 $getTagsUrl = Url::to(['tag/get-tags']);
 
@@ -98,6 +98,10 @@ $js = <<<SCRIPT
                 .text('暂无可用标签，您可以选择新建标签。')
                 .removeClass('hidden')
                 .addClass('show');
+                
+                //清空标签
+                $(fillData.selector).html('');
+                
                 
                 return;
             }else{

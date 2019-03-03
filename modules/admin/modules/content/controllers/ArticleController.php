@@ -13,7 +13,6 @@ use app\models\content\SearchArticle;
 use app\modules\admin\controllers\BaseController;
 use yii\base\Exception;
 use yii\base\UnknownMethodException;
-use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -49,7 +48,8 @@ class ArticleController extends BaseController
                 'table' => '{{%topic}}',
                 'index' => 'id',
                 'text' => 'name',
-                'limit' => '9'
+                'limit' => '9',
+                'user_id' => Yii::$app->user->id
             ],
             'upload' => [
                 'class' => UploadAction::class,

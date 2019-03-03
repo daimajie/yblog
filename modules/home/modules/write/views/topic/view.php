@@ -30,7 +30,7 @@ LayerAsset::register($this);
                 <div class="row mb-30">
                     <div class="col-lg-12">
                         <?= Html::a('<span>话题列表</span>', ['index'], ['class' => 'btn btn-lg btn-color']) ?>
-                        <?= Html::a('<span>创建文章</span>', ['index'], ['class' => 'btn btn-lg']) ?>
+                        <?= Html::a('<span>文章列表</span>', ['article/index','id'=>$model->id],['class' => 'btn btn-lg']);?>
                     </div>
                 </div>
                 <div class="row"><?= Alert::widget(['options' => ['class'=>'col-lg-12']]) ?></div>

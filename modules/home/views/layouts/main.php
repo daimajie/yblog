@@ -80,7 +80,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                             <li><a href="<?= Url::to(['/home/member/user/setting'])?>" class="sidenav__menu-link">账号设置</a></li>
                             <?php if($isAuthor):?>
                             <li><a href="<?= Url::to(['/home/member/author/index','id'=>$user->id])?>" class="sidenav__menu-link">个人主页</a></li>
-                            <li><a href="<?= Url::to(['/home/content/write/index'])?>" class="sidenav__menu-link">写作中心</a></li>
+                            <li><a href="<?= Url::to(['/home/write/topic/index'])?>" class="sidenav__menu-link">写作中心</a></li>
                             <?php endif;?>
                             <li><?= Html::a('安全退出',['/home/index/logout'], ['data-method' => 'post','class'=>'sidenav__menu-link'])?></li>
                         </ul>

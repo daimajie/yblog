@@ -9,6 +9,7 @@
 
 namespace app\widgets\select2;
 
+use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\bootstrap\InputWidget;
 use app\widgets\select2\assets\Select2Asset;
@@ -20,10 +21,14 @@ class Select2 extends InputWidget
     public $searchAfterJsFun; //下拉菜单改变后触发的js回调函数名称
     public $selected; //选中的一个项目
     public $width;
+    public $selectUrl;
 
     public function init()
     {
         parent::init();
+
+        if(empty($this->selectUrl))
+            throw new Exception('传递参数(selectUrl)错误。');
 
         $this->searchAfterJsFun = !empty($this->searchAfterJsFun) ? $this->searchAfterJsFun : 'function(){return;}';
         $this->selected = !empty($this->selected) ? $this->selected : [];
@@ -42,7 +47,8 @@ class Select2 extends InputWidget
                 'id' => $this->options['id'],
                 'searchAfterJsFun' => $this->searchAfterJsFun,
                 'selected' => Json::encode($this->selected),
-                'width' => $this->width
+                'width' => $this->width,
+                'selectUrl' => $this->selectUrl
             ]);
         } else {
             throw new InvalidArgumentException("'model' must be specified.");

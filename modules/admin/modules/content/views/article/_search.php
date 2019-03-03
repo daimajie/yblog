@@ -32,7 +32,8 @@ use app\widgets\select2\Select2;
 
     <?= $form->field($model, 'topic_id')->widget(Select2::class,[
         //当下拉框改变后触发的js回调函数,参数一个，是选择后的id值
-        'width' => '185px'
+        'width' => '185px',
+        'selectUrl' => '/admin/content/article/select'
     ]) ?>
 
 

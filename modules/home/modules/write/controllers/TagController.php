@@ -5,6 +5,7 @@ namespace app\modules\home\modules\write\controllers;
 use Yii;
 use app\models\content\Tag;
 use app\modules\home\controllers\BaseController;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\base\Exception;
@@ -17,6 +18,7 @@ use yii\widgets\ActiveForm;
  */
 class TagController extends BaseController
 {
+
     /**
      * @inheritdoc
      */
@@ -27,6 +29,17 @@ class TagController extends BaseController
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['validateForm','create','update','delete','get-tags'],
+                'rules' => [
+                    [
+                        'actions' => ['validateForm','create','update','delete','get-tags'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];

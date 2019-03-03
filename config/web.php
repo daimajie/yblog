@@ -49,7 +49,7 @@ $config = [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.qq.com',
                 'username' => 'daimajie@qq.com',
-                'password' => 'okaeomwrcoebbjaf',
+                'password' => '******',
                 'port' => '465',
                 'encryption' => 'ssl',
             ],

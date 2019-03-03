@@ -788,9 +788,9 @@ class Article extends ArticleForm
     public static function getArticleQuery($topic_id){
         return self::find()
             ->where([
-                'status' => self::STATUS_NORMAL,
-                'check'  => self::CHECK_ADOPT,
-                'topic_id' => $topic_id
+                'status' => self::STATUS_NORMAL, //公示文章
+                'check'  => self::CHECK_ADOPT,  //审核通过
+                'topic_id' => $topic_id         //同一话题下
             ]);
     }
 
@@ -803,13 +803,13 @@ class Article extends ArticleForm
 
         $prev = static::getArticleQuery($topic_id)
             ->orderBy(['created_at'=>SORT_ASC])
-            ->where(['>', 'id', $article_id])
+            ->andWhere(['>', 'id', $article_id])
             ->select(['id','title'])
             ->asArray()
             ->one();
         $next = static::getArticleQuery($topic_id)
             ->orderBy(['created_at'=>SORT_DESC])
-            ->Where(['<', 'id', $article_id])
+            ->andWhere(['<', 'id', $article_id])
             ->select(['id', 'title'])
             ->asArray()
             ->one();

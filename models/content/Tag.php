@@ -153,7 +153,9 @@ class Tag extends \yii\db\ActiveRecord
         $tags = self::find()
             ->select(['name'])
             ->indexBy('id')
-            ->where(['topic_id'=>$topic_id])
+            ->where([
+                'topic_id'=>$topic_id,
+            ])
             ->asArray()
             ->column();
 

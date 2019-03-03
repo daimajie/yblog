@@ -4,6 +4,8 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use app\widgets\Alert;
 use yii\helpers\Url;
+use app\components\ViewHelper;
+use app\models\content\Article;
 
 $params = Yii::$app->request->queryParams;
 ?>
@@ -14,34 +16,39 @@ $params = Yii::$app->request->queryParams;
     <div class="col-lg-12 blog__content mb-30">
 
         <div class="title-wrap">
-            <h3>写作中心 - <small>话题列表</small></h3>
+            <h3>写作中心 - <small><?= Html::encode($model->name)?></small></h3>
         </div>
         <div class="row">
             <div class="col-lg-12 blog__content mb-30 sidebar--right">
-                <div class="row">
+                <div class="row mb-3">
                     <div class="col-lg-6">
-                        <?= Html::a('<span>创建话题</span>', ['create'], ['class' => 'btn btn-lg btn-color']) ?>
+                        <?= Html::a('<span>话题列表</span>', ['topic/index'], ['class' => 'btn btn-lg btn-color']) ?>
+                        <?= Html::a('<span>创建文章</span>', ['create','id'=>$model->id], ['class' => 'btn btn-lg']) ?>
                     </div>
                     <div class="col-lg-6">
-                        <?= Html::beginForm(['index'], 'get') ?>
+                        <?= Html::beginForm(['','id'=>$model->id], 'get') ?>
                         <div class="row">
                             <div class="col-md-3">
-                                <?= Html::dropDownList('secrecy', isset($params['secrecy'])?$params['secrecy']:'',[
-                                    '1' => '私有',
-                                    '2' => '公开',
+                                <?= Html::dropDownList('check', isset($params['check'])?$params['check']:'',[
+                                    Article::CHECK_WAIT => '待审核',
+                                    Article::CHECK_ADOPT => '通过',
+                                    Article::CHECK_DENIAL => '失败',
                                 ], [
-                                    'prompt'=>'选择状态',
+                                    'prompt'=>'审核状态',
                                 ]) ?>
                             </div>
                             <div class="col-md-3">
-                                <?= Html::dropDownList('category_id', isset($params['category_id'])?$params['category_id']:'', $category_items, [
-                                    'prompt'=>'选择分类'
+                                <?= Html::dropDownList('status', isset($params['status'])?$params['status']:'',[
+                                    Article::STATUS_NORMAL => '公示文章',
+                                    Article::STATUS_DRAFT  => '草稿箱',
+                                ], [
+                                    'prompt'=>'文章状态',
                                 ]) ?>
                             </div>
                             <div class="col-md-6">
                                 <div class="search-form">
-                                    <?= Html::input('text', 'name', isset($params['name'])?trim($params['name']):'', [
-                                        'placeholder'=>'话题名称',
+                                    <?= Html::input('text', 'title', isset($params['title'])?trim($params['title']):'', [
+                                        'placeholder'=>'文章标题',
                                         'autocomplete'=>"off"
                                     ]) .
                                     Html::submitButton('<i class="ui-search search-icon"></i>', [
@@ -66,58 +73,63 @@ $params = Yii::$app->request->queryParams;
                     'tableOptions' => [
                         'class' => 'table'
                     ],
+                    'id' => 'grid',
                     'dataProvider' => $dataProvider,
                     'layout' => "{items}\n{summary}\n{pager}",
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'name',
-                        'count',
                         [
-                            'attribute' => 'status',
-                            'enableSorting' => false,
+                            'attribute' => 'title',
+                            'value' => function($model){
+                                return $model->title;
+                            },
+                            'contentOptions' => [
+                                'width' => 420,
+                            ],
+                        ],
+                        [
+                            'attribute' => 'check',
                             'value' => function($model){
                                 $tmp = [
-                                    Topic::STATUS_NORMAL => '连载',
-                                    Topic::STATUS_FINISH => '完结',
-                                    Topic::STATUS_RECYCLE => '回收站'
+                                    Article::CHECK_WAIT => '待审核',
+                                    Article::CHECK_ADOPT => '通过',
+                                    Article::CHECK_DENIAL => '失败',
+                                ];
+
+                                return $tmp[$model->check];
+                            },
+                        ],
+                        [
+                            'attribute' => 'status',
+                            'value' => function($model){
+                                $tmp = [
+                                    Article::STATUS_NORMAL => '公示',
+                                    Article::STATUS_DRAFT => '草稿',
                                 ];
                                 return $tmp[$model->status];
                             }
                         ],
                         [
-                            'label' => '所属分类',
-                            'value' => function($model){
-                                if($model->category_id){
-                                    return $model->category->name;
-                                }
-                                return '';
-                            }
+                            'attribute' => 'visited',
                         ],
                         [
-                            'attribute' => 'check',
-                            'enableSorting' => false,
-                            'value' => function($model){
-                                $tmp = ['待审核','通过','失败'];
-                                return $tmp[$model->check - 1];
-                            }
+                            'attribute' => 'comment',
                         ],
                         [
-                            'attribute' => 'secrecy',
-                            'enableSorting' => false,
+                            'attribute' => 'topic_id',
                             'value' => function($model){
-                                $tmp = ['私密','公开'];
-                                return $tmp[$model->secrecy - 1];
-                            }
+                                return $model->topic->name;
+                            },
                         ],
                         [
                             'attribute' => 'created_at',
-                            'format' => ['date', 'php:Y-m-d']
+                            'format' => ['date', 'php:Y-m-d'],
                         ],
 
                         [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => '<a href="javascript:;">操作</a>',
-                            'template' => '{view} {update} {delete} {article-list}',
+                            'template' => '{view} {update} {delete}',
                             'buttons'=>[
                                 'view' => function ($url, $model, $key) {
                                     return Html::a('<small>查看</small>', $url);
@@ -135,14 +147,12 @@ $params = Yii::$app->request->queryParams;
                                         ],
                                     ]);
                                 },
-                                'article-list' => function($url, $model, $key){
-                                    return Html::a('<small>文章列表</small>', Url::to(['article/index','id'=>$model->id]));
-                                }
 
                             ],
-
                         ],
+
                     ],
+
                 ]); ?>
                 <!-- \content -->
             </div>
