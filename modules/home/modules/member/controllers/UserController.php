@@ -21,6 +21,8 @@ use yii\web\NotFoundHttpException;
 
 class UserController extends BaseController
 {
+    private $_user;
+
     public function behaviors()
     {
         return [
@@ -55,7 +57,7 @@ class UserController extends BaseController
 
     //账号设置
     public function actionSetting(){
-        $model = $this->findModel(Yii::$app->user->id);
+        $model = $this->getUser();
         $model->scenario = UserForm::SCENARIO_SETTING;
 
         if(Yii::$app->request->isPost){
@@ -75,7 +77,7 @@ class UserController extends BaseController
 
     //修改头像
     public function actionAvatar(){
-        $model = $this->findModel(Yii::$app->user->id);
+        $model = $this->getUser();
         $model->scenario = UserForm::SCENARIO_AVATAR;
 
         if(Yii::$app->request->isPost){
@@ -101,7 +103,7 @@ class UserController extends BaseController
 
     //修改密码
     public function actionPassword(){
-        $model = $this->findModel(Yii::$app->user->id);
+        $model = $this->getUser();
         $model->scenario = UserForm::SCENARIO_PASSWORD;
 
         if(Yii::$app->request->isPost){
@@ -119,7 +121,7 @@ class UserController extends BaseController
 
     //修改邮箱
     public function actionEmail(){
-        $model = $this->findModel(Yii::$app->user->id);
+        $model = $this->getUser();
         $model->scenario = UserForm::SCENARIO_EMAIL;
 
         if(Yii::$app->request->isPost){
@@ -136,12 +138,13 @@ class UserController extends BaseController
         ]);
     }
 
-    protected function findModel($id)
-    {
-        if (($model = User::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
+    //获取当前用户模型
+    private function getUser(){
+        if(!empty($this->_user))
+            return $this->_user;
+
+        $this->_user = User::findOne(Yii::$app->user->id);
+
+        return $this->_user;
     }
 }

@@ -44,7 +44,7 @@ class SearchTopic extends Topic
     {
         $query = Topic::find()
             ->with(['category'])
-            ->andWhere(['!=', 'status', self::STATUS_RECYCLE]);//排除回收站的话题
+            ->andWhere(['!=', 'status', self::STATUS_RECYCLE]);//只排除回收站的话题
 
 
         $dataProvider = new ActiveDataProvider([
@@ -52,13 +52,15 @@ class SearchTopic extends Topic
             'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
         ]);
 
+
+        //以手动设置的用户id为准
+        if(!empty($user_id)){
+            $query->andWhere(['user_id'=>$user_id]);
+            unset($params['user_id']);
+        }
+
         //块赋值
         $this->attributes = $params;
-
-        //如果传递用户id就以传递的为准
-        if (!empty($user_id))
-            $this->user_id = $user_id;
-
 
         if (!$this->validate()) {
             return $dataProvider;

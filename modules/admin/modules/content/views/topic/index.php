@@ -20,10 +20,9 @@ $status = (int)(isset($searchModel->status) ? $searchModel->status : 0);
     <div class="box-header with-border">
         <div class="pull-left">
             <?= Html::a('创建话题', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
-            <?php
-            echo Html::a('回收站', Url::current(['status'=>Topic::STATUS_RECYCLE]), [
-                'class' => 'btn btn-warning btn-flat '
-            ]) ?>
+            <?= Html::a('话题列表', ['index','status'=>null], ['class' => 'btn btn-info btn-flat']) ?>
+            <?= Html::a('回收站', ['index','status'=>Topic::STATUS_RECYCLE], ['class' => 'btn btn-warning btn-flat']) ?>
+
         </div>
         <div class="pull-right">
             <?php echo $this->render('_search', [

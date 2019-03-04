@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use app\components\Helper;
 use app\models\content\Article;
+use app\models\content\Topic;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\content\Article */
@@ -78,6 +79,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'check',
                     'format' => 'raw',
                     'value' => function($model){
+                        if($model->topic->secrecy == Topic::SECR_PRIVATE)
+                            return '私密文章';
+
                         $input = Html::activeRadioList($model, 'check', [
                             Article::CHECK_WAIT => '待审核',
                             Article::CHECK_ADOPT => '审核通过',

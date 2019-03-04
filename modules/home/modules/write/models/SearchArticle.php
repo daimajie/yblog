@@ -37,26 +37,29 @@ class SearchArticle extends Article
     /**
      * Creates data provider instance with search query applied
      */
-    public function search($params, $user_id=null)
+    public function search($params, $topic_id=null, $user_id=null)
     {
         $query = Article::find()
-            ->andWhere(['!=', 'status', self::STATUS_RECYCLE])//排除回收站的话题
-            ->andWhere(['topic_id'=>$this->topic_id]);
+            ->andWhere(['!=', 'status', self::STATUS_RECYCLE]);//排除回收站的话题
 
-        // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
         ]);
 
+        //以手动设置的为准
+        if(!empty($topic_id)){
+            $query->andWhere(['topic_id'=>$topic_id]);
+            unset($params['topic_id']);
+        }
 
-
+        //以手动设置的为准
+        if(!empty($user_id)){
+            $query->andWhere(['user_id'=>$user_id]);
+            unset($params['user_id']);
+        }
 
         $this->attributes = $params;
-
-        if(!empty($user_id)){
-            $this->user_id = $user_id;
-        }
 
         //验证文章标题数据
         if(!$this->validate()){

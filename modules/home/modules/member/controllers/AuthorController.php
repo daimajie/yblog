@@ -27,25 +27,22 @@ class AuthorController extends BaseController
 
 
         $searchModel = new SearchArticle();
-        $searchModel->user_id = $id;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, null, $id);
 
         //作者最近更新的话题列表
-        $category = Topic::getActiveCategoryByUser($id, 5);
+        $topics = Topic::getActiveTopicsByUser($id, 5);
+
+        //获取作者私密话题
+        $secrecy = Topic::getSecrecyTopicByUser($id);
 
         return $this->render('index', [
-            'model' => $model,
+            'model' => $model, //作者模型
             'dataProvider' => $dataProvider,
-            'category' => $category,
-            'topicCount' => Topic::find()->where(['user_id'=>$id])->count()
+            'topics' => $topics,
+            'topicCount' => Topic::getCountByUser($id),
+            'secrecy' => $secrecy
         ]);
-    }
-
-    /**
-     * 写文章
-     */
-    public function actionWrite(){
-
     }
 
     /**
@@ -55,7 +52,7 @@ class AuthorController extends BaseController
     {
         if (($model = User::findOne($id)) !== null) {
             //是否是作者
-            if($model->author > 0)
+            if($model->author >= 0)
                 return $model;
         }
         throw new NotFoundHttpException('您请求的页面不存在。');

@@ -97,6 +97,9 @@ $params = Yii::$app->request->queryParams;
                             'attribute' => 'check',
                             'enableSorting' => false,
                             'value' => function($model){
+                                if($model->secrecy == Topic::SECR_PRIVATE)
+                                    return '';
+
                                 $tmp = ['待审核','通过','失败'];
                                 return $tmp[$model->check - 1];
                             }

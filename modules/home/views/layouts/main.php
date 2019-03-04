@@ -5,6 +5,7 @@ use app\assets\MainAsset;
 use app\components\Helper;
 use app\modules\home\controllers\BaseController;
 use yii\widgets\ActiveForm;
+use yii\widgets\Menu;
 
 
 
@@ -108,7 +109,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                 <ul class="sidenav__menu-dropdown">
                     <?php
                     if(!empty($this->params['isHome'])){
-                        $router = '';
+                        $router = Yii::$app->defaultRoute;
                     }else{
                         $router = '/home/content/topic/index';
                     }
@@ -176,33 +177,40 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                         <img class="logo__img" src="static/assets/img/logo_mobile.png" srcset="static/assets/img/logo_mobile.png 1x, static/assets/img/logo_mobile@2x.png 2x" alt="logo">
                     </a>
 
-                    <!-- Nav-wrap -->
                     <nav class="flex-child nav__wrap d-none d-lg-block">
-                        <ul class="nav__menu">
-                            <li class="active">
-                                <a href="/">首页</a>
-                            </li>
-                            <?php if(!empty($base[BaseController::CACHE_CATEGORY_LIST])):?>
-                                <li class="nav__dropdown">
-                                    <a href="javascript:void(0);">内容分类</a>
-                                    <ul class="nav__dropdown-menu">
-                                        <?php foreach($base[BaseController::CACHE_CATEGORY_LIST] as $key => $val):?>
-                                            <li><a href="<?= Url::to([$router, 'category_id'=>$key])?>"><?= $val?></a></li>
-                                        <?php endforeach;?>
-                                    </ul>
-                                </li>
-                            <?php endif;?>
-                            <li>
-                                <a href="<?= Url::to(['/home/content/topic/index'])?>">热门话题</a>
-                            </li>
-                            <li>
-                                <a href="<?= Url::to(['/home/index/about'])?>">关于</a>
-                            </li>
-                            <li>
-                                <a href="<?= Url::to(['/home/index/contact'])?>">联系</a>
-                            </li>
-                        </ul> <!-- end menu -->
-                    </nav> <!-- end nav-wrap -->
+                        <?php
+
+                        $tmp = [];
+                        foreach ($base[BaseController::CACHE_CATEGORY_LIST] as $key => $val){
+                            $tmp[] = [
+                                'label'  => $val,
+                                'url'    => [$router, 'category_id'=>$key]
+                            ];
+                        }
+
+                        echo Menu::widget([
+                            'options' => [
+                                    'class' => 'nav__menu'
+                            ],
+                            'submenuTemplate' => "\n<ul class='nav__dropdown-menu'>\n{items}\n</ul>\n",
+                            'items' => [
+                                ['label' => '首页', 'url' => [Yii::$app->defaultRoute], ['options'=>['class'=>'active']]],
+                                [
+                                    'label' => '内容分类',
+                                    'url'=>'javascript:void(0);',
+                                    'options'=>['class'=>'nav__dropdown'],
+                                    'items'=>$tmp
+                                ],
+                                ['label' => '热门话题', 'url' => ['/home/content/topic/index']],
+                                ['label' => '关于', 'url' => ['/home/index/about']],
+                                ['label' => '联系', 'url' => ['/home/index/contact']],
+
+                            ],
+                        ]);
+                        ?>
+                    </nav>
+
+                    <!-- end nav-wrap -->
 
                     <!-- Nav Right -->
                     <div class="nav__right nav--align-right d-lg-flex">
@@ -239,7 +247,11 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
     <!-- end navigation -->
 
     <!-- Header -->
-    <?php if(!isset($showHeader) || $showHeader):?>
+    <?php
+    $mt = 'mt-40';
+    if(!isset($showHeader) || $showHeader):
+        $mt = 'mt-0';
+        ?>
     <div class="header">
         <div class="container">
             <div class="flex-parent align-items-center">
@@ -263,7 +275,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
     <!-- end header -->
 
 
-    <div class="main-container container mt-40" id="main-container">
+    <div class="main-container container <?= $mt?>" id="main-container">
 
         <!-- Content -->
         <?= $content ?>

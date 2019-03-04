@@ -20,7 +20,6 @@ use app\modules\home\modules\write\models\ArticleForm;
 use app\modules\home\modules\write\models\SearchArticle;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 use app\widgets\select2\actions\SelectAction;
 use Yii;
@@ -102,9 +101,8 @@ class ArticleController extends BaseController
         $model = $this->findModel($id);
 
         $searchModel = new SearchArticle();
-        $searchModel->topic_id = $id;
 
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->user->id);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id, $this->user->id);
 
         return $this->render('index', [
             'model' => $model,
@@ -112,6 +110,7 @@ class ArticleController extends BaseController
         ]);
     }
 
+    //文章详情页********************************
     public function actionView($id){
         $model = $this->findArticleModel($id);
 

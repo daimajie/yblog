@@ -3,8 +3,6 @@ use app\models\content\Topic;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use app\widgets\Alert;
-use yii\helpers\Url;
-use app\components\ViewHelper;
 use app\models\content\Article;
 
 $params = Yii::$app->request->queryParams;
@@ -98,16 +96,20 @@ $params = Yii::$app->request->queryParams;
 
                                 return $tmp[$model->check];
                             },
+                            'visible' => $model->secrecy != Topic::SECR_PRIVATE
                         ],
                         [
                             'attribute' => 'status',
                             'value' => function($model){
+                                if($model->topic->secrecy == Topic::SECR_PRIVATE)
+                                    return '私密文章';
+
                                 $tmp = [
                                     Article::STATUS_NORMAL => '公示',
                                     Article::STATUS_DRAFT => '草稿',
                                 ];
                                 return $tmp[$model->status];
-                            }
+                            },
                         ],
                         [
                             'attribute' => 'visited',

@@ -36,16 +36,15 @@ class SearchArticle extends Article
     /**
      * Creates data provider instance with search query applied
      */
-    public function search($params, $user_id=null)
+    public function search($params, $topic_id=null, $user_id=null)
     {
         $query = Article::find()
             ->with(['user'])
             ->where([
-                'check' => self::CHECK_ADOPT, //审核通过的文章
+                'check' => self::CHECK_ADOPT,   //审核通过的文章（可以刨除私密话题的文章）
                 'status' => self::STATUS_NORMAL,//公示文章
             ]);
 
-        // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
@@ -59,12 +58,21 @@ class SearchArticle extends Article
             return $dataProvider;
         }
 
+        //使用传递的话题id
+        if(!empty($topic_id)){
+            $query->andWhere(['topic_id'=>$topic_id]);
+            unset($params['topic_id']);
+        }
+
+        //使用传递的作者id
+        if(!empty($user_id)){
+            $query->andWhere(['user_id'=>$user_id]);
+            unset($params['user_id']);
+        }
+
 
         $this->attributes = $params;
 
-        if(!empty($user_id)){
-            $this->user_id = $user_id;
-        }
 
         //验证文章标题数据
         if(!$this->validate()){
@@ -85,8 +93,6 @@ class SearchArticle extends Article
             }
 
         }
-
-
 
 
         //必须是当前话题的文章

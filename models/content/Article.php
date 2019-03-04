@@ -767,7 +767,7 @@ class Article extends ArticleForm
 
     /*home*/
     /**
-     * 获取制定文章模型
+     * 获取指定文章模型
      * @param $id
      * @return Article|array|ActiveRecord|null
      */
@@ -775,7 +775,9 @@ class Article extends ArticleForm
 
         return self::find()->with(['topic','user','tags','content'])
             ->where([
-                'id' => $id
+                'id' => $id,
+                'status' => self::STATUS_NORMAL,
+                'check' => self::CHECK_ADOPT
             ])
             ->asArray()
             ->one();

@@ -11,7 +11,7 @@ $config = [
     'timeZone' => 'Asia/Shanghai',
     'language' => 'zh-CN',
     'charset' => 'utf-8',
-    'defaultRoute' => 'home/index/index',
+    'defaultRoute' => '/home/index/index',
 
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -40,7 +40,7 @@ $config = [
             'loginUrl' => ['/home/index/login']
         ],
         'errorHandler' => [
-            'errorAction' => 'home/index/error',
+            'errorAction' => '/home/index/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

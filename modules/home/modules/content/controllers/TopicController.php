@@ -37,7 +37,7 @@ class TopicController extends BaseController
 
     /**
      * #文章列表
-     * @param $id
+     * @param $id int #话题id
      * @return string
      */
     public function actionView($id){
@@ -45,9 +45,8 @@ class TopicController extends BaseController
         $model = $this->findModel($id);
 
         $searchModel = new SearchArticle();
-        $searchModel->topic_id = $id;
 
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
 
         return $this->render('view', [
             'model' => $model,

@@ -100,13 +100,78 @@ $title = trim(Yii::$app->request->get('title', ''));
                 <p class="mb-3"><?= empty($model['user']['intro']) ? '博主好懒～什么也没留下！' : Html::encode($model['user']['intro'])?></p>
             </div>
         </div>
+        <!--作者私密话题-->
+        <div class="widget widget-reviews">
+            <h4 class="widget-title">私密话题</h4>
+            <ul class="post-list-small">
+                <?php
+                foreach($secrecy as $key => $val):
+                    ?>
+                    <li class="post-list-small__item">
+                        <article class="post-list-small__entry clearfix">
+                            <div class="post-list-small__img-holder">
+                                <div class="thumb-container thumb-75">
+                                    <a href="<?= Url::to(['/home/write/topic/show','id'=>$val['id']])?>">
+                                        <img data-src="<?= ViewHelper::showImage($val['image'])?>" src="<?= ViewHelper::showImage($val['image'])?>" alt="" class=" lazyloaded">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="post-list-small__body">
+                                <h3 class="post-list-small__entry-title">
+                                    <a href="<?= Url::to(['/home/write/topic/show','id'=>$val['id']])?>"><?= Html::encode($val['name'])?></a>
+                                </h3>
+                                <ul class="entry__meta">
+                                    <li class="entry__meta-date">
+                                        <i class="ui-author"></i>
+                                        <?= ViewHelper::username($model->username, $model->nickname)?>
+                                    </li>
+                                    <li class="entry__meta-date">
+                                        <i class="ui-xing"></i>
+                                        <?php
+                                        $tmp = [
+                                            Topic::STATUS_NORMAL => '连载中',
+                                            Topic::STATUS_FINISH => '完结',
+                                            Topic::STATUS_RECYCLE => '回收站',
+                                        ];
+                                        echo $tmp[$val['status']];
+                                        ?>
+                                    </li>
+                                    <li class="entry__meta-comments">
+                                        <i class="ui-flickr"></i>
+                                        <?= $val['count']?>篇
+                                    </li>
+                                </ul>
+                                <ul class="entry__meta">
+                                    <li class="entry__meta-date">
+                                        <i class="ui-date"></i>
+                                        <?= ViewHelper::time($val['updated_at'])?>
+                                    </li>
+                                </ul>
+                            </div>
+                        </article>
+                    </li>
+                <?php
+                endforeach;
+                ?>
+                <li class="post-list-small__item">
+                    <article class="post-list-small__entry clearfix">
+                        <div class="post-list-small__body">
+                            <h3 class="post-list-small__entry-title">
+                                <a href="<?= Url::to(['/home/content/topic/index', 'user_id'=>$model->id])?>">查看作者更多话题</a>
+                            </h3>
+                        </div>
+                    </article>
+                </li>
+
+            </ul>
+        </div>
 
         <!--作者话题-->
         <div class="widget widget-reviews">
             <h4 class="widget-title">作者话题</h4>
             <ul class="post-list-small">
                 <?php
-                foreach($category as $key => $val):
+                foreach($topics as $key => $val):
                 ?>
                 <li class="post-list-small__item">
                     <article class="post-list-small__entry clearfix">

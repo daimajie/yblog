@@ -29,7 +29,7 @@ class ArticleController extends BaseController
 
 
     /**
-     * 获取制定文章模型
+     * 获取指定文章
      */
     protected function findModel($id)
     {

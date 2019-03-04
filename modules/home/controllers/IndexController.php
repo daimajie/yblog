@@ -9,6 +9,7 @@ use app\models\member\ForgetForm;
 use Yii;
 use yii\base\Exception;
 use yii\filters\AccessControl;
+use yii\helpers\VarDumper;
 use yii\web\MethodNotAllowedHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -27,7 +28,7 @@ class IndexController extends BaseController
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['logout','login','register','forget','reset_password'],
                 'rules' => [
                     [
@@ -81,6 +82,7 @@ class IndexController extends BaseController
 
         $searchModel = new SearchArticle();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index',[
             'dataProvider' => $dataProvider,
         ]);

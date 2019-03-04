@@ -11,6 +11,7 @@ namespace app\modules\home\modules\write\controllers;
 
 
 use app\models\content\Category;
+use app\modules\home\modules\write\models\SearchArticle;
 use yii\filters\AccessControl;
 use app\models\content\Topic;
 use app\modules\home\controllers\BaseController;
@@ -30,10 +31,10 @@ class TopicController extends BaseController
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['index','create','update','delete'],
+                'only' => ['index','create','update','delete','view','show'],
                 'rules' => [
                     [
-                        'actions' => ['index','create','update','delete'],
+                        'actions' => ['index','create','update','delete','view','show'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -76,6 +77,7 @@ class TopicController extends BaseController
     //话题列表
     public function actionIndex(){
         $searchModel = new SearchTopic();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->user->id);
 
         return $this->render('index',[
@@ -144,6 +146,21 @@ class TopicController extends BaseController
         ]);
     }
 
+    //话题文章列表**************************
+    public function actionShow($id){
+        $model = $this->findTopicModel($id);
+
+        $searchModel = new SearchArticle();
+
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id, $this->user->id);
+
+        return $this->render('show', [
+            'model' => $model,
+            'dataProvider' => $dataProvider,
+            'cloudTags' => $model->getTags()->asArray()->all()
+        ]);
+    }
+
     //获取模型
     protected function findTopicModel($id)
     {
@@ -154,4 +171,6 @@ class TopicController extends BaseController
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
 }

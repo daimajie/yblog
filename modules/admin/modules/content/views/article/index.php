@@ -6,6 +6,7 @@ use app\models\content\Article;
 use app\components\Helper;
 use yii\helpers\Url;
 use app\assets\LayerAsset;
+use app\models\content\Topic;
 
 LayerAsset::register($this);
 
@@ -103,6 +104,9 @@ $batchList = include_once('batchOperate.php');
                 [
                     'attribute' => 'check',
                     'value' => function($model){
+                        if($model->topic->secrecy == Topic::SECR_PRIVATE)
+                            return '私密文章';
+
                         $tmp = [
                             Article::CHECK_WAIT => '待审核',
                             Article::CHECK_ADOPT => '审核通过',

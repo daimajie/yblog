@@ -343,7 +343,7 @@ class Topic extends \yii\db\ActiveRecord
         return $provider;
     }
     //获取指定作者N个活跃话题
-    public static function getActiveCategoryByUser($user_id, $limit){
+    public static function getActiveTopicsByUser($user_id, $limit){
         if($user_id <= 0) return [];
         $ret = self::find()
             ->with(['category'])
@@ -359,6 +359,41 @@ class Topic extends \yii\db\ActiveRecord
             ->all();
         return $ret;
 
+    }
+
+    public static function getSecrecyTopicByUser($user_id){
+        if($user_id <= 0) return [];
+        $ret = self::find()
+            ->with(['category'])
+            ->where([
+                'secrecy' => self::SECR_PRIVATE
+            ])
+            ->andWhere(['!=', 'status', self::STATUS_RECYCLE])
+            ->andWhere(['user_id'=>$user_id])
+            ->orderBy(['updated_at'=>SORT_DESC])
+            ->asArray()
+            ->all();
+        return $ret;
+    }
+
+
+    /**
+     * 根据用户获取话题总数(去除回收站 私有 非审核通过的话题)
+     * @param $user_id
+     */
+    public static function getCountByUser($user_id){
+        if(!$user_id)
+            return -1;
+
+        return self::find()->where([
+            'check' => self::CHECK_ADOPT,
+            'secrecy' => self::SECR_PUBLIC,
+            'user_id' => $user_id
+        ])->andWhere([
+            '!=',
+            'status',
+            self::STATUS_RECYCLE
+        ])->count();
     }
 
 

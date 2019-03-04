@@ -108,15 +108,15 @@ $title = trim(Yii::$app->request->get('title', ''));
         <!--search article-->
         <div class="widget widget_mc4wp_form_widget text-center">
             <?= Html::beginForm(['view','id'=>$model['id']], 'get',['class'=>'search-form']) ?>
-                <?= Html::input('text', 'title', !empty($title)?trim($title):'', [
-                    'placeholder'=>'话题名称',
-                    'autocomplete'=>"off",
-                    'class' => 'search-input mb-0'
-                ]) .
-                Html::submitButton('<i class="ui-search search-icon"></i>', [
-                    'class' => 'search-button btn btn-lg btn-color btn-button'
-                ])
-                ?>
+            <?= Html::input('text', 'title', !empty($title)?trim($title):'', [
+                'placeholder'=>'话题名称',
+                'autocomplete'=>"off",
+                'class' => 'search-input mb-0'
+            ]) .
+            Html::submitButton('<i class="ui-search search-icon"></i>', [
+                'class' => 'search-button btn btn-lg btn-color btn-button'
+            ])
+            ?>
             <?= Html::endForm() ?>
         </div>
         <!-- Widget Tags -->

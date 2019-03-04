@@ -40,16 +40,16 @@ class SearchTopic extends Topic
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $user_id=null)
+    public function search($params)
     {
         //排除 私密话题 待审核和审核失败 以及冻结的话题
         $query = Topic::find()
             ->with(['category','user'])
             ->where([
-                'check' => self::CHECK_ADOPT,
-                'secrecy' => self::SECR_PUBLIC
+                'check' => self::CHECK_ADOPT, //审核通过的话题
+                'secrecy' => self::SECR_PUBLIC//公开话题
             ])
-            ->andWhere(['!=', 'status', self::STATUS_RECYCLE]);
+            ->andWhere(['!=', 'status', self::STATUS_RECYCLE]); //非回收站的
 
         // add conditions that should always apply here
 
@@ -61,15 +61,8 @@ class SearchTopic extends Topic
         //块赋值
         $this->attributes = $params;
 
-        //如果传递用户id就以传递的为准
-        if (!empty($user_id))
-            $this->user_id = $user_id;
-
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-
             return $dataProvider;
         }
 
