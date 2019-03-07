@@ -23,6 +23,7 @@ if(!$isGuest){
 $base = $this->params['base'];
 $router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
 $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] : true;
+
 ?>
 
 
@@ -173,8 +174,8 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                     </button> <!-- end Side menu button -->
 
                     <!-- Mobile logo -->
-                    <a href="index.html" class="logo logo--mobile d-lg-none">
-                        <img class="logo__img" src="static/assets/img/logo_mobile.png" srcset="static/assets/img/logo_mobile.png 1x, static/assets/img/logo_mobile@2x.png 2x" alt="logo">
+                    <a href="<?= Url::home([])?>" class="logo logo--mobile d-lg-none">
+                        <img class="logo__img" src="<?= $base['seo']['logo']['mobile']?>" alt="logo">
                     </a>
 
                     <nav class="flex-child nav__wrap d-none d-lg-block">
@@ -257,8 +258,8 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
             <div class="flex-parent align-items-center">
 
                 <!-- Logo -->
-                <a href="index.html" class="logo d-none d-lg-block">
-                    <img class="logo__img" src="static/assets/img/logo.png" srcset="static/assets/img/logo.png 1x, static/assets/img/logo@2x.png 2x" alt="logo">
+                <a href="<?= Url::home([])?>" class="logo d-none d-lg-block">
+                    <img class="logo__img" src="<?= $base['seo']['logo']['pc']?>" alt="logo">
                 </a>
 
                 <!-- Ad Banner 728 -->

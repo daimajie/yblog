@@ -37,8 +37,8 @@ class Topic extends \yii\db\ActiveRecord
     const CHECK_DENIAL = 3;
 
     //公开状态
-    const SECR_PRIVATE = '1';
-    const SECR_PUBLIC = '2';
+    const SECR_PRIVATE = 1;
+    const SECR_PUBLIC = 2;
 
     const SCENARIO_STATUS = 'status';
 

@@ -2,6 +2,14 @@
 
 return [
     'adminEmail' => 'daimajie@qq.com',
+    //站点信息
+    'seo' => [
+        'name' => 'y-blog',
+        'keywords' => '网络写作社区,文章发布,网络博客',
+        'description' => '这是一个基于话题的为网络写手提供的写作平台，包含文学 长篇故事 短篇故事散文 生活记事等作品。',
+        'logo' => ['pc'=>'static/assets/img/logo.png','mobile'=>'static/assets/img/logo_mobile.png'],
+        'qrcode' => 'static/assets/img/blog/rqcode.png',
+    ],
 
     //后台应用参数
     'admin_app' => [

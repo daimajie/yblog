@@ -4343,3 +4343,6 @@ dd {
 .help-block{
   color: #dc3545!important;
 }
+.active-author img{
+  border-radius: 50%;
+}
