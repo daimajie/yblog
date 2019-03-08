@@ -3,9 +3,7 @@
 namespace app\modules\home\modules\write\controllers;
 
 use Yii;
-use app\models\content\Tag;
-use app\modules\home\controllers\BaseController;
-use yii\filters\AccessControl;
+use app\modules\home\modules\write\models\TagForm as Tag;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\base\Exception;
@@ -16,7 +14,7 @@ use yii\widgets\ActiveForm;
 /**
  * TagController implements the CRUD actions for Tag model.
  */
-class TagController extends BaseController
+class TagController extends WriteBaseController
 {
 
     /**
@@ -29,17 +27,6 @@ class TagController extends BaseController
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                ],
-            ],
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['validateForm','create','update','delete','get-tags'],
-                'rules' => [
-                    [
-                        'actions' => ['validateForm','create','update','delete','get-tags'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
                 ],
             ],
         ];
@@ -132,7 +119,7 @@ class TagController extends BaseController
      */
     protected function findModel($id)
     {
-        if (($model = Tag::findOne($id)) !== null) {
+        if (($model = Tag::findOne($id)) !== null && $model->user_id == Yii::$app->user->id) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

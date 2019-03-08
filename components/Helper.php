@@ -193,4 +193,48 @@ class Helper
         $session[$key] = $data;//保存回session
         return true;
     }
+
+
+    public static function checkRoute($route, $params = [], $user = null){
+        $r = static::normalizeRoute($route);
+
+        //精确匹配
+        if ($user->can($r, $params)) {
+            return true;
+        }
+
+        //通配符匹配
+        while (($pos = strrpos($r, '/')) > 0) {
+            $r = substr($r, 0, $pos);
+            if ($user->can($r . '/*', $params)) {
+                return true;
+            }
+        }
+
+        //所有权限
+        return $user->can('/*', $params);
+    }
+
+    /**
+     * Normalize route
+     * @param  string  $route    Plain route string
+     * @param  boolean|array $advanced Array containing the advanced configuration. Defaults to false.
+     * @return string            Normalized route string
+     */
+    protected static function normalizeRoute($route)
+    {
+        if ($route === '') {
+            $normalized = '/' . Yii::$app->controller->getRoute();
+        } elseif (strncmp($route, '/', 1) === 0) {
+            $normalized = $route;
+        } elseif (strpos($route, '/') === false) {
+            $normalized = '/' . Yii::$app->controller->getUniqueId() . '/' . $route;
+        } elseif (($mid = Yii::$app->controller->module->getUniqueId()) !== '') {
+            $normalized = '/' . $mid . '/' . $route;
+        } else {
+            $normalized = '/' . $route;
+        }
+
+        return $normalized;
+    }
 }

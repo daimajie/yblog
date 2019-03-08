@@ -2,92 +2,60 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\widgets\ActiveForm;
-use yii\helpers\Url;
-use yii\grid\GridView;
 use app\models\rbac\AuthItem;
-use app\components\ViewHelper;
-
+use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
-/* @var $model app\models\member\User */
+/* @var $model app\models\rbac\AuthItem */
 
-$this->title = $model->username;
-$this->params['breadcrumbs'][] = ['label' => '用户列表', 'url' => ['index']];
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => '权限列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="row">
     <div class="col-lg-4">
-        <div class="user-view box box-primary">
+        <div class="auth-item-view box box-primary">
             <div class="box-header">
-                <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-flat']) ?>
-                <?= Html::a('删除', ['delete', 'id' => $model->id], [
+                <?= Html::a('修改', ['update', 'id' => $model->name], ['class' => 'btn btn-primary btn-flat']) ?>
+                <?= Html::a('删除', ['delete', 'id' => $model->name], [
                     'class' => 'btn btn-danger btn-flat',
                     'data' => [
-                        'confirm' => '您确定要删除该用户吗?',
+                        'confirm' => '您确定要删除该项目吗?',
                         'method' => 'post',
                     ],
                 ]) ?>
             </div>
-            <?php $form = ActiveForm::begin([
-                'action' => Url::to(['view','id'=>$model->id]),
-            ]); ?>
             <div class="box-body table-responsive no-padding">
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-                        'id',
-                        'username',
-                        'nickname',
-                        'email:email',
+                        'name',
                         [
-                            'attribute' => 'image',
-                            'format' => 'image',
+                            'attribute' => 'type',
                             'value' => function($model){
-                                return ViewHelper::showImage($model->image);
-                            },
-                        ],
-                        'status',
-                        [
-                            'attribute' => 'author',
-                            'label' => '写作文章',
-                            'format' => 'raw',
-                            'value' => function($model){
-                                if($model->author >= 0){
-                                    return $model->author;
-                                }
-
-                                $input =  Html::activeRadioList($model, 'author', [
-                                    '-1' => '读者',
-                                    '0' => '作者',
-                                ]);
-                                $error = Html::error($model, 'author', ['class' => 'text-danger']);
-                                return $input . $error;
+                                $tmp = [
+                                    AuthItem::TYPE_ROLE => '角色',
+                                    AuthItem::TYPE_ROUTER => '路由'
+                                ];
+                                return $tmp[$model->type];
                             }
                         ],
-
-                        //'auth_key',
-                        //'password_hash',
-                        //'password_reset_token',
+                        'description:ntext',
+                        'rule_name',
+                        'data',
                         'created_at:datetime',
                         'updated_at:datetime',
+
                     ],
                 ]) ?>
             </div>
-            <div class="box-footer">
-                <?= Html::submitButton('提交保存', [
-                        'class' => 'btn btn-info btn-flat ' . ($model->author >= 0 ? 'hide' : '')
-                ]) ?>
-            </div>
-            <?php ActiveForm::end(); ?>
         </div>
     </div>
     <div class="col-lg-8">
         <?php
-        $form = ActiveForm::begin([
-            'action' => ['assignment'],
-            'method' => 'POST'
-        ]);
-        echo Html::hiddenInput('user_id', $model->id);
+        $form = ActiveForm::begin([]);
+        echo Html::hiddenInput('role_name', $model->name);
         ?>
         <div class="auth-item-view box box-primary">
             <div class="box-body table-responsive no-padding">
@@ -104,15 +72,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                         ],
                         [
-                            'label' => '拥有权限(角色)',//authItemChildren
+                            'label' => '拥有权限(路由)',//authItemChildren
                             'format' => 'raw',
-                            'value' => function($model) use ($rolesName){
+                            'value' => function($model) use($routers){
                                 $checked = false;
-                                if( in_array($model->name, $rolesName) ){
+                                if( in_array($model->name, $routers) ){
                                     $checked = true;
                                 }
 
-                                $input = Html::checkbox('roles[]', $checked, ['value'=>$model->name]);
+                                $input = Html::checkbox('children[]', $checked, ['value'=>$model->name]);
                                 return $input;
                             },
                             'footerOptions' => ['colspan' => 5],
@@ -164,4 +132,5 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php ActiveForm::end()?>
     </div>
 </div>
+
 

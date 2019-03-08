@@ -3,10 +3,16 @@
 namespace app\modules\admin\modules\member\controllers;
 
 use app\models\member\UserForm;
+use app\models\rbac\AuthAssignment;
+use app\models\rbac\AuthItem;
 use Yii;
 use app\models\member\UserForm as User;
 use app\models\member\SearchUser;
 use app\modules\admin\controllers\BaseController;
+use yii\base\Exception;
+use yii\data\ActiveDataProvider;
+use yii\helpers\VarDumper;
+use yii\rbac\Assignment;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -25,6 +31,7 @@ class UserController extends BaseController
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'assignment' => ['POST'],
                 ],
             ],
         ];
@@ -55,6 +62,8 @@ class UserController extends BaseController
 
         $model = $this->findModel($id);
 
+
+
         if(Yii::$app->request->isPost){
             //设置场景
             $model->scenario = UserForm::SCENARIO_STATUS;
@@ -70,11 +79,62 @@ class UserController extends BaseController
 
         }
 
+        // 授权数据
+        $routerDataProvider = new ActiveDataProvider([
+            'query' => AuthItem::find()->with(['ruleName'])->where(['type'=>AuthItem::TYPE_ROLE]),
+            'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
+            'pagination' => [
+                'pageSize' => 100
+            ]
+        ]);
+
+        //获取选中的角色
+        $hasRoles = $this->getAuthManager()->getRolesByUser($model->id);
+        $rolesName = array_keys($hasRoles);
+
+
 
 
         return $this->render('view', [
             'model' => $model,
+            'routerDataProvider' => $routerDataProvider,
+            'rolesName' => $rolesName
         ]);
+    }
+
+    //分派角色
+    public function actionAssignment(){
+        $user_id = (int) Yii::$app->request->post('user_id');
+        $roles = Yii::$app->request->post('roles');
+
+        if(empty($user_id)){
+            throw new Exception('传递参数错误。');
+        }
+
+        $user = $this->findModel($user_id);
+
+        //清空该用户所有的角色
+        if(AuthAssignment::deleteAll(['user_id'=>$user->id]) === false){
+            throw new Exception('清空用户角色失败。');
+        }
+
+        //指派新角色
+        if(empty($roles) || !is_array($roles)){
+
+            return $this->redirect(['user/view','id'=>$user->id]);
+        }
+
+        $auth = $this->getAuthManager();
+
+        foreach ($roles as $item){
+            //获取角色
+            $role = $auth->getRole($item);
+            $auth->assign($role, $user->id);
+        }
+
+
+        return $this->redirect(['user/view','id'=>$user->id]);
+
     }
 
     /**
@@ -149,5 +209,10 @@ class UserController extends BaseController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    //获取authManager
+    private function getAuthManager(){
+        return Yii::$app->authManager;
     }
 }

@@ -21,6 +21,10 @@ return [
         'motion' => [
             'class' => 'app\modules\admin\modules\motion\Module',
         ],
+        //用户管理
+        'rbac' => [
+            'class' => 'app\modules\admin\modules\rbac\Module',
+        ],
     ],
     'components' => [
 

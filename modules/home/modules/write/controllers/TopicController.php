@@ -12,9 +12,7 @@ namespace app\modules\home\modules\write\controllers;
 
 use app\models\content\Category;
 use app\modules\home\modules\write\models\SearchArticle;
-use yii\filters\AccessControl;
 use app\models\content\Topic;
-use app\modules\home\controllers\BaseController;
 use app\modules\home\modules\write\models\SearchTopic;
 use app\modules\home\modules\write\models\TopicForm;
 use app\widgets\upload\actions\UploadAction;
@@ -22,26 +20,10 @@ use Yii;
 use yii\base\Exception;
 use yii\web\NotFoundHttpException;
 
-class TopicController extends BaseController
+class TopicController extends WriteBaseController
 {
     public $user; //当前用户
 
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['index','create','update','delete','view','show'],
-                'rules' => [
-                    [
-                        'actions' => ['index','create','update','delete','view','show'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ];
-    }
 
     //独立方法
     public function actions()

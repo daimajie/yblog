@@ -2,25 +2,26 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\rbac\AuthItem;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\member\SearchUser */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '创建用户';
+$this->title = '权限列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index box box-primary">
+<div class="auth-item-index box box-primary">
     <div class="box-header with-border">
 
         <div class="pull-left">
-            <?= Html::a('创建用户', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
+            <?= Html::a('创建权限', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
         </div>
         <div class="pull-right">
             <?php echo $this->render('_search', [
                 'model' => $searchModel,
             ]); ?>
         </div>
+
     </div>
     <div class="box-body table-responsive no-padding">
         <?= GridView::widget([
@@ -29,31 +30,35 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'id',
-                'username',
-                'nickname',
-                'email:email',
-                'status',
+                'name',
                 [
-                    'attribute' => 'author',
-                    'label' => '写作文章',
+                    'attribute' => 'type',
                     'value' => function($model){
-                        if($model->author < 0){
-                            return '读者';
-                        }
-                        return $model->author;
+                        $tmp = [
+                            AuthItem::TYPE_ROLE => '角色',
+                            AuthItem::TYPE_ROUTER => '路由'
+                        ];
+                        return $tmp[$model->type];
                     }
                 ],
+                'description:ntext',
+                'rule_name',
                 [
                     'attribute' => 'created_at',
                     'format' => ['date', 'php:Y-m-d']
                 ],
                 [
-                    'attribute' => 'created_at',
-                    'format' => ['date', 'php:Y-m-d']
-                ],
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{update} {delete} {view}',
+                    'buttons' => [
 
-                ['class' => 'yii\grid\ActionColumn'],
+                    ],
+                    'visibleButtons' => [
+                        'view' => function($model){
+                            return $model->type == AuthItem::TYPE_ROLE;
+                        },
+                    ]
+                ],
             ],
         ]); ?>
     </div>

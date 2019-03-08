@@ -15,16 +15,14 @@ use app\models\content\Article;
 use app\models\content\Tag;
 use app\widgets\upload\actions\UploadAction;
 use app\models\content\Topic;
-use app\modules\home\controllers\BaseController;
 use app\modules\home\modules\write\models\ArticleForm;
 use app\modules\home\modules\write\models\SearchArticle;
-use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use app\widgets\select2\actions\SelectAction;
 use Yii;
 
-class ArticleController extends BaseController
+class ArticleController extends WriteBaseController
 {
     public $user; //当前用户
 
@@ -35,17 +33,6 @@ class ArticleController extends BaseController
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                ],
-            ],
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['validateForm','create','update','delete','get-tags'],
-                'rules' => [
-                    [
-                        'actions' => ['validateForm','create','update','delete','get-tags'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
                 ],
             ],
         ];

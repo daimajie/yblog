@@ -263,7 +263,9 @@ class Article extends ArticleForm
 
             [['title', 'brief', 'topic_id'], 'required'],
 
-            [['topic_id'], 'exist', 'targetClass' => Topic::class, 'targetAttribute' => ['topic_id'=>'id']],
+            //[['topic_id'], 'exist', 'targetClass' => Topic::class, 'targetAttribute' => ['topic_id'=>'id']],
+            //必须是自己的
+            [['topic_id'], 'isOwner'],
 
             [['title'], 'string', 'max' => 75],
             [['brief'], 'string', 'max' => 225],
@@ -272,6 +274,24 @@ class Article extends ArticleForm
             [['status', 'check'], 'in', 'range' => [1,2,3], 'message' => '请正确选择文章状态信息'],
             [['status', 'check'], 'default', 'value' => 1],
         ]);
+    }
+
+    //查看选择的话题是不是自己的
+    public function isOwner($attr){
+        if($this->hasErrors())
+            return false;
+
+        $isOwner = Topic::find()->where([
+            'id' => $this->topic_id,
+            'user_id' => Yii::$app->user->id
+        ])->count();
+
+        if(!$isOwner)
+        {
+            $this->addError($attr, '这不是您自己的话题，不成创建文章.');
+            return false;
+        }
+        return true;
     }
 
     public function scenarios()

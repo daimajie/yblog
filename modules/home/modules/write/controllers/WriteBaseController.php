@@ -3,25 +3,25 @@
  * Created by PhpStorm.
  * User : daimajie
  * Email: daimajie@qq.com
- * Date : 2019/1/20
- * Time : 18:47
+ * Date : 2019/3/7
+ * Time : 12:59
  */
 
-namespace app\modules\admin\controllers;
+namespace app\modules\home\modules\write\controllers;
 
 
-use yii\web\Controller;
+use app\modules\home\controllers\BaseController;
 use Yii;
 use yii\web\ForbiddenHttpException;
 
-class BaseController extends Controller
+class WriteBaseController extends BaseController
 {
     public function behaviors()
     {
         return [
-            /*'as access-control' => [
+            'as access-control' => [
                 'class' => 'app\components\behaviors\AccessControl',
-            ],*/
+            ],
         ];
     }
 

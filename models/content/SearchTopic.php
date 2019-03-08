@@ -40,7 +40,7 @@ class SearchTopic extends Topic
      */
     public function search($params)
     {
-        $query = Topic::find()->with(['category','user']);
+        $query = self::find()->with(['category','user']);
 
         // add conditions that should always apply here
 

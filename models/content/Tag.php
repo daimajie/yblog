@@ -50,11 +50,10 @@ class Tag extends \yii\db\ActiveRecord
         return [
             [['name','topic_id'], 'required'],
             [['topic_id'], 'integer'],
-            [['topic_id'], 'exist', 'targetClass' => Topic::class, 'targetAttribute' => ['topic_id' => 'id']],
             [['name'], 'string', 'max' => 8],
 
-            [['name'], 'checkUnique'],
-            [['name'], 'checkTop']
+            [['name'], 'checkUnique'], //一个话题下不允许同名标签
+            [['name'], 'checkTop'] //一个话题下包含的标签数量限制
         ];
     }
 

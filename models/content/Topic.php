@@ -81,12 +81,13 @@ class Topic extends \yii\db\ActiveRecord
 
             [['category_id'], 'exist', 'targetClass' => Category::class, 'targetAttribute' => 'id'],
 
-            [['secrecy'], 'in', 'range' => [1, 2]],
-
             [['name'], 'string', 'max' => 18],
+
+            [['secrecy'], 'in', 'range' => [1, 2]],
 
             //每个用户不能在统一话题建立同名话题（回收站中的除外）
             [['name'], 'uniqueOnUser'],
+
 
             [['image'], 'string', 'max' => 125],
 
