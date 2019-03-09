@@ -67,6 +67,7 @@ $username = empty($user->nickname) ? $user->username : $user->nickname;
                         'url' => '#',
                         'items' => [
                             ['label' => '评论管理', 'icon' => '', 'url' => ['/admin/motion/comment'],],
+                            ['label' => '消息管理', 'icon' => '', 'url' => ['/admin/motion/contact'],],
                         ],
                     ],
                     [

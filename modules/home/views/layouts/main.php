@@ -133,7 +133,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                 <a href="<?= Url::to(['/home/index/about'])?>" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--salad"><i class="ui-author"></i> 关于</a>
             </li>
             <li>
-                <a href="<?= Url::to(['/home/index/contact'])?>" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--purple"><i class="ui-email"></i> 联系</a>
+                <a href="<?= Url::to(['/home/motion/contact/create'])?>" class="sidenav__menu-link sidenav__menu-link-category sidenav__menu-link--purple"><i class="ui-email"></i> 联系</a>
             </li>
         </ul>
     </nav>
@@ -204,7 +204,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                                 ],
                                 ['label' => '热门话题', 'url' => ['/home/content/topic/index']],
                                 ['label' => '关于', 'url' => ['/home/index/about']],
-                                ['label' => '联系', 'url' => ['/home/index/contact']],
+                                ['label' => '联系', 'url' => ['/home/motion/contact/create']],
 
                             ],
                         ]);
