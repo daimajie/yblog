@@ -26,7 +26,7 @@ class UserController extends BaseController
      */
     public function behaviors()
     {
-        return [
+        return array_merge(parent::behaviors(),[
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -34,7 +34,7 @@ class UserController extends BaseController
                     'assignment' => ['POST'],
                 ],
             ],
-        ];
+        ]);
     }
 
     /**
@@ -91,6 +91,8 @@ class UserController extends BaseController
         //获取选中的角色
         $hasRoles = $this->getAuthManager()->getRolesByUser($model->id);
         $rolesName = array_keys($hasRoles);
+
+
 
 
 

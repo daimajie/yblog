@@ -8,6 +8,8 @@
 return [
     'layout' => 'main',
 
+    'defaultRoute' => 'site/index',
+
     'modules' => [
         //内容管理
         'content' => [

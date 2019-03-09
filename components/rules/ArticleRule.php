@@ -17,7 +17,7 @@ class ArticleRule extends Rule
 
     public function execute($user, $item, $params)
     {
-        if(empty($params['id'])) return true;
+        if(empty($params['id'])) return false;
 
         return (Article::findOne($params['id']))->user_id == $user;//是否是创建者
     }

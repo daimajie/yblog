@@ -28,14 +28,14 @@ class ArticleController extends WriteBaseController
 
     public function behaviors()
     {
-        return [
+        return array_merge(parent::behaviors(),[
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
             ],
-        ];
+        ]);
     }
 
     public function init()
@@ -213,6 +213,7 @@ class ArticleController extends WriteBaseController
         if ($model) {
             return $model;
         }
+
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 

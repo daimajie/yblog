@@ -38,8 +38,7 @@ class Module extends \yii\base\Module
         ];
 
         //设置错误页面
-        //Yii::$app->errorHandler->errorAction = 'admin/site/error';
-        Yii::$app->errorHandler->errorAction = 'home/index/error';
+        Yii::$app->errorHandler->errorAction = 'admin/site/error';
 
     }
 

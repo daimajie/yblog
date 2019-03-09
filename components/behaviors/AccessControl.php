@@ -11,6 +11,7 @@ namespace app\components\behaviors;
 use app\components\Helper;
 use Yii;
 use yii\web\ForbiddenHttpException;
+use app\models\content\Article;
 
 class AccessControl extends \yii\base\ActionFilter
 {
@@ -32,6 +33,7 @@ class AccessControl extends \yii\base\ActionFilter
 
         //判断是否是作者
         if(!$user->isGuest && $user->identity->author >= 0){
+
             if (Helper::checkRoute($actionId, Yii::$app->getRequest()->get(), $user)) {
                 return true;
             }
@@ -52,6 +54,7 @@ class AccessControl extends \yii\base\ActionFilter
         if ($user->getIsGuest()) {
             $user->loginRequired();
         } else {
+            Yii::$app->errorHandler->errorAction = '/home/index/error';
             throw new ForbiddenHttpException('不允许访问.');
         }
     }
