@@ -173,6 +173,12 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public static function findIdentity($id){
         return static::findOne($id);
     }
+    
+    
+    //关联用户基本数据
+    public function getProfile(){
+        return $this->hasOne(Profile::class, ['user_id'=>'id']);
+    }
 
 
 

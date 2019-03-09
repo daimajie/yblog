@@ -194,6 +194,10 @@ class UserController extends BaseController
             return $this->redirect(['user/view', 'id'=>$model->id]);
         }
         $model->delete();
+
+        //删除该用户与权限的关联
+        AuthAssignment::deleteAll(['user_id'=>$model->id]);
+
         return $this->redirect(['index']);
     }
 

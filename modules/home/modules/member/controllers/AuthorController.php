@@ -15,6 +15,7 @@ use app\models\member\User;
 use app\modules\home\controllers\BaseController;
 use app\modules\home\models\content\SearchArticle;
 use Yii;
+use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 
 class AuthorController extends BaseController
@@ -50,10 +51,15 @@ class AuthorController extends BaseController
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
-            //是否是作者
-            if($model->author >= 0)
-                return $model;
+        $model = User::find()
+            ->with(['profile'])
+            ->where([
+                'id' => $id
+            ])
+            ->one();
+
+        if ($model !== null && $model->author >= 0) {
+            return $model;
         }
         throw new NotFoundHttpException('您请求的页面不存在。');
     }

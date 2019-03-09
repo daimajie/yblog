@@ -4,7 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\helpers\Url;
 use app\models\content\Topic;
-
+use app\modules\home\widgets\Qrcode;
+use app\modules\home\widgets\Contact;
 
 /*$model 用户模型*/
 /*$dataProvide 文章数据提供者*/
@@ -93,16 +94,34 @@ $title = trim(Yii::$app->request->get('title', ''));
         <div class="widget widget_mc4wp_form_widget text-center">
             <div class="sidebar-about">
                 <div class="about-img entry-author text-center">
-                    <img src="<?= ViewHelper::staticPath('img/blog/list_post_img_1.jpg')?>" class="img-thumbnail">
+                    <img src="<?= ViewHelper::showImage($model->profile->photo)?>" class="img-thumbnail">
                 </div>
                 <h5><i class="ui-author"></i> <?= ViewHelper::username($model->username, $model->nickname)?></h5>
                 <p><small> 文章 - <?= $model->author?>  /  话题 - <?= $topicCount?> </small></p>
-                <p class="mb-3"><?= empty($model['user']['intro']) ? '博主好懒～什么也没留下！' : Html::encode($model['user']['intro'])?></p>
+                <p class="mb-3"><?= empty($model->profile->intro) ? '博主好懒～什么也没留下！' : Html::encode($model->profile->intro)?></p>
             </div>
         </div>
+
+        <?php
+        //作者社交账号
+        //echo Contact::Widget();
+
+
+        //二维码
+        echo Qrcode::Widget([
+            'image' => ViewHelper::showImage($model->profile->qrcode),
+            'title' => '打赏作者'
+        ]);
+        ?>
+
+
+
         <!--作者私密话题-->
+        <?php
+        if(!empty($secrecy)):
+        ?>
         <div class="widget widget-reviews">
-            <h4 class="widget-title">私密话题</h4>
+            <h4 class="widget-title">私密话题 <small>(仅作者可见)</small></h4>
             <ul class="post-list-small">
                 <?php
                 foreach($secrecy as $key => $val):
@@ -165,7 +184,9 @@ $title = trim(Yii::$app->request->get('title', ''));
 
             </ul>
         </div>
-
+        <?php
+        endif;
+        ?>
         <!--作者话题-->
         <div class="widget widget-reviews">
             <h4 class="widget-title">作者话题</h4>

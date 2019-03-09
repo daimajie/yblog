@@ -15,7 +15,7 @@ $type = $show ? 'text' : 'hidden';
 ?>
 
 
-<?= Html::activeInput($type, $model, 'image',[
+<?= Html::activeInput($type, $model, $name,[
     'class' => "form-control disabled mb-0",
     'readonly' => true,
     'id' => $id
@@ -23,8 +23,8 @@ $type = $show ? 'text' : 'hidden';
 <div id="uploader" class="upload-wrap clearfix">
     <div class="col-sm-12 col-md-6 col-lg-4">
         <div id="fileBox" class="upload-image col-sm-6 col-xs-8">
-            <?php if(!empty($model->image)):?>
-                <img src="<?= Helper::showImage($model->image)?>" alt="上传图片">
+            <?php if(!empty($model->$name)):?>
+                <img src="<?= Helper::showImage($model->$name)?>" alt="上传图片">
             <?php else:?>
                 <img src="<?= $directoryAsset?>/image/bg.jpg" alt="上传图片">
             <?php endif;?>
@@ -43,7 +43,7 @@ $type = $show ? 'text' : 'hidden';
 
 <?php
 $token =  Yii::$app->request->getCsrfToken();
-$upUrl = Url::to(['upload']);
+$upUrl = Url::to([$uploadPath]);
 
 $js = <<<UPLOADER
 $(function(){

@@ -33,34 +33,25 @@ use app\widgets\upload\Upload;
                     <div class="col-md-12">
                         <?php $form = ActiveForm::begin(['id' => 'setting-form']); ?>
 
-                        <label for="input-username">账号</label>
-                        <input name="name" disabled="disabled" id="input-username" type="text" value="<?= Html::encode($model->username)?>">
 
-                        <?= $form
-                            ->field($model, 'nickname')
-                            ->textInput([]) ?>
-
-                        <?= $form->field($profile, 'address')?>
-
-                        <?= $form->field($profile, 'intro')->textarea(['rows'=>5])?>
-
-                        <?= $form->field($profile, 'blog')?>
-
-                        <?= $form->field($profile, 'photo',[
+                        <?= $form->field($profile, 'qrcode',[
                             'options' => [
                                 'class' => 'mb-3'
                             ]
                         ])->widget(Upload::class,[
                             'info' => '', //提示信息
                             'show' => false, //是否显示输入框
-                            'name' => 'photo', //input name值
+                            'name' => 'qrcode', //input name值
                             'thumb' => [ //截取尺寸
-                                'width' => 270,
-                                'height' => 203
+                                'width' => 300,
+                                'height' => 300
                             ],
-                            'uploadPath' => 'photo' //上传方法
+                            'uploadPath' => 'qrcode' //上传方法
 
-                        ])->label('生活照') ?>
+                        ])->label('打赏二维码') ?>
+
+
+
 
 
                         <?= Html::submitButton('<span>提交保存</span>', ['class' => 'btn btn-sm', 'name' => 'login-button']) ?>
