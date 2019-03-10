@@ -15,6 +15,8 @@ use yii\helpers\Url;
 use app\assets\LayerAsset;
 
 LayerAsset::register($this);
+
+$this->title = Html::encode($model->name);
 ?>
 <!-- Content -->
 <div class="row">

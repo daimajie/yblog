@@ -12,6 +12,8 @@ use yii\widgets\ActiveForm;
 use app\widgets\upload\Upload;
 use app\widgets\Alert;
 
+
+$this->title = '创建话题';
 ?>
 <!-- Content -->
 <div class="row">

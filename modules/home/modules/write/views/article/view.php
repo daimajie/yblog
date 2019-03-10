@@ -13,7 +13,7 @@ use yii\helpers\HtmlPurifier;
 use yii\helpers\Url;
 
 
-$this->title = $model['title'];
+$this->title = Html::encode($model['title']);
 ?>
 <!-- Content -->
 <div class="row">

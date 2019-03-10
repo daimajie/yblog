@@ -4,7 +4,6 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
 
-$this->title = 'DAIMAJIE - 找回密码';
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -15,6 +14,7 @@ $fieldOptions2 = [
     'options' => ['class' => 'form-group has-feedback'],
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
+$this->title = '找回密码';
 ?>
 
 <div class="login-box">

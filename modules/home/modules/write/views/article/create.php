@@ -13,6 +13,7 @@ use app\widgets\Alert;
 use app\widgets\select2\Select2;
 use yii\helpers\Url;
 
+$this->title = '创建文章';
 ?>
 <!-- Content -->
 <div class="row">

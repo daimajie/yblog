@@ -13,7 +13,7 @@ use app\components\ViewHelper;
 use app\models\content\Topic;
 
 
-$this->title = '话题 - ' . Html::encode($model->name);
+$this->title = Html::encode($model->name);
 
 //搜索的属性
 $tag_id = Yii::$app->request->get('tag_id', '');

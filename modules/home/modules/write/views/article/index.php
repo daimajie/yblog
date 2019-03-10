@@ -6,6 +6,8 @@ use app\widgets\Alert;
 use app\models\content\Article;
 
 $params = Yii::$app->request->queryParams;
+
+$this->title = '文章列表';
 ?>
 <!-- Content -->
 <div class="row">

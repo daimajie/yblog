@@ -793,13 +793,13 @@ class Article extends ArticleForm
      */
     public static function singleArticle($id){
 
-        return self::find()->with(['topic','user','tags','content'])
+        return self::find()->with(['topic','user', 'user.profile','tags','content'])
             ->where([
                 'id' => $id,
                 'status' => self::STATUS_NORMAL,
                 'check' => self::CHECK_ADOPT
             ])
-            ->asArray()
+            //->asArray()
             ->one();
     }
 

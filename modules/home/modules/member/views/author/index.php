@@ -6,12 +6,16 @@ use yii\helpers\Url;
 use app\models\content\Topic;
 use app\modules\home\widgets\Qrcode;
 use app\modules\home\widgets\Contact;
+use app\modules\home\widgets\TopicList;
+
 
 /*$model 用户模型*/
 /*$dataProvide 文章数据提供者*/
 
 //搜索的属性
 $title = trim(Yii::$app->request->get('title', ''));
+
+$this->title = ViewHelper::username($model->username, $model->nickname);
 ?>
 <!-- Content -->
 <div class="row">
@@ -94,7 +98,12 @@ $title = trim(Yii::$app->request->get('title', ''));
         <div class="widget widget_mc4wp_form_widget text-center">
             <div class="sidebar-about">
                 <div class="about-img entry-author text-center">
-                    <img src="<?= ViewHelper::showImage($model->profile->photo)?>" class="img-thumbnail">
+                    <?php
+                    if(!empty($model->profile->photo))
+                        echo Html::img(ViewHelper::showImage($model->profile->photo),[
+                                'class' => 'img-thumbnail'
+                        ])
+                    ?>
                 </div>
                 <h5><i class="ui-author"></i> <?= ViewHelper::username($model->username, $model->nickname)?></h5>
                 <p><small> 文章 - <?= $model->author?>  /  话题 - <?= $topicCount?> </small></p>
@@ -109,149 +118,23 @@ $title = trim(Yii::$app->request->get('title', ''));
 
         //二维码
         echo Qrcode::Widget([
-            'image' => ViewHelper::showImage($model->profile->qrcode),
+            'image' => !empty($model->profile->qrcode) ? ViewHelper::showImage($model->profile->qrcode) : '',
             'title' => '打赏作者'
         ]);
+
+        //私密话题
+        echo TopicList::Widget([
+            'user_id' => $model->id,
+            'secrecy' => true,
+            'title' => '私密话题(仅作者可见)'
+        ]);
+
+        //热门话题
+        echo TopicList::Widget([
+            'user_id' => $model->id,
+            'secrecy' => false
+        ]);
         ?>
-
-
-
-        <!--作者私密话题-->
-        <?php
-        if(!empty($secrecy)):
-        ?>
-        <div class="widget widget-reviews">
-            <h4 class="widget-title">私密话题 <small>(仅作者可见)</small></h4>
-            <ul class="post-list-small">
-                <?php
-                foreach($secrecy as $key => $val):
-                    ?>
-                    <li class="post-list-small__item">
-                        <article class="post-list-small__entry clearfix">
-                            <div class="post-list-small__img-holder">
-                                <div class="thumb-container thumb-75">
-                                    <a href="<?= Url::to(['/home/write/topic/show','id'=>$val['id']])?>">
-                                        <img data-src="<?= ViewHelper::showImage($val['image'])?>" src="<?= ViewHelper::showImage($val['image'])?>" alt="" class=" lazyloaded">
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="post-list-small__body">
-                                <h3 class="post-list-small__entry-title">
-                                    <a href="<?= Url::to(['/home/write/topic/show','id'=>$val['id']])?>"><?= Html::encode($val['name'])?></a>
-                                </h3>
-                                <ul class="entry__meta">
-                                    <li class="entry__meta-date">
-                                        <i class="ui-author"></i>
-                                        <?= ViewHelper::username($model->username, $model->nickname)?>
-                                    </li>
-                                    <li class="entry__meta-date">
-                                        <i class="ui-xing"></i>
-                                        <?php
-                                        $tmp = [
-                                            Topic::STATUS_NORMAL => '连载中',
-                                            Topic::STATUS_FINISH => '完结',
-                                            Topic::STATUS_RECYCLE => '回收站',
-                                        ];
-                                        echo $tmp[$val['status']];
-                                        ?>
-                                    </li>
-                                    <li class="entry__meta-comments">
-                                        <i class="ui-flickr"></i>
-                                        <?= $val['count']?>篇
-                                    </li>
-                                </ul>
-                                <ul class="entry__meta">
-                                    <li class="entry__meta-date">
-                                        <i class="ui-date"></i>
-                                        <?= ViewHelper::time($val['updated_at'])?>
-                                    </li>
-                                </ul>
-                            </div>
-                        </article>
-                    </li>
-                <?php
-                endforeach;
-                ?>
-                <li class="post-list-small__item">
-                    <article class="post-list-small__entry clearfix">
-                        <div class="post-list-small__body">
-                            <h3 class="post-list-small__entry-title">
-                                <a href="<?= Url::to(['/home/content/topic/index', 'user_id'=>$model->id])?>">查看作者更多话题</a>
-                            </h3>
-                        </div>
-                    </article>
-                </li>
-
-            </ul>
-        </div>
-        <?php
-        endif;
-        ?>
-        <!--作者话题-->
-        <div class="widget widget-reviews">
-            <h4 class="widget-title">作者话题</h4>
-            <ul class="post-list-small">
-                <?php
-                foreach($topics as $key => $val):
-                ?>
-                <li class="post-list-small__item">
-                    <article class="post-list-small__entry clearfix">
-                        <div class="post-list-small__img-holder">
-                            <div class="thumb-container thumb-75">
-                                <a href="<?= Url::to(['/home/content/topic/view','id'=>$val['id']])?>">
-                                    <img data-src="<?= ViewHelper::showImage($val['image'])?>" src="<?= ViewHelper::showImage($val['image'])?>" alt="" class=" lazyloaded">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="post-list-small__body">
-                            <h3 class="post-list-small__entry-title">
-                                <a href="<?= Url::to(['/home/content/topic/view','id'=>$val['id']])?>"><?= Html::encode($val['name'])?></a>
-                            </h3>
-                            <ul class="entry__meta">
-                                <li class="entry__meta-date">
-                                    <i class="ui-author"></i>
-                                    <?= ViewHelper::username($model->username, $model->nickname)?>
-                                </li>
-                                <li class="entry__meta-date">
-                                    <i class="ui-xing"></i>
-                                    <?php
-                                    $tmp = [
-                                        Topic::STATUS_NORMAL => '连载中',
-                                        Topic::STATUS_FINISH => '完结',
-                                        Topic::STATUS_RECYCLE => '回收站',
-                                    ];
-                                    echo $tmp[$val['status']];
-                                    ?>
-                                </li>
-                                <li class="entry__meta-comments">
-                                    <i class="ui-flickr"></i>
-                                    <?= $val['count']?>篇
-                                </li>
-                            </ul>
-                            <ul class="entry__meta">
-                                <li class="entry__meta-date">
-                                    <i class="ui-date"></i>
-                                    <?= ViewHelper::time($val['updated_at'])?>
-                                </li>
-                            </ul>
-                        </div>
-                    </article>
-                </li>
-                <?php
-                endforeach;
-                ?>
-                <li class="post-list-small__item">
-                    <article class="post-list-small__entry clearfix">
-                        <div class="post-list-small__body">
-                            <h3 class="post-list-small__entry-title">
-                                <a href="<?= Url::to(['/home/content/topic/index', 'user_id'=>$model->id])?>">查看作者更多话题</a>
-                            </h3>
-                        </div>
-                    </article>
-                </li>
-
-            </ul>
-        </div>
 
     </aside>
     <!-- end sidebar -->

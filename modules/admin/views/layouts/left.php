@@ -79,6 +79,14 @@ $username = empty($user->nickname) ? $user->username : $user->nickname;
                             ['label' => '规则管理', 'icon' => '', 'url' => ['/admin/rbac/auth-rule'],],
                         ],
                     ],
+                    [
+                        'label' => '系统设置',
+                        'icon' => 'bookmark-o',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => 'SEO', 'icon' => '', 'url' => ['/admin/setting/seo'],],
+                        ],
+                    ],
 
 
                     /*['label' => 'Menu Yii2.0', 'options' => ['class' => 'header']],

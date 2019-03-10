@@ -11,9 +11,9 @@ use yii\widgets\ListView;
 use yii\helpers\Url;
 use app\components\ViewHelper;
 use app\models\content\Topic;
+use app\modules\home\widgets\Advert;
 
-
-$this->title = '话题 - ' . Html::encode($model->name);
+$this->title = Html::encode($model->name);
 
 //搜索的属性
 $tag_id = Yii::$app->request->get('tag_id', '');
@@ -132,6 +132,11 @@ $title = trim(Yii::$app->request->get('title', ''));
                 <?php endif;?>
             </div>
         </div>
+
+        <?=
+        //广告
+        Advert::Widget();
+        ?>
 
 
 

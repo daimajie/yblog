@@ -11,9 +11,11 @@ use app\components\ViewHelper;
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
 use yii\helpers\Url;
+use app\modules\home\widgets\Qrcode;
+use app\modules\home\widgets\Advert;
 
 
-$this->title = $model['title'];
+$this->title = Html::encode($model['title']);
 ?>
 <!-- Content -->
 <div class="row">
@@ -103,7 +105,7 @@ $this->title = $model['title'];
                     <h6 class="entry-author__name">
                         <a href="<?= Url::to(['/home/member/author/index', 'id'=>$model['user']['id']])?>"><?= ViewHelper::username($model['user']['username'], $model['user']['nickname'])?></a>
                     </h6>
-                    <p style="font-size: 14px;" class="mb-0"><?= empty($model['user']['intro']) ? '博主好懒～什么也没留下！' : Html::encode($model['user']['intro'])?></p>
+                    <p style="font-size: 14px;" class="mb-0"><?= empty($model['user']['profile']['intro']) ? '博主好懒～什么也没留下！' : Html::encode($model['user']['profile']['intro'])?></p>
                 </div>
             </div>
 
@@ -147,6 +149,19 @@ $this->title = $model['title'];
 
     <!-- Sidebar -->
     <aside class="col-lg-4 sidebar sidebar--right">
+        <?php
+        //二维码
+        echo Qrcode::Widget([
+            'title' => '打赏作者',
+            'image' => !empty($model['user']['profile']['qrcode']) ? ViewHelper::showImage($model['user']['profile']['qrcode']) : ''
+        ]);
+
+        //作者其他话题
+
+
+        //广告
+        echo Advert::widget()
+        ?>
     </aside>
     <!-- end sidebar -->
 </div>

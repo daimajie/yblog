@@ -59,7 +59,6 @@ class Helper
             'savePath' =>  $path .'/'. $name
         ];
 
-        return [$path, $name];
     }
 
     /**

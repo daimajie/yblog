@@ -13,7 +13,7 @@ use yii\widgets\ListView;
 //搜索的属性
 $title = trim(Yii::$app->request->get('title', ''));
 
-$this->title = '搜索结果 - ' . isset($title)?trim($title):'';
+$this->title = '搜索结果';
 ?>
 <!-- Content -->
 <div class="row">

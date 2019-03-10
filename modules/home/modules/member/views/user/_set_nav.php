@@ -10,6 +10,8 @@ use yii\widgets\Menu;
 
 //隐藏header部分
 $this->params['showHeader'] = false;
+
+$this->title = '账号设置';
 ?>
 <nav class="mb-3">
     <?php

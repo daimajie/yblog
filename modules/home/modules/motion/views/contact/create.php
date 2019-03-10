@@ -8,6 +8,8 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use dmstr\widgets\Alert;
 
+
+$this->title = '联系我';
 ?>
 <div class="row">
 

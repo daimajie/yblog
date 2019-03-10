@@ -6,7 +6,7 @@ use app\components\Helper;
 use app\modules\home\controllers\BaseController;
 use yii\widgets\ActiveForm;
 use yii\widgets\Menu;
-
+use app\components\ViewHelper;
 
 
 MainAsset::register($this);
@@ -21,9 +21,9 @@ if(!$isGuest){
 }
 /*基本数据 菜单 SEO 等*/
 $base = $this->params['base'];
+
 $router = ''; //Url::to() 方法中的路由参数 用来判断是否是首页
 $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] : true;
-
 ?>
 
 
@@ -35,7 +35,9 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
     <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <meta name="keywords" content="<?= $base['seo']['keywords']?>">
+    <meta name="description" content="<?= $base['seo']['description']?>" />
+    <title><?= Html::encode($this->title) . ' ' . $base['seo']['name']?></title>
     <?php $this->head() ?>
 </head>
 
@@ -175,7 +177,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
 
                     <!-- Mobile logo -->
                     <a href="<?= Url::home([])?>" class="logo logo--mobile d-lg-none">
-                        <img class="logo__img" src="<?= $base['seo']['logo']['mobile']?>" alt="logo">
+                        <img class="logo__img" src="<?= ViewHelper::showImage($base['seo']['mobile_logo'])?>" alt="logo">
                     </a>
 
                     <nav class="flex-child nav__wrap d-none d-lg-block">
@@ -259,7 +261,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
 
                 <!-- Logo -->
                 <a href="<?= Url::home([])?>" class="logo d-none d-lg-block">
-                    <img class="logo__img" src="<?= $base['seo']['logo']['pc']?>" alt="logo">
+                    <img class="logo__img" src="<?= ViewHelper::showImage($base['seo']['pc_logo'])?>" alt="logo">
                 </a>
 
                 <!-- Ad Banner 728 -->

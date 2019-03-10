@@ -347,7 +347,7 @@ class Topic extends \yii\db\ActiveRecord
     public static function getActiveTopicsByUser($user_id, $limit){
         if($user_id <= 0) return [];
         $ret = self::find()
-            ->with(['category'])
+            ->with(['category','user'])
             ->where([
                 'check' => self::CHECK_ADOPT,
                 'secrecy' => self::SECR_PUBLIC
@@ -365,7 +365,7 @@ class Topic extends \yii\db\ActiveRecord
     public static function getSecrecyTopicByUser($user_id){
         if($user_id <= 0 || $user_id != Yii::$app->user->id) return [];
         $ret = self::find()
-            ->with(['category'])
+            ->with(['category','user'])
             ->where([
                 'secrecy' => self::SECR_PRIVATE
             ])

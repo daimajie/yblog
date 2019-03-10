@@ -6,6 +6,8 @@ use app\widgets\Alert;
 use yii\helpers\Url;
 
 $params = Yii::$app->request->queryParams;
+
+$this->title = '话题列表';
 ?>
 <!-- Content -->
 <div class="row">

@@ -19,9 +19,9 @@ class WriteBaseController extends BaseController
     public function behaviors()
     {
         return [
-            'as access-control' => [
+            /*'as access-control' => [
                 'class' => 'app\components\behaviors\AccessControl',
-            ],
+            ],*/
         ];
     }
 

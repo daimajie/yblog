@@ -31,18 +31,11 @@ class AuthorController extends BaseController
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, null, $id);
 
-        //作者最近更新的话题列表
-        $topics = Topic::getActiveTopicsByUser($id, 5);
-
-        //获取作者私密话题
-        $secrecy = Topic::getSecrecyTopicByUser($id);
 
         return $this->render('index', [
             'model' => $model, //作者模型
             'dataProvider' => $dataProvider,
-            'topics' => $topics,
             'topicCount' => Topic::getCountByUser($id),
-            'secrecy' => $secrecy
         ]);
     }
 

@@ -4,7 +4,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
 
-$this->title = 'DAIMAJIE - 登录页';
+
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -15,6 +15,7 @@ $fieldOptions2 = [
     'options' => ['class' => 'form-group has-feedback'],
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
+$this->title = '登录页';
 ?>
 
 <div class="login-box">

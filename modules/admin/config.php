@@ -27,6 +27,10 @@ return [
         'rbac' => [
             'class' => 'app\modules\admin\modules\rbac\Module',
         ],
+        //系统设置
+        'setting' => [
+            'class' => 'app\modules\admin\modules\setting\Module',
+        ],
     ],
     'components' => [
 

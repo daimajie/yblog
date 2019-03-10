@@ -9,8 +9,9 @@
 
 namespace app\modules\home\controllers;
 
-
+use yii\helpers\HtmlPurifier;
 use app\models\content\Category;
+use app\models\setting\SEO;
 use yii\caching\DbDependency;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
@@ -19,7 +20,7 @@ use Yii;
 class BaseController extends Controller
 {
     const CACHE_CATEGORY_LIST = 'category_list';
-    const SEO_CACHE = 'seo';
+    const CACHE_SEO = 'seo';
 
 
     public function beforeAction($action)
@@ -47,15 +48,19 @@ class BaseController extends Controller
 
 
         //缓存seo信息(需要保存至数据库)
-        $seo = $cache->get(static::SEO_CACHE);
+        $seo = $cache->get(static::CACHE_SEO);
         if ($seo === false) {
-            $seo = Yii::$app->params['seo'];
+            $seo = SEO::find()->limit(1)->asArray()->one();
+            $seo['about'] = HtmlPurifier::process($seo['about']);
 
-            $cache->set(static::SEO_CACHE, $seo, 0);
+            //设置缓存
+            $dependency = new DbDependency([
+                'sql' => "SELECT updated_at FROM {{%seo}};"
+            ]);
+
+            $cache->set(static::CACHE_SEO, $seo, 0, $dependency);
         }
-        $base[static::SEO_CACHE] = $seo;
-
-
+        $base[static::CACHE_SEO] = $seo;
 
 
         //分配到试图

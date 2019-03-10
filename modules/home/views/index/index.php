@@ -7,6 +7,7 @@ use app\modules\home\widgets\Recommend;
 use app\modules\home\widgets\Advert;
 use app\modules\home\widgets\Contact;
 use app\modules\home\widgets\Qrcode;
+use app\components\ViewHelper;
 
 
 $this->params['isHome'] = true;
@@ -95,8 +96,9 @@ $this->params['isHome'] = true;
         <?php
         try{
             //二维码
+            $qrcode = $this->params['base']['seo']['qrcode'];
             echo Qrcode::Widget([
-                 'image' => 'static/assets/img/blog/rqcode.png'
+                 'image' => !empty($qrcode) ? ViewHelper::showImage($qrcode) : ''
             ]);
 
             //热门话题
@@ -112,7 +114,7 @@ $this->params['isHome'] = true;
             echo Advert::Widget();
 
             //作者社交账号
-            echo Contact::Widget();
+            //echo Contact::Widget();
 
         }catch (Exception $e){
             throw $e;
