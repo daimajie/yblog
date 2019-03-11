@@ -12,6 +12,7 @@ use app\widgets\upload\Upload;
 use app\widgets\Alert;
 use app\widgets\select2\Select2;
 use yii\helpers\Url;
+use app\widgets\ueditor\UEditor;
 
 $this->title = '创建文章';
 ?>
@@ -88,12 +89,18 @@ $this->title = '创建文章';
                         ])->hint('！请注意，只能搜索到连载话题.',['class'=>'text-info']) ?>
 
                         <!-- 内容 -->
-                        <?= $form->field($model, 'art_content',[
+                        <?php
+                        echo $form->field($model, 'art_content',[
                             'options' => ['class' => 'mb-3']
-                        ])->textarea([
-                            'rows' => 16,
-                            'class' => 'mb-0'
-                        ]) ?>
+                        ])->widget(UEditor::class,[
+                            'saveUrl' => ['/home/write/article/upload-file'],
+                            'clientOptions' => [
+                                'class' => 'mb-0'
+                            ]
+                        ]);
+
+                        echo Html::error($model, 'art_content');
+                        ?>
 
                         <!-- 新建标签 -->
                         <?= $form->field($model, 'new_tags',[

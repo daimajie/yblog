@@ -9,7 +9,11 @@
 
 namespace app\modules\admin\controllers;
 
-
+use app\models\content\Article;
+use app\models\content\Topic;
+use app\models\member\User;
+use app\widgets\ueditor\UploadFileAction;
+use app\models\motion\Contact;
 
 /**
  * 公共控制器
@@ -24,13 +28,26 @@ class SiteController extends BaseController
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
+            'error' => 'yii\web\ErrorAction',
+            'upload-file' => UploadFileAction::class
+
         ];
     }
 
+
     public function actionIndex(){
-        return $this->render('index');
+
+
+
+        return $this->render('index',[
+            'message' => Contact::find()->count(),
+            'user' => User::find()->count(),
+            'article' => Article::find()->where([
+
+            ])->count(),
+            'topic' => Topic::find()->where([
+
+            ])->count()
+        ]);
     }
 }

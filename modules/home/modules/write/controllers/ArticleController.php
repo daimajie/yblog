@@ -21,6 +21,7 @@ use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use app\widgets\select2\actions\SelectAction;
 use Yii;
+use app\widgets\ueditor\UploadFileAction;
 
 class ArticleController extends WriteBaseController
 {
@@ -63,6 +64,7 @@ class ArticleController extends WriteBaseController
                     'height' => 203
                 ]
             ],
+            'upload-file' => UploadFileAction::class
         ];
     }
 

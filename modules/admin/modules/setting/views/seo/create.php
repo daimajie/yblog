@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\components\ViewHelper;
+use app\widgets\ueditor\UEditor;
+use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
@@ -10,6 +12,8 @@ use app\components\ViewHelper;
 
 $this->title = '信息设置';
 $this->params['breadcrumbs'][] = $this->title;
+
+
 ?>
 <div class="seo-create">
 
@@ -45,7 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     ->hint('必须提供 ( 300*300 ) 尺寸的图片。') ?>
             </div>
 
-            <?= $form->field($model, 'about')->textarea(['rows' => 8]) ?>
+            <?= $form->field($model, 'about')->widget(UEditor::class,[
+                'saveUrl' => ['/admin/site/upload-file']
+            ]) ?>
 
         </div>
         <div class="box-footer">

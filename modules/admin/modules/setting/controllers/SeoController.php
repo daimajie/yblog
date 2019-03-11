@@ -14,6 +14,7 @@ class SeoController extends BaseController
 {
 
 
+
     /**
      * Lists all SEO models.
      * @return mixed

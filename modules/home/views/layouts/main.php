@@ -7,6 +7,7 @@ use app\modules\home\controllers\BaseController;
 use yii\widgets\ActiveForm;
 use yii\widgets\Menu;
 use app\components\ViewHelper;
+use \app\modules\home\widgets\AdvertBar;
 
 
 MainAsset::register($this);
@@ -164,7 +165,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
     <!-- Navigation -->
     <header class="nav">
 
-        <div class="nav__holder nav--sticky">
+        <div class="nav__holder nav--sticky" style="z-index:9999;">
             <div class="container relative">
                 <div class="flex-parent">
 
@@ -265,12 +266,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                 </a>
 
                 <!-- Ad Banner 728 -->
-                <div class="text-center">
-                    <a href="#">
-                        <img src="static/assets/img/blog/placeholder_leaderboard.jpg" alt="">
-                    </a>
-                </div>
-
+                <?= AdvertBar::widget()?>
             </div>
         </div>
     </div>
@@ -296,7 +292,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                     <div class="col-lg-3 col-md-6">
                         <div class="widget">
                             <a href="index.html">
-                                <img src="img/logo_mobile.png" srcset="img/logo_mobile.png 1x, img/logo_mobile@2x.png 2x" class="logo__img" alt="">
+                                <img src="<?= ViewHelper::staticPath('img/logo_mobile.png')?>" srcset="<?= ViewHelper::staticPath('img/logo_mobile.png')?> 1x, <?= ViewHelper::staticPath('img/logo_mobile@2x.png')?> 2x" class="logo__img" alt="">
                             </a>
                             <p class="mt-20">We bring you the best Premium WordPress Themes. Deliver smart websites faster with this amazing theme. We care about our buyers.</p>
                         </div>
@@ -310,7 +306,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                                     <div class="post-list-small__img-holder">
                                         <div class="thumb-container thumb-75">
                                             <a href="single-post.html">
-                                                <img data-src="static/assets/img/blog/popular_post_1.jpg" src="static/assets/img/empty.png" alt="" class="lazyload">
+                                                <img data-src="<?= ViewHelper::staticPath('img/blog/popular_post_1.jpg')?>" src="<?= ViewHelper::staticPath('img/empty.png')?>" alt="" class="lazyload">
                                             </a>
                                         </div>
                                     </div>
@@ -332,7 +328,7 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                                     <div class="post-list-small__img-holder">
                                         <div class="thumb-container thumb-75">
                                             <a href="single-post.html">
-                                                <img data-src="static/assets/img/blog/popular_post_2.jpg" src="static/assets/img/empty.png" alt="" class="lazyload">
+                                                <img data-src="<?= ViewHelper::staticPath('img/blog/popular_post_2.jpg')?>" src="<?= ViewHelper::staticPath('img/empty.png')?>" alt="" class="lazyload">
                                             </a>
                                         </div>
                                     </div>
@@ -417,7 +413,8 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
 
             </div>
         </div> <!-- end bottom footer -->
-    </footer> <!-- end footer -->
+    </footer>
+    <!-- end footer -->
 
     <div id="back-to-top">
         <a href="#top" aria-label="Go to top"><i class="ui-arrow-up"></i></a>

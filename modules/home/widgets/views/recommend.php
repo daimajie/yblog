@@ -39,7 +39,7 @@ use app\components\ViewHelper;
                             <div class="post-list-small__img-holder">
                                 <div class="thumb-container thumb-75">
                                     <a href="<?= Url::to(['/home/content/article/view', 'id'=>$art['id']])?>">
-                                        <img data-src="<?= ViewHelper::showImage($art['image'])?>" src="<?= ViewHelper::staticPath('static/assets/img/empty.png')?>" alt="" class="lazyload">
+                                        <img data-src="<?= ViewHelper::showImage($art['image'])?>" src="<?= ViewHelper::staticPath('img/empty.png')?>" alt="" class="lazyload">
                                     </a>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@ use app\components\ViewHelper;
                                 <div class="post-list-small__img-holder">
                                     <div class="thumb-container thumb-75">
                                         <a href="<?= Url::to(['/home/content/article/view', 'id'=>$art['id']])?>">
-                                            <img data-src="<?= ViewHelper::showImage($art['image'])?>" src="<?= ViewHelper::staticPath('static/assets/img/empty.png')?>" alt="" class="lazyload">
+                                            <img data-src="<?= ViewHelper::showImage($art['image'])?>" src="<?= ViewHelper::staticPath('img/empty.png')?>" alt="" class="lazyload">
                                         </a>
                                     </div>
                                 </div>

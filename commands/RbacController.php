@@ -124,6 +124,12 @@ class RbacController extends Controller
      * 添加文章操作路由权限
      */
     private function addArticleRouter(){
+        // 添加 (内容图片上传路由) 权限
+        $uploadFile = $this->authManager->createPermission('/home/write/article/upload-file');
+        $uploadFile->description = '文章图片上传路由';
+        $this->authManager->add($uploadFile);
+
+
         // 添加 (文章图片上传路由) 权限
         $uploadArticle = $this->authManager->createPermission('/home/write/article/upload');
         $uploadArticle->description = '文章图片上传路由';
@@ -166,6 +172,7 @@ class RbacController extends Controller
 
 
         //作者拥有的路由权限
+        $this->authManager->addChild($this->author, $uploadFile);
         $this->authManager->addChild($this->author, $uploadArticle);
         $this->authManager->addChild($this->author, $selectArticle);
         $this->authManager->addChild($this->author, $indexArticle);

@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use app\widgets\upload\Upload;
 use app\widgets\select2\Select2;
 use yii\helpers\Url;
+use app\widgets\ueditor\UEditor;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\content\Article */
@@ -40,7 +41,10 @@ use yii\helpers\Url;
                 'selectUrl' => '/admin/content/article/select'
         ]) ?>
 
-        <?= $form->field($model, 'art_content')->textarea(['rows' => 16]) ?>
+        <?php //$form->field($model, 'art_content')->textarea(['rows' => 16]) ?>
+        <?= $form->field($model, 'art_content')->widget(UEditor::class,[
+            'saveUrl' => ['/admin/site/upload-file']
+        ]) ?>
 
         <?= $form->field($model, 'new_tags')->textInput(['maxlength' => true]) ?>
 

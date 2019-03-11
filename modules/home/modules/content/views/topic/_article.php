@@ -14,6 +14,7 @@
 use app\components\ViewHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use app\modules\home\widgets\AdvertBar;
 ?>
 <article class="entry post-list">
         <div class="entry__img-holder post-list__img-holder">
@@ -53,11 +54,7 @@ use yii\helpers\Url;
 
 <?php
 //文章列表显示一半的时候加个广告
-if($index+1 == floor($count/2)):
-    ?>
-    <div class="text-center pb-40">
-        <a href="#">
-            <img src="<?= ViewHelper::staticPath('img/blog/placeholder_leaderboard.jpg')?>">
-        </a>
-    </div>
-<?php endif;?>
+if($index+1 == floor($count/2)){
+    echo AdvertBar::widget();
+}
+?>
