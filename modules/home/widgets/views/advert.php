@@ -8,8 +8,9 @@
  */
 ?>
 <!-- 广告 -->
-<div class="widget widget_media_image">
-    <a href="#">
+<div class="widget widget_media_image advert">
+    <!--<a href="#">
         <img src="static/assets/img/blog/placeholder_300.jpg" alt="">
-    </a>
+    </a>-->
+    <?= $content?>
 </div>

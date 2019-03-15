@@ -10,7 +10,7 @@ use app\components\ViewHelper;
 use yii\helpers\Url;
 ?>
 <div class="widget widget-gallery-sm">
-    <h4 class="widget-title text-left">获取作者</h4>
+    <h4 class="widget-title text-left">活跃作者</h4>
     <ul class="widget-gallery-sm__list active-author" style="justify-content:flex-start;">
         <?php
         foreach($authors as $key => $item):

@@ -33,34 +33,37 @@ class BaseController extends Controller
         $cache = Yii::$app->cache;
         $base = [];
 
-        //获取分类列表
+        //**获取分类列表
         $category = $cache->get(static::CACHE_CATEGORY_LIST);
         if($category === false){
             $category = Category::dropItems();
 
             //设置缓存
-            $dependency = new DbDependency([
+            /*$dependency = new DbDependency([
                 'sql' => "SELECT MAX(updated_at) FROM {{%category}};"
-            ]);
-            $cache->set(static::CACHE_CATEGORY_LIST, $category, 0, $dependency);
+            ]);*/
+            $cache->set(static::CACHE_CATEGORY_LIST, $category, 3600*24/*, $dependency*/);
         }
         $base[static::CACHE_CATEGORY_LIST] = $category;
 
 
-        //缓存seo信息(需要保存至数据库)
+        //**缓存seo信息(需要保存至数据库)
         $seo = $cache->get(static::CACHE_SEO);
         if ($seo === false) {
             $seo = SEO::find()->limit(1)->asArray()->one();
             $seo['about'] = HtmlPurifier::process($seo['about']);
 
             //设置缓存
-            $dependency = new DbDependency([
+           /* $dependency = new DbDependency([
                 'sql' => "SELECT updated_at FROM {{%seo}};"
-            ]);
+            ]);*/
 
-            $cache->set(static::CACHE_SEO, $seo, 0, $dependency);
+            $cache->set(static::CACHE_SEO, $seo, 3600*24/*, $dependency*/);
         }
         $base[static::CACHE_SEO] = $seo;
+
+
+
 
 
         //分配到试图

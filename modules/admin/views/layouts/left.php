@@ -43,6 +43,7 @@ $username = empty($user->nickname) ? $user->username : $user->nickname;
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
                     ['label' => 'Menu y-blog', 'options' => ['class' => 'header']],
+                    ['label' => '控制台', 'icon' => 'bookmark-o','url'=>['/admin/site']],
                     [
                         'label' => '内容管理',
                         'icon' => 'bookmark-o',
@@ -85,20 +86,14 @@ $username = empty($user->nickname) ? $user->username : $user->nickname;
                         'url' => '#',
                         'items' => [
                             ['label' => 'SEO', 'icon' => '', 'url' => ['/admin/setting/seo'],],
+                            ['label' => '缓存管理', 'icon' => '', 'url' => ['/admin/setting/cache'],],
+                            ['label' => '系统日志', 'icon' => '', 'url' => ['/admin/setting/log'],],
+                            ['label' => '广告', 'icon' => '', 'url' => ['/admin/setting/advert'],],
                         ],
                     ],
-
-
-                    /*['label' => 'Menu Yii2.0', 'options' => ['class' => 'header']],
+                    ['label' => 'Menu Yii2.0', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
-
-                    [
-                        'label' => 'Mailbox',
-                        'icon' => 'envelope-o',
-                        'url' => ['/mailbox'],
-                        'template'=>'<a href="{url}">{icon} {label}<span class="pull-right-container"><small class="label pull-right bg-yellow">123</small></span></a>'
-                    ],*/
                 ],
             ]
         ) ?>

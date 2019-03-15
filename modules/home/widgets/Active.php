@@ -18,6 +18,7 @@ class Active extends Widget
 {
     public $authors;
 
+
     public function behaviors()
     {
         return [

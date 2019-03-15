@@ -26,11 +26,7 @@ class Recommend extends Widget
         return [
             [
                 'class' => CacheableWidgetBehavior::class,
-                'cacheDuration' => 0,
-                'cacheDependency' => [
-                    'class' => 'yii\caching\DbDependency',
-                    'sql' => 'SELECT MAX(created_at) FROM ' . self::ART_TBL,
-                ],
+                'cacheDuration' => 3600*24,
             ]
         ];
     }

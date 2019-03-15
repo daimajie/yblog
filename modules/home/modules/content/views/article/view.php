@@ -13,6 +13,7 @@ use yii\helpers\HtmlPurifier;
 use yii\helpers\Url;
 use app\modules\home\widgets\Qrcode;
 use app\modules\home\widgets\Advert;
+use app\modules\home\controllers\BaseController;
 
 
 $this->title = Html::encode($model['title']);
@@ -75,7 +76,22 @@ $this->title = Html::encode($model['title']);
             <div class="entry__article">
                 <!--article content-->
                 <div class="content">
-                    <?= HtmlPurifier::process($model['content']['content'])?>
+                    <?php
+                    if ($this->beginCache('article', [
+                        'dependency' => [
+                            'class' => 'yii\caching\DbDependency',
+                            'sql' => 'select updated_at from {{%article}} where id=' . $model['id'],
+                        ],
+                        'variations' => [
+                            $model['id'],
+                            //$this->context->module->id
+                        ],
+                        'duration' => 3600 * 24,
+                    ])){
+                        echo HtmlPurifier::process($model['content']['content']);
+                        $this->endCache();
+                    }
+                    ?>
                 </div>
                 <!--end article content-->
 

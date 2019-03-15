@@ -140,25 +140,8 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
             </li>
         </ul>
     </nav>
-
-    <div class="socials sidenav__socials">
-        <a class="social social-facebook" href="#" target="_blank" aria-label="facebook">
-            <i class="ui-facebook"></i>
-        </a>
-        <a class="social social-twitter" href="#" target="_blank" aria-label="twitter">
-            <i class="ui-twitter"></i>
-        </a>
-        <a class="social social-google-plus" href="#" target="_blank" aria-label="google">
-            <i class="ui-google"></i>
-        </a>
-        <a class="social social-youtube" href="#" target="_blank" aria-label="youtube">
-            <i class="ui-youtube"></i>
-        </a>
-        <a class="social social-instagram" href="#" target="_blank" aria-label="instagram">
-            <i class="ui-instagram"></i>
-        </a>
-    </div>
-</header> <!-- end sidenav -->
+</header>
+<!-- end sidenav -->
 
 <main class="main oh" id="main">
 
@@ -266,7 +249,8 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                 </a>
 
                 <!-- Ad Banner 728 -->
-                <?= AdvertBar::widget()?>
+                <div class="advert-bar"><?= AdvertBar::widget()?></div>
+
             </div>
         </div>
     </div>

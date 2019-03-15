@@ -29,17 +29,6 @@ class TopicList extends Widget
     public $title = '作者话题';
 
 
-    public function behaviors()
-    {
-        return [
-            /*[
-                'class' => CacheableWidgetBehavior::class,
-                'cacheDuration' => $this->duration,
-                'cacheDependency' => $this->dependency
-            ]*/
-
-        ];
-    }
 
     public function init()
     {
@@ -70,7 +59,8 @@ class TopicList extends Widget
                 'topics' => $topics,
                 'title' => $this->title,
                 'more' => !$this->secrecy,
-                'user_id' => $this->user_id
+                'user_id' => $this->user_id,
+                'show' => $show
             ]);
         }
 

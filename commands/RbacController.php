@@ -27,16 +27,14 @@ class RbacController extends Controller
     public function init()
     {
         parent::init();
-
-        $this->authManager = $auth = Yii::$app->authManager;
-
-        //先清空所有权限数据
-        $auth->removeAll();
+        $this->authManager = Yii::$app->authManager;
     }
 
 
     public function actionInit()
     {
+        //先清空所有权限数据
+        $this->authManager->removeAll();
 
         //创建角色
         $this->addRoles();

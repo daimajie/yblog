@@ -7,8 +7,9 @@
  * Time : 22:36
  */
 ?>
-<div class="text-center">
-    <a href="#">
+<div class="text-center advert-bar">
+    <!--<a href="javascript:void(0);">
         <img src="static/assets/img/blog/placeholder_leaderboard.jpg" alt="">
-    </a>
+    </a>-->
+    <?= $content?>
 </div>

@@ -4346,3 +4346,18 @@ dd {
 .active-author img{
   border-radius: 50%;
 }
+.advert-bar{
+  width: 728px;
+  height: 90px;
+  /*background: url("../img/blog/placeholder_leaderboard.jpg");*/
+}
+.advert{
+  width: 100%;
+  height: 250px;
+  /*background: url("../img/blog/placeholder_300.jpg") center no-repeat;*/
+}
+.advert-bar img,
+.advert img{
+  width: 100%;
+  height:100%;
+}

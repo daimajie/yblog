@@ -22,14 +22,14 @@ use app\models\content\Topic;
             <article class="post-list-small__entry clearfix">
                 <div class="post-list-small__img-holder">
                     <div class="thumb-container thumb-75">
-                        <a href="<?= Url::to(['/home/content/topic/view', 'id'=>$topic['id']])?>">
+                        <a href="<?= Url::to([$show ? '/home/write/topic/show' : '/home/content/topic/view', 'id'=>$topic['id']])?>">
                             <img data-src="<?= ViewHelper::showImage($topic['image'])?>" src="<?= ViewHelper::showImage($topic['image'])?>" class=" lazyloaded">
                         </a>
                     </div>
                 </div>
                 <div class="post-list-small__body">
                     <h3 class="post-list-small__entry-title">
-                        <a href="<?= Url::to(['/home/content/topic/view', 'id'=>$topic['id']])?>">
+                        <a href="<?= Url::to([$show ? '/home/write/topic/show' : '/home/content/topic/view', 'id'=>$topic['id']])?>">
                             <?= Html::encode($topic['name'])?>
                         </a>
                     </h3>
