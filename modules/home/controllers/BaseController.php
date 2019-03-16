@@ -63,7 +63,7 @@ class BaseController extends Controller
             }else{
                 $seo = $seo_data;
             }
-            $seo['about'] = HtmlPurifier::process($seo['about']);
+            $seo['about'] = isset($seo['about'])?HtmlPurifier::process($seo['about']):'';
 
             //设置缓存
            /* $dependency = new DbDependency([

@@ -24,7 +24,7 @@ use app\components\ViewHelper;
             </li>
         <?php
         endforeach;
-        if(empty($topics)) echo '暂无数据。';
+        if(empty($topics)) echo '<li>暂无数据。</li>';
         ?>
     </ul>
 </div>

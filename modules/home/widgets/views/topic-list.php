@@ -65,6 +65,7 @@ use app\models\content\Topic;
         </li>
         <?php
         endforeach;
+        if(empty($topics)) echo '<li>暂无数据。</li>';
         if($more):
         ?>
         <li class="post-list-small__item">

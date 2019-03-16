@@ -19,10 +19,10 @@ class More extends Widget
     public function behaviors()
     {
         return [
-            [
+           /* [
                 'class' => CacheableWidgetBehavior::class,
                 'cacheDuration' => 3600 * 24, //缓存一天
-            ]
+            ]*/
 
         ];
     }
@@ -45,7 +45,6 @@ class More extends Widget
             ->limit(3)
             ->asArray()
             ->all();
-
 
         return $this->render('more',[
             'articles' => $this->articles

@@ -58,6 +58,7 @@ use app\components\ViewHelper;
                     </li>
                     <?php
                     endforeach;
+                    if(empty($byComment)) echo '<li>暂无数据。</li>';
                     ?>
                 </ul>
             </div>
@@ -91,6 +92,7 @@ use app\components\ViewHelper;
                         </li>
                     <?php
                     endforeach;
+                    if(empty($byVisited)) echo '<li>暂无数据。</li>';
                     ?>
                 </ul>
             </div>
@@ -123,6 +125,7 @@ use app\components\ViewHelper;
                     </li>
                     <?php
                     endforeach;
+                    if(empty($comment)) echo '<li>暂无数据。</li>';
                     ?>
 
                 </ul>

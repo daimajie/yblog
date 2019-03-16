@@ -22,6 +22,7 @@ use yii\helpers\Url;
             </li>
         <?php
         endforeach;
+        if(empty($authors)) echo '<li>暂无数据。</li>';
         ?>
     </ul>
 </div>

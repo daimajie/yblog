@@ -58,6 +58,7 @@ use app\components\ViewHelper;
             </article>
         <?php
         endforeach;
+        if(empty($articles)) echo '暂无数据。';
         ?>
 
     </div>

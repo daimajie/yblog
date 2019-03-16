@@ -43,7 +43,9 @@ class MemberController extends  Controller
 
             // 分配角色：
             $auth = $this->authManager;
-            if(!$adminRole = $auth->getRole('管理员') && !$authorRole = $auth->getRole('作者')){
+            $adminRole = $auth->getRole('管理员');
+            $authorRole = $auth->getRole('作者');
+            if( !$adminRole || !$authorRole ){
                 throw new \Exception('请先执行Rbac/init 添加权限和角色。.');
             }
 
