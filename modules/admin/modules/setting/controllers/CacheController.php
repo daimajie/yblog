@@ -35,6 +35,9 @@ class CacheController extends BaseController
         //控制台统计缓存
         $caches[SiteController::CACHE_COUNT]['exists'] = $this->cache->exists(SiteController::CACHE_COUNT);
         $caches[SiteController::CACHE_COUNT]['desc'] = '控制台首页统计数据缓存';
+        //最新评论文章缓存
+        $caches[Base::CACHE_LATELY_COMMENT]['exists'] = $this->cache->exists(Base::CACHE_LATELY_COMMENT);
+        $caches[Base::CACHE_LATELY_COMMENT]['desc'] = '控制台首页统计数据缓存';
 
 
 
@@ -62,6 +65,12 @@ class CacheController extends BaseController
     //清空统计缓存
     public function actionCount(){
         $this->cache->delete(SiteController::CACHE_COUNT);
+        return $this->redirect(['index']);
+    }
+
+    //清空最新评论缓存
+    public function actionLately(){
+        $this->cache->delete(Base::CACHE_LATELY_COMMENT);
         return $this->redirect(['index']);
     }
 

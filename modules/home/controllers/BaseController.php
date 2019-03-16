@@ -9,6 +9,7 @@
 
 namespace app\modules\home\controllers;
 
+use app\models\content\Article;
 use yii\helpers\HtmlPurifier;
 use app\models\content\Category;
 use app\models\setting\SEO;
@@ -21,6 +22,7 @@ class BaseController extends Controller
 {
     const CACHE_CATEGORY_LIST = 'category_list';
     const CACHE_SEO = 'seo';
+    const CACHE_LATELY_COMMENT = 'lately';
 
 
     public function beforeAction($action)
@@ -50,7 +52,17 @@ class BaseController extends Controller
         //**缓存seo信息(需要保存至数据库)
         $seo = $cache->get(static::CACHE_SEO);
         if ($seo === false) {
-            $seo = SEO::find()->limit(1)->asArray()->one();
+            $seo_data = SEO::find()->limit(1)->asArray()->one();
+            if(!$seo_data){
+                $seo['name'] = Yii::$app->name;
+                $seo['keywords'] = '';
+                $seo['description'] = '';
+                $seo['pc_logo'] = '';
+                $seo['mobile_logo'] = '';
+                $seo['qrcode'] = '';
+            }else{
+                $seo = $seo_data;
+            }
             $seo['about'] = HtmlPurifier::process($seo['about']);
 
             //设置缓存
@@ -62,6 +74,20 @@ class BaseController extends Controller
         }
         $base[static::CACHE_SEO] = $seo;
 
+        //**最新回复文章
+        $lately = $cache->get(static::CACHE_LATELY_COMMENT);
+        if ($lately === false) {
+            $lately = Article::getLately();
+
+            //设置缓存
+            /* $dependency = new DbDependency([
+                 'sql' => "SELECT updated_at FROM {{%seo}};"
+             ]);*/
+
+            $cache->set(static::CACHE_LATELY_COMMENT, $lately, 3600*24/*, $dependency*/);
+        }
+        $base[static::CACHE_LATELY_COMMENT] = $lately;
+        //VarDumper::dump(SEO::find()->limit(1)->asArray()->one(), 10,1);die;
 
 
 

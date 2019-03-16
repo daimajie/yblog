@@ -96,9 +96,8 @@ $this->params['isHome'] = true;
         <?php
         try{
             //二维码
-            $qrcode = $this->params['base']['seo']['qrcode'];
             echo Qrcode::Widget([
-                 'image' => !empty($qrcode) ? ViewHelper::showImage($qrcode) : ''
+                 'image' => $this->params['base']['seo']['qrcode']
             ]);
 
             //热门话题

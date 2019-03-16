@@ -43,6 +43,7 @@ class ArticleController extends WriteBaseController
     {
         parent::init();
         $this->user = Yii::$app->user->identity;
+
     }
 
     public function actions()
@@ -54,7 +55,7 @@ class ArticleController extends WriteBaseController
                 'index' => 'id',
                 'text' => 'name',
                 'limit' => '9',
-                'user_id' =>  $this->user->id,
+                'user_id' =>  empty($this->user->id) ? null : $this->user->id,
             ],
             'upload' => [
                 'class' => UploadAction::class,

@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
 use yii\widgets\Menu;
 use app\components\ViewHelper;
 use \app\modules\home\widgets\AdvertBar;
+use yii\helpers\HtmlPurifier;
 
 
 MainAsset::register($this);
@@ -191,6 +192,11 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                                 ['label' => '热门话题', 'url' => ['/home/content/topic/index']],
                                 ['label' => '关于', 'url' => ['/home/index/about']],
                                 ['label' => '联系', 'url' => ['/home/motion/contact/create']],
+                                [
+                                    'label' => '控制台',
+                                    'url' => ['/admin/site/index'],
+                                    'visible' => Yii::$app->user->can('管理员')
+                                ],
 
                             ],
                         ]);
@@ -245,7 +251,11 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
 
                 <!-- Logo -->
                 <a href="<?= Url::home([])?>" class="logo d-none d-lg-block">
-                    <img class="logo__img" src="<?= ViewHelper::showImage($base['seo']['pc_logo'])?>" alt="logo">
+                    <img class="logo__img" src="<?=
+                    !empty($base['seo']['pc_logo'])?
+                        ViewHelper::showImage($base['seo']['pc_logo']):
+                        ViewHelper::staticPath('/img/logo.png');
+                    ?>" alt="logo">
                 </a>
 
                 <!-- Ad Banner 728 -->
@@ -275,60 +285,52 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
 
                     <div class="col-lg-3 col-md-6">
                         <div class="widget">
-                            <a href="index.html">
-                                <img src="<?= ViewHelper::staticPath('img/logo_mobile.png')?>" srcset="<?= ViewHelper::staticPath('img/logo_mobile.png')?> 1x, <?= ViewHelper::staticPath('img/logo_mobile@2x.png')?> 2x" class="logo__img" alt="">
+                            <a href="<?= Url::to(['/home/index/about'])?>">
+                                <img class="logo__img" src="<?=
+                                !empty($base['seo']['mobile_logo'])?
+                                ViewHelper::showImage($base['seo']['mobile_logo']):
+                                    ViewHelper::staticPath('/img/logo_mobile.png');
+                                ?>" alt="logo">
                             </a>
-                            <p class="mt-20">We bring you the best Premium WordPress Themes. Deliver smart websites faster with this amazing theme. We care about our buyers.</p>
+                            <p class="mt-20">
+                                <?= ViewHelper::truncate_utf8_string(HtmlPurifier::process($base['seo']['about']),120)?>
+                            </p>
                         </div>
                     </div>
 
                     <div class="col-lg-3 col-md-6">
+
                         <h4 class="widget-title">最新回复文章</h4>
                         <ul class="post-list-small">
+                            <?php
+                            if(empty($base[BaseController::CACHE_LATELY_COMMENT]))echo '暂无数据.';
+                            foreach($base[BaseController::CACHE_LATELY_COMMENT] as $item):
+                            ?>
                             <li class="post-list-small__item">
                                 <article class="post-list-small__entry clearfix">
                                     <div class="post-list-small__img-holder">
                                         <div class="thumb-container thumb-75">
-                                            <a href="single-post.html">
-                                                <img data-src="<?= ViewHelper::staticPath('img/blog/popular_post_1.jpg')?>" src="<?= ViewHelper::staticPath('img/empty.png')?>" alt="" class="lazyload">
+                                            <a href="<?= Url::to(['article/view','id'=>$item['id']])?>">
+                                                <img data-src="<?= ViewHelper::showImage($item['image'])?>" src="<?= ViewHelper::staticPath('img/empty.png')?>" alt="" class="lazyload">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="post-list-small__body">
                                         <h3 class="post-list-small__entry-title">
-                                            <a href="single-post.html">Google is fixing its troubling burger emoji in Android 8.1</a>
-                                        </h3>
-                                        <ul class="entry__meta">
-                                            <li class="entry__meta-date">
-                                                <i class="ui-date"></i>
-                                                21 October, 2017
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </article>
-                            </li>
-                            <li class="post-list-small__item">
-                                <article class="post-list-small__entry clearfix">
-                                    <div class="post-list-small__img-holder">
-                                        <div class="thumb-container thumb-75">
-                                            <a href="single-post.html">
-                                                <img data-src="<?= ViewHelper::staticPath('img/blog/popular_post_2.jpg')?>" src="<?= ViewHelper::staticPath('img/empty.png')?>" alt="" class="lazyload">
+                                            <a href="<?= Url::to(['article/view','id'=>$item['id']])?>">
+                                                <?= ViewHelper::truncate_utf8_string(Html::encode($item['title']), 80)?>
                                             </a>
-                                        </div>
-                                    </div>
-                                    <div class="post-list-small__body">
-                                        <h3 class="post-list-small__entry-title">
-                                            <a href="single-post.html">How Meditation Can Transform Your Business</a>
                                         </h3>
                                         <ul class="entry__meta">
                                             <li class="entry__meta-date">
                                                 <i class="ui-date"></i>
-                                                21 October, 2017
+                                                <?= ViewHelper::time($item['created_at'])?>
                                             </li>
                                         </ul>
                                     </div>
                                 </article>
                             </li>
+                            <?php endforeach;?>
                         </ul>
                     </div>
 
@@ -362,41 +364,18 @@ $showHeader = isset($this->params['showHeader']) ? $this->params['showHeader'] :
                         <div class="widget widget_nav_menu">
                             <h4 class="widget-title">站点链接</h4>
                             <ul>
-                                <li><a href="about.html">关于我</a></li>
-                                <li><a href="contact.html">联系我</a></li>
-                                <li><a href="categories.html">首页</a></li>
-                                <li><a href="shortcodes.html">全部话题</a></li>
+                                <li><a href="<?= Url::to(['/home/index/about'])?>">关于我</a></li>
+                                <li><a href="<?= Url::to(['/home/motion/contact/create'])?>">联系我</a></li>
+                                <li><a href="<?= Url::home()?>">首页</a></li>
+                                <li><a href="<?= Url::to(['/home/content/topic/index'])?>">全部话题</a></li>
                             </ul>
                         </div>
                     </div>
 
                 </div>
             </div>
-        </div> <!-- end container -->
-
-        <div class="footer__bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-7 order-lg-2 text-right text-md-center">
-                        <div class="widget widget_nav_menu">
-                            <ul>
-                                <li><a href="#">Terms</a></li>
-                                <li><a href="#">Privacy</a></li>
-                                <li><a href="#">Advertise</a></li>
-                                <li><a href="#">Affiliates</a></li>
-                                <li><a href="#">Newsletter</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 order-lg-1 text-md-center">
-              <span class="copyright">
-                &copy; 2018 | <a href="https://github.com/daimajie/yblog">y-blog</a>
-              </span>
-                    </div>
-                </div>
-
-            </div>
-        </div> <!-- end bottom footer -->
+        </div>
+        <!-- end container -->
     </footer>
     <!-- end footer -->
 

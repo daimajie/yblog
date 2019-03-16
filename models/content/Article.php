@@ -5,6 +5,7 @@ namespace app\models\content;
 use app\components\events\ArticlePutEvent;
 use app\components\Helper;
 use app\models\member\User;
+use app\models\motion\Comment;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -808,12 +809,14 @@ class Article extends ArticleForm
      * @return \yii\db\ActiveQuery
      */
     public static function getArticleQuery($topic_id){
-        return self::find()
+        $query = self::find()
             ->where([
                 'status' => self::STATUS_NORMAL, //公示文章
                 'check'  => self::CHECK_ADOPT,  //审核通过
                 'topic_id' => $topic_id         //同一话题下
             ]);
+        //$query->andFilterWhere(['topic_id' => $topic_id]);
+        return $query;
     }
 
     /**
@@ -836,6 +839,27 @@ class Article extends ArticleForm
             ->asArray()
             ->one();
         return ['prev' => $prev, 'next' => $next];
+    }
+    
+    /**
+     * 获取最新回复的两条文章
+     */
+    public static function getLately(){
+
+        return self::find()
+            ->select(['a.id','image','c.created_at','title'])
+            ->alias('a')
+            ->leftJoin(['c'=>'{{%comment}}'],'a.id=c.article_id')
+            ->where([
+                'status' => self::STATUS_NORMAL, //公示文章
+                'check'  => self::CHECK_ADOPT,  //审核通过
+            ])
+            ->orderBy(['c.created_at'=>SORT_DESC])
+            ->limit(2)
+            ->asArray()
+            ->all();
+
+
     }
 
 }

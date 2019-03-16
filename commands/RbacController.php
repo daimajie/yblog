@@ -12,6 +12,7 @@ use app\components\rules\ArticleRule;
 use app\components\rules\TopicRule;
 use Yii;
 use yii\console\Controller;
+use yii\console\ExitCode;
 
 
 class RbacController extends Controller
@@ -55,14 +56,14 @@ class RbacController extends Controller
         //添加 后台管理路由
         $this->addAdminRouter();
 
+        echo '初始化权限成功。';
+        return ExitCode::OK;
 
 
 
-
-
-        $this->authManager->assign($this->author, 2);
+        /*$this->authManager->assign($this->author, 2);
         $this->authManager->assign($this->author, 1);
-        $this->authManager->assign($this->admin, 1);
+        $this->authManager->assign($this->admin, 1);*/
     }
 
     /**
