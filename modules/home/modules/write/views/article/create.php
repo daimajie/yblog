@@ -9,7 +9,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\widgets\upload\Upload;
-use app\widgets\Alert;
+use app\widgets\HomeAlert as Alert;
 use app\widgets\select2\Select2;
 use yii\helpers\Url;
 use app\widgets\ueditor\UEditor;

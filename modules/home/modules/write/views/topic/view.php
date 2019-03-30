@@ -9,7 +9,7 @@
 use app\models\content\Topic;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\widgets\Alert;
+use app\widgets\HomeAlert as Alert;
 use app\components\ViewHelper;
 use yii\helpers\Url;
 use app\assets\LayerAsset;

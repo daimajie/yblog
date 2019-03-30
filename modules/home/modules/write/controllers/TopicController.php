@@ -78,6 +78,7 @@ class TopicController extends WriteBaseController
                 return $this->redirect(['index']);
             }
             //话题创建失败
+            Yii::$app->session->setFlash('error', implode($model->getFirstErrors()));
         }
 
         return $this->render('create',[
@@ -96,7 +97,7 @@ class TopicController extends WriteBaseController
                 return $this->redirect(['index']);
             }
             //话题创建失败
-            Yii::$app->session->setFlash('error', $model->getFirstErrors());
+            Yii::$app->session->setFlash('error', implode($model->getFirstErrors()));
         }
 
         return $this->render('create',[

@@ -19,7 +19,7 @@ use app\components\ViewHelper;
         ?>
             <li class="widget-gallery-sm__item">
                 <a href="<?= Url::to(['/home/content/topic/view','id'=>$item['id']])?>">
-                    <img width="125" src="<?= ViewHelper::showImage($item['image'])?>" alt="<?= Html::encode($item['name'])?>">
+                    <img title="<?= Html::encode($item['name'])?>" width="125" src="<?= ViewHelper::showImage($item['image'])?>" alt="<?= Html::encode($item['name'])?>">
                 </a>
             </li>
         <?php

@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 use app\widgets\upload\assets\UploadAsset;
 use app\widgets\upload\Upload;
 use yii\helpers\Html;
-use dmstr\widgets\Alert;
+use app\widgets\HomeAlert as Alert;
 
 UploadAsset::register($this);
 ?>

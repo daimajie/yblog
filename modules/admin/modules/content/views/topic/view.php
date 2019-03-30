@@ -92,7 +92,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         $error = Html::error($model, 'check', ['class' => 'text-danger']);
 
                         return $input . $error;
-                    }
+                    },
+                    'visible' => $model->secrecy != Topic::SECR_PRIVATE
                 ],
                 [
                     'attribute' => 'secrecy',

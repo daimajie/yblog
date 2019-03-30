@@ -8,7 +8,7 @@
  */
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-use dmstr\widgets\Alert;
+use app\widgets\HomeAlert as Alert;
 use yii\helpers\Url;
 use app\assets\LayerAsset;
 

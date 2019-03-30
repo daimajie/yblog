@@ -114,13 +114,18 @@ class ArticleController extends WriteBaseController
     public function actionCreate($id){
         $model = new ArticleForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->store()) {
+        if ($model->load(Yii::$app->request->post())) {
 
 
             //触发计数事件(新建文章初始都是待审核 所以不需要计数)
             //$model->trigger(Article::EVENT_AFTER_ADD);
+            if( $model->store() ){
 
-            return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id]);
+            }else{
+                Yii::$app->session->setFlash('error', implode($model->getFirstErrors()));
+            }
+
         }
 
 
@@ -159,6 +164,8 @@ class ArticleController extends WriteBaseController
                 $model->trigger(Article::EVENT_AFTER_PUT, $event);
 
                 return $this->redirect(['view', 'id' => $model->id]);
+            }else{
+                Yii::$app->session->setFlash('error', implode($model->getFirstErrors()));
             }
         }
 

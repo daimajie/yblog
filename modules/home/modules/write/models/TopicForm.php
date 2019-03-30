@@ -68,7 +68,7 @@ class TopicForm extends Topic
         return true;
     }
 
-    //每个用户最多同时又5个活跃活体，再不能创建
+    //每个用户最多同时n个活跃活体，再不能创建
     public function activeLimit($attr){
         if($this->hasErrors())
             return false;
@@ -78,12 +78,17 @@ class TopicForm extends Topic
             return false;
         }
 
+        //如果建立私有话题 直接通过
+        if($this->secrecy == static::SECR_PRIVATE)
+            return true;
+
         $count = static::find()
             ->where([
                 'user_id'=>Yii::$app->user->getId(),
-                'status' => static::STATUS_NORMAL
+                'status' => static::STATUS_NORMAL,
+                'secrecy' => static::SECR_PUBLIC
             ])
-            ->andWhere(['!=', 'status', static::STATUS_RECYCLE])
+            //->andWhere(['!=', 'status', static::STATUS_RECYCLE])
             ->count();
         $limit = Yii::$app->params['topic']['active_limit'];
 
@@ -125,9 +130,10 @@ class TopicForm extends Topic
             $count = static::find()
                 ->where([
                     'user_id'=>Yii::$app->user->getId(),
-                    'status' => static::STATUS_NORMAL
+                    'status' => static::STATUS_NORMAL,
+                    'secrecy' => static::SECR_PUBLIC
                 ])
-                ->andWhere(['!=', 'status', static::STATUS_RECYCLE])
+                //->andWhere(['!=', 'status', static::STATUS_RECYCLE])
                 ->count();
             $limit = Yii::$app->params['topic']['active_limit'];
 

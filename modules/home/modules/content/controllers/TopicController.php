@@ -70,7 +70,7 @@ class TopicController extends BaseController
                 $model->status != Topic::STATUS_RECYCLE)
                 return $model;
         }
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('请求页面不存在。');
     }
 
 

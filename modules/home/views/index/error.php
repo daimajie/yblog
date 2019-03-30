@@ -9,6 +9,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ListView;
 use app\modules\home\models\content\SearchArticle;
+use app\modules\home\widgets\Qrcode;
 
 $this->title = $name;
 ?>
@@ -69,10 +70,16 @@ $this->title = $name;
     <aside class="col-lg-4 sidebar sidebar--right">
 
         <!--qrcode-->
-        <div class="widget widget_mc4wp_form_widget text-center">
-            <img width="100%" src="static/assets/img/blog/rqcode.png" alt="关注微信公众号" class="mb-3 ">
-            <h4 class="widget-title">扫码直接下载APP</h4>
-        </div>
+        <?php
+        try{
+            //二维码
+            echo Qrcode::Widget([
+                'image' => $this->params['base']['seo']['qrcode']
+            ]);
+        }catch (\yii\base\Exception $e){
+
+        }
+        ?>
 
     </aside>
     <!-- end sidebar -->

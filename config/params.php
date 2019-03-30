@@ -34,8 +34,8 @@ return [
 
     //话题设置
     'topic' => [
-        'secrecy_limit' => 5,
-        'active_limit' => 5
+        'secrecy_limit' => 5, //每个用户可创建的私密话题上限
+        'active_limit' => 5, //每个用户同时拥有的连载话题上限
     ]
 
 

@@ -5,9 +5,7 @@ use app\modules\home\widgets\HotTopic;
 use app\modules\home\widgets\Active;
 use app\modules\home\widgets\Recommend;
 use app\modules\home\widgets\Advert;
-use app\modules\home\widgets\Contact;
 use app\modules\home\widgets\Qrcode;
-use app\components\ViewHelper;
 
 
 $this->params['isHome'] = true;

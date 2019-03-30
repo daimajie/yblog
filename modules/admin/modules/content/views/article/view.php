@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use app\components\Helper;
 use app\models\content\Article;
 use app\models\content\Topic;
+use yii\helpers\HtmlPurifier;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\content\Article */
@@ -102,8 +103,9 @@ $this->params['breadcrumbs'][] = $this->title;
 //                'user_id',
                 [
                     'attribute' => 'content',
+                    'format' => 'raw',
                     'value' => function($model){
-                        return $model->content->content;
+                        return HtmlPurifier::process($model->content->content);
                     }
                 ],
                 [

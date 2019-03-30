@@ -29,7 +29,12 @@ $this->title = '账号设置';
             ['label' => '修改密码', 'url' => ['user/password'],'template' => '<a class="sidenav__menu-link sidenav__menu-link--red" href="{url}">{label}</a>'],
             ['label' => '修改邮箱', 'url' => ['user/email'],'template' => '<a class="sidenav__menu-link sidenav__menu-link--purple" href="{url}">{label}</a>'],
             ['label' => '二维码设置', 'url' => ['user/set-qrcode'],'template' => '<a class="sidenav__menu-link sidenav__menu-link--light-blue" href="{url}">{label}</a>'],
-            ['label' => '成为作者', 'url' => ['/home/motion/contact/create'],'template' => '<a class="sidenav__menu-link sidenav__menu-link--violet" href="{url}">{label}</a>'],
+            [
+                'label' => '成为作者',
+                'url' => ['/home/motion/contact/create'],
+                'template' => '<a class="sidenav__menu-link sidenav__menu-link--violet" href="{url}">{label}</a>',
+                'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->author < 0
+            ],
 
         ],
     ]);

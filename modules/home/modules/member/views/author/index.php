@@ -2,10 +2,7 @@
 use app\components\ViewHelper;
 use yii\helpers\Html;
 use yii\widgets\ListView;
-use yii\helpers\Url;
-use app\models\content\Topic;
 use app\modules\home\widgets\Qrcode;
-use app\modules\home\widgets\Contact;
 use app\modules\home\widgets\TopicList;
 
 

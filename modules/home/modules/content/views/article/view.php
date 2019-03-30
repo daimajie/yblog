@@ -13,7 +13,6 @@ use yii\helpers\HtmlPurifier;
 use yii\helpers\Url;
 use app\modules\home\widgets\Qrcode;
 use app\modules\home\widgets\Advert;
-use app\modules\home\controllers\BaseController;
 
 
 $this->title = Html::encode($model['title']);

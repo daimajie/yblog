@@ -10,7 +10,7 @@ use app\models\content\Topic;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\widgets\upload\Upload;
-use app\widgets\Alert;
+use app\widgets\HomeAlert as Alert;
 
 
 $this->title = '创建话题';

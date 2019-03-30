@@ -19,7 +19,7 @@ use yii\helpers\Json;
 class ArticleForm extends ActiveRecord
 {
     public $new_tags = '';
-    public $arr_tags = '';
+    public $arr_tags = [];
     public $art_content = '';
 
     public function rules()

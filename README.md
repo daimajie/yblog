@@ -81,17 +81,23 @@ return [
     ],
 ```
 
-4 初始化权限
+4 初始化数据库
+
+~~~
+./yii migrate (window 去掉 './')
+~~~
+
+5 初始化权限
 
 ~~~
 ./yii rbac/init  (window 去掉 './') 
 ~~~
 
 
-5 添加用户(管理员及作者) 按照提示输入信息即可
+6 添加用户(管理员及作者) 按照提示输入信息即可
 ~~~
 ./yii member/add-admin  (window 去掉 './') 
 ./yii member/add-author  (window 去掉 './') 
 ~~~
 
-6 添加虚拟主机访问 web目录即可 获指定web目录为网站根目录
+7 添加虚拟主机访问 web目录即可 获指定web目录为网站根目录

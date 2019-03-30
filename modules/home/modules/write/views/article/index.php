@@ -2,7 +2,7 @@
 use app\models\content\Topic;
 use yii\grid\GridView;
 use yii\helpers\Html;
-use app\widgets\Alert;
+use app\widgets\HomeAlert as Alert;
 use app\models\content\Article;
 
 $params = Yii::$app->request->queryParams;

@@ -6,7 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use dmstr\widgets\Alert;
+use app\widgets\HomeAlert as Alert;
 
 
 $this->title = '联系我';

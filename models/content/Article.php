@@ -216,6 +216,9 @@ class Article extends ArticleForm
                 Topic::updateAllCounters(['count'=>1],['id'=>$topic_id]);
 
                 User::updateAllCounters(['author'=>1],['id'=>$user_id]);
+
+                //包含审核通过的文章 话题一定是审核通过的
+                Topic::updateAll(['check'=>Topic::CHECK_ADOPT],['!=', 'check', Topic::CHECK_ADOPT]);
             }
 
             //2.如果由审核通过转为待审核

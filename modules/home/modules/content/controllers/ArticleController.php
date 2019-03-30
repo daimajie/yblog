@@ -21,7 +21,10 @@ class ArticleController extends BaseController
     public function actionView($id){
 
         $model = $this->findModel($id);
-        //VarDumper::dump($model->user->profile,10,1);die;
+
+        //增加访问次数
+        $model->updateCounters(['visited' => 1]);
+
         return $this->render('view',[
             'model' => $model,
             'prevAndNext' => Article::getPrevNext($id, $model['topic_id'])
