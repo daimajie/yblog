@@ -31,8 +31,6 @@ class Qrcode extends Widget
     {
         parent::init();
 
-        if(empty($this->image))
-            $this->image = 'static/assets/img/blog/rqcode.png';
 
         if(empty($this->title))
             $this->title = '扫码关注';
@@ -40,6 +38,7 @@ class Qrcode extends Widget
 
     public function run()
     {
+        if(empty($this->image)) return false;
 
         return $this->render('qrcode',[
             'title' => $this->title,

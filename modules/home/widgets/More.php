@@ -19,10 +19,10 @@ class More extends Widget
     public function behaviors()
     {
         return [
-           /* [
+            [
                 'class' => CacheableWidgetBehavior::class,
                 'cacheDuration' => 3600 * 24, //缓存一天
-            ]*/
+            ]
 
         ];
     }
