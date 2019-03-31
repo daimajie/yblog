@@ -72,7 +72,7 @@ use app\models\content\Topic;
             <article class="post-list-small__entry clearfix">
                 <div class="post-list-small__body">
                     <h3 class="post-list-small__entry-title">
-                        <a href="<?= Url::to(['/home/content/topic/index', 'id'=>$user_id])?>">查看作者更多话题</a>
+                        <a href="<?= Url::to(['/home/content/topic/index', 'user_id'=>$user_id])?>">查看作者更多话题</a>
                     </h3>
                 </div>
             </article>

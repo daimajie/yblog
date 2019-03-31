@@ -78,7 +78,7 @@ $this->title = ViewHelper::username($model->username, $model->nickname);
     <aside class="col-lg-4 sidebar sidebar--right">
         <!--search article-->
         <div class="widget widget_mc4wp_form_widget text-center">
-            <?= Html::beginForm(['index','user_id'=>$model['id']], 'get',['class'=>'search-form']) ?>
+            <?= Html::beginForm(['index','id'=>$model['id']], 'get',['class'=>'search-form']) ?>
             <?= Html::input('text', 'title', !empty($title)?trim($title):'', [
                 'placeholder'=>'文章标题',
                 'autocomplete'=>"off",
@@ -115,7 +115,7 @@ $this->title = ViewHelper::username($model->username, $model->nickname);
 
         //二维码
         echo Qrcode::Widget([
-            'image' => !empty($model->profile->qrcode) ? ViewHelper::showImage($model->profile->qrcode) : '',
+            'image' => !empty($model->profile->qrcode) ? $model->profile->qrcode : '',
             'title' => '打赏作者'
         ]);
 

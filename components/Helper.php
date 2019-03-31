@@ -117,7 +117,7 @@ class Helper
         if(empty($savePath)) throw new InvalidArgumentException('传递参数错误。');
         $upRoot = Yii::$app->params['upload']['upRoot'];
 
-        return $upRoot . '/' .$savePath;
+        return '/' . $upRoot . '/' .$savePath;
     }
 
     /**

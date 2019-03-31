@@ -168,7 +168,7 @@ $this->title = Html::encode($model['title']);
         //二维码
         echo Qrcode::Widget([
             'title' => '打赏作者',
-            'image' => !empty($model['user']['profile']['qrcode']) ? ViewHelper::showImage($model['user']['profile']['qrcode']) : ''
+            'image' => !empty($model['user']['profile']['qrcode']) ? $model['user']['profile']['qrcode'] : ''
         ]);
 
         //作者其他话题

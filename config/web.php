@@ -78,14 +78,14 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
+
+        /*'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => false,
+            'showScriptName' => true,
             'rules' => [
             ],
-        ],appendTimestamp
-        */
+        ],*/
+
         'assetManager' => [
             'appendTimestamp' => true,
             'bundles' => [

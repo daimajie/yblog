@@ -37,7 +37,7 @@ class ViewHelper
         if(empty($savePath)) return'';
         $upRoot = Yii::$app->params['upload']['upRoot'];
 
-        return $upRoot . '/' .$savePath;
+        return '/' . $upRoot . '/' .$savePath;
     }
 
     /**

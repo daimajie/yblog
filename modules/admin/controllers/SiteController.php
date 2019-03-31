@@ -40,6 +40,7 @@ class SiteController extends BaseController
 
 
     public function actionIndex(){
+
         $cache = Yii::$app->cache;
         $count = $cache->getOrSet(self::CACHE_COUNT,function(){
                 return [

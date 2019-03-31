@@ -857,6 +857,7 @@ class Article extends ArticleForm
                 'status' => self::STATUS_NORMAL, //公示文章
                 'check'  => self::CHECK_ADOPT,  //审核通过
             ])
+            ->andWhere(['not', ['c.created_at' => null]])
             ->orderBy(['c.created_at'=>SORT_DESC])
             ->limit(2)
             ->asArray()

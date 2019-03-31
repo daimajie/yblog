@@ -20,7 +20,7 @@ $username = empty($user->nickname) ? $user->username : $user->nickname;
                 <p><?= $username?></p>
                 <?= Html::a(
                     '安全退出 <i class="glyphicon glyphicon-log-out"></i>',
-                    ['/index/logout'],
+                    ['/home/index/logout'],
                     ['data-method' => 'post']
                 ) ?>
             </div>

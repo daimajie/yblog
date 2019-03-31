@@ -32,10 +32,4 @@ return [
             'class' => 'app\modules\admin\modules\setting\Module',
         ],
     ],
-    'components' => [
-
-    ],
-    'params' => [
-
-    ],
 ];

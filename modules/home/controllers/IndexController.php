@@ -79,7 +79,7 @@ class IndexController extends BaseController
     public function actionIndex()
     {
 
-
+        //var_dump(Yii::$app->user->isGuest);die;
         $searchModel = new SearchArticle();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
